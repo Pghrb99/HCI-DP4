@@ -3,15 +3,14 @@ import './App.css';
 import React from 'react';
 
 import Header from './components/Header';
+import SideMenu from './components/SideMenu';
+
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div class="App">
+        <SideMenu />
         <Header />
       </div>
     );
