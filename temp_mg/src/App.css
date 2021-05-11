@@ -1,0 +1,59 @@
+.App {
+  text-align: center;
+}
+
+#head {
+  border: 1px solid black;
+  width: 100%;
+  height: 200px;
+  position: relative;
+}
+
+#head img {
+  height: 150px;
+  vertical-align: middle;
+}
+
+.head_title {
+  font-size: 64px;
+	text-align: center;
+	position: absolute;
+  margin-left: 10px;
+  top: -50px;
+	left: 30px;
+}
+
+#head_bottom {
+  text-align: center;
+}
+
+#head_tags {
+  float: left;
+  margin-left: 50px;
+  margin-top: 5px;
+  font-size: 20px;
+}
+
+#start_button {
+  float: right;
+  margin-right: 50px;
+  background:#1AAB8A;
+  color:#fff;
+  border: none;
+  cursor: pointer;
+  width: 100px;
+  height: 30px;
+  font-size: 20px;
+}
+
+#progress_button {
+  float: right;
+  margin-right: 50px;
+  background:#1AAB8A;
+  color:#fff;
+  border: none;
+  cursor: pointer;
+  width: 100px;
+  height: 30px;
+  font-size: 20px;
+}
