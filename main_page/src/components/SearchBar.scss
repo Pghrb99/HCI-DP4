@@ -1,0 +1,42 @@
+.SearchBar {
+	width: 700px;
+	margin: 0 auto;
+	box-sizing: border-box;
+	display: flex;
+	margin-top: 20%;
+}
+.Toggle {
+	margin-right: 40px;
+}
+
+
+.inputField {
+	background-color: white;
+    display: flex;
+	align-items: flex-start;
+	flex-wrap: wrap;
+	min-height: 48px;
+	width: 480px;
+	padding: 0 8px;
+	border: 1px solid rgb(214, 216, 218);
+	border-radius: 6px;
+	&:focus-within {
+		border: 1px solid #0052cc;
+	}
+	input {
+		flex: 1;
+		border: none;
+		height: 46px;
+		font-size: 14px;
+		padding: 4px 0 0 0;
+		&:focus {
+			outline: transparent;
+		}
+	}
+}
+
+@media screen and (max-width: 567px) {
+	.inputField {
+		width: calc(100vw - 32px);
+	}
+}

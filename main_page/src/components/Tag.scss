@@ -1,0 +1,43 @@
+$include-color: #98ded9;
+$exclude-color: #de9898;
+
+.Include, .Exclude {
+    width: auto;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: white;
+	padding: 0 8px;
+	font-size: 14px;
+    font-weight: bold;
+	list-style: none;
+	border-radius: 6px;
+	margin: 0 8px 8px 0;
+	.tagName {
+        margin-left: 3px;
+		margin-top: 0px;
+        margin-bottom: 3px;
+	}
+	.tag-close-icon {
+		display: block;
+		width: 16px;
+		height: 16px;
+		line-height: 16px;
+		text-align: center;
+		font-size: 14px;
+		margin-left: 8px;
+		color: #0052cc;
+		border-radius: 50%;
+		background: #fff;
+		cursor: pointer;
+	}
+}
+
+.Include {
+    background-color: $include-color;
+}
+
+.Exclude {
+    background-color: $exclude-color;
+}

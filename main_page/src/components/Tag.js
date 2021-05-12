@@ -1,0 +1,23 @@
+import React from 'react'
+import {IoBan} from 'react-icons/io5'
+import {FaPlus} from 'react-icons/fa'
+import './Tag.scss'
+
+const Tag = ({name, isInclude}) => {
+    if (isInclude){
+        return (
+            <li className="Include">
+                <FaPlus color="white"/><span className="tagName">{name}</span>
+            </li>
+        )
+    }
+
+    return (
+        <li className="Exclude">
+            <IoBan color="white"/><span className="tagName">{name}</span>
+        </li>
+    )
+    
+}
+
+export default Tag
