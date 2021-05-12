@@ -1,10 +1,10 @@
 import './App.css';
-import SearchBar from './components/SearchBar'
+import TagSearchPage from './pages/TagSearchPage';
 
 function App() {
   return (
     <div className="App">
-      <SearchBar mode={true}/>
+      <TagSearchPage />
     </div>
   );
 }

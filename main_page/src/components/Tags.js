@@ -2,11 +2,16 @@ import React from 'react'
 import Tag from './Tag'
 import './Tags.scss'
 
-const Tags = ({tags}) => {
+const Tags = ({tags, onRemove}) => {
     return (
         <ul className='Tags'>
             {tags.map((tag) => (
-                <Tag key={tag.id} name={tag.name} isInclude={tag.isInclude}></Tag>
+                <Tag 
+                    key={tag.name} 
+                    name={tag.name} 
+                    isInclude={tag.isInclude}
+                    onRemove={onRemove} 
+                />
             ))}
         </ul>
     )

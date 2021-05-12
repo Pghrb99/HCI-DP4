@@ -1,5 +1,5 @@
 $include-color: #98ded9;
-$incldue-hover-color: #67d8d0;
+$include-hover-color: #67d8d0;
 $exclude-color: #de9898;
 $exclude-hover-color: #db7070;
 
@@ -73,7 +73,7 @@ $exclude-hover-color: #db7070;
   }
   
   .react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
-    background-color: $incldue-hover-color;
+    background-color: $include-hover-color;
   }
   
   .react-toggle-track-check {
@@ -141,7 +141,7 @@ $exclude-hover-color: #db7070;
   
   .react-toggle--checked .react-toggle-thumb {
     left: 74px;
-    border-color: $incldue-hover-color;
+    border-color: #4D4D4D;
   }
   
   .react-toggle--focus .react-toggle-thumb {

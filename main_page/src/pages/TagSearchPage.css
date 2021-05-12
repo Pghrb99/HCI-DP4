@@ -1,0 +1,27 @@
+body {
+  background-color: #c7ffd8;
+}
+.TagSearchPage {
+  text-align: center;
+}
+.TagSearchBar {
+  margin: 0 auto;
+}
+
+.TopBar {
+  position: absolute;
+  top: 30px;
+  right: 50px;
+}
+
+#logo {
+  margin-top: 7%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  height: 30vmin;
+  pointer-events: none;
+}
+
+
+
