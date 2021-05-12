@@ -1,0 +1,13 @@
+h2 {
+    padding-left: 50px;
+}
+
+#infodocument {
+    position: absolute;
+    top: 270px;
+}
+
+#reviews {
+    position: absolute;
+    top: 1000px;
+}

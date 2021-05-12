@@ -4,7 +4,8 @@ import React from 'react';
 
 import Header from './components/Header';
 import SideMenu from './components/SideMenu';
-
+import HorizontalBar from './components/HorizontalBar';
+import InfoDocument from './components/InfoDocument';
 
 class App extends React.Component {
   render() {
@@ -12,6 +13,8 @@ class App extends React.Component {
       <div class="App">
         <SideMenu />
         <Header />
+        <HorizontalBar />
+        <InfoDocument/>
       </div>
     );
   }
