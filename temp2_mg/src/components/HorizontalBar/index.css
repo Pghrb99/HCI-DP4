@@ -1,5 +1,5 @@
 #hori_bar {
-    position: absolute;
+    position: fixed;
     top: 234px;
     left: -40px;
     width: 100%;

@@ -1,12 +1,12 @@
 .App {
     text-align: center;
-    
 }
   
 #head {
   width: 100%;
   height: 250px;
-  position: absolute;
+  position: fixed;
+  top: 0px;
   z-index: 0;
 }
 
@@ -17,10 +17,10 @@
   background-size: cover;
   background-position: center;
   position: absolute;
-  top: 0;
-  left: 0;
+  left: 0px;
   content: "";
-  opacity: 0.5;
+  /*그림에만 투명도를 넣기 위해서 after로 분류함*/
+  /*opacity: 0.5;*/
   z-index: -1;
 }
   

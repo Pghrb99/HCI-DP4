@@ -5,6 +5,7 @@ h2 {
 #infodocument {
     position: absolute;
     top: 270px;
+    z-index: -5;
 }
 
 #reviews {
