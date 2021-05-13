@@ -1,5 +1,5 @@
 import React from 'react'
-import './TopBar.scss'
+import '../TopBar/TopBar.scss'
 
 const TopBar = ({isSignedIn, userName}) => {
     if (isSignedIn) {

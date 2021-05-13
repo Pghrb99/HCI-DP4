@@ -1,7 +1,7 @@
 import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
-import ActivityCard from '../components/ActivityCard'
-import img1 from '../imgs/hockey_world_1400.jpg'
+import ActivityCard from './Sections/ActivityCard/ActivityCard'
+import img1 from './Sections/imgs/hockey_world_1400.jpg'
 
 const TagSearchResultPage = () => {
     return (

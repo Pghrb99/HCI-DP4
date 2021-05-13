@@ -1,5 +1,5 @@
 import React from 'react'
-import Tag from './Tag'
+import Tag from '../Tag/Tag'
 import './Tags.scss'
 
 const Tags = ({tags, onRemove}) => {

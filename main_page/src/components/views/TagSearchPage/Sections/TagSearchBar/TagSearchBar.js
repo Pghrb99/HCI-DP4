@@ -1,10 +1,10 @@
 import React, {useState} from 'react'
 import Autocomplete from 'react-autocomplete'
-import Tags from './Tags'
 import Toggle from 'react-toggle'
-import "./Toggle.scss"
-import './TagSearchBar.scss'
-import SearchButton from './SearchButton'
+import Tags from '../Tags/Tags'
+import SearchButton from '../SearchButton/SearchButton'
+import "../Toggle/Toggle.scss"
+import '../TagSearchBar/TagSearchBar.scss'
 
 const TagSearchBar = () => {
     const [mode, setMode] = useState(true);
