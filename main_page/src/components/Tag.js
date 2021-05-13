@@ -7,9 +7,9 @@ const Tag = ({name, isInclude, onRemove}) => {
     if (isInclude){
         return (
             <li className="Include">
-                <FaPlus color="white"/>
+                <FaPlus color="white" className="tag-icon"/>
                 <span className="tagName">{name}</span>
-                <span onClick={() => onRemove(name)}>
+                <span className="wrapper" onClick={() => onRemove(name)}>
                     <IoCloseCircle className="tag-close-icon"/>
                 </span>
             </li>
@@ -18,9 +18,9 @@ const Tag = ({name, isInclude, onRemove}) => {
 
     return (
         <li className="Exclude">
-            <IoBan color="white"/>
+            <IoBan color="white" className="tag-icon"/>
             <span className="tagName">{name}</span>
-            <span onClick={() => onRemove(name)}>
+            <span className="wrapper" onClick={() => onRemove(name)}>
                 <IoCloseCircle className="tag-close-icon"/>
             </span>
         </li>

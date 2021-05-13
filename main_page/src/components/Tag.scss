@@ -1,17 +1,18 @@
-$include-color: #98ded9;
-$include-hover-color: #67d8d0;
+$include-color: #77be9b;
+$include-hover-color: #3aa770;
 $exclude-color: #de9898;
 $exclude-hover-color: #db7070;
 
 .Include, .Exclude {
+	box-shadow: 1px 1px 1px grey;
     width: auto;
-	height: 40px;
+	height: 35px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	color: white;
 	padding: 0 8px;
-	font-size: 14px;
+	font-size: 16px;
     font-weight: bold;
 	list-style: none;
 	border-radius: 6px;
@@ -20,6 +21,11 @@ $exclude-hover-color: #db7070;
         margin-left: 3px;
 		margin-top: 0px;
         margin-bottom: 3px;
+	}
+	.tag-icon {
+		display: block;
+		width: 20px;
+		height: 20px;
 	}
 	.tag-close-icon {
 		display: block;
@@ -31,6 +37,11 @@ $exclude-hover-color: #db7070;
 		margin-left: 8px;
 		border-radius: 50%;
 		cursor: pointer;
+	}
+	.wrapper {
+		margin-right: 4px;
+		width: 16px;
+		height: 16px;
 	}
 }
 

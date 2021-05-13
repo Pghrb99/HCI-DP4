@@ -29,7 +29,13 @@ const TagSearchBar = () => {
     }
 
     const onRemove = (name) => {
-        setTags(tags.filter(tag => tag.name!=name))
+        setTags(tags.filter(tag => tag.name!==name))
+    }
+
+    const onBackspaceDown = function(e) {
+        if(e.keyCode === 8 && text.length === 0) {
+            setTags(tags.slice(0, -1))
+        }
     }
 
     return (
@@ -45,12 +51,40 @@ const TagSearchBar = () => {
                 />
             </div>
 
-            <div className="inputField">
+            <div className="inputField" >
                 <Tags tags={tags} onRemove={onRemove}/>
                 <Autocomplete
                     items={[
                         { label: 'Air' },
                         { label: 'Acrobatic' },
+                        { label: 'Ball' },
+                        { label: 'Climbing' },
+                        { label: 'Water' },
+                        { label: 'Indoor' },
+                        { label: 'Outdoor' },
+                        { label: 'Combat' },
+                        { label: 'Strength' },
+                        { label: 'Ball' },
+                        { label: 'Climbing' },
+                        { label: 'Water' },
+                        { label: 'Indoor' },
+                        { label: 'Outdoor' },
+                        { label: 'Combat' },
+                        { label: 'Strength' },
+                        { label: 'Ball' },
+                        { label: 'Climbing' },
+                        { label: 'Water' },
+                        { label: 'Indoor' },
+                        { label: 'Outdoor' },
+                        { label: 'Combat' },
+                        { label: 'Strength' },
+                        { label: 'Ball' },
+                        { label: 'Climbing' },
+                        { label: 'Water' },
+                        { label: 'Indoor' },
+                        { label: 'Outdoor' },
+                        { label: 'Combat' },
+                        { label: 'Strength' },
                         { label: 'Ball' },
                         { label: 'Climbing' },
                         { label: 'Water' },
@@ -67,7 +101,10 @@ const TagSearchBar = () => {
                     renderItem={(item, highlighted) =>
                       <div
                         key={item.id}
-                        style={{ backgroundColor: highlighted ? '#eee' : 'transparent'}}
+                        style={{
+                            cursor: 'default',
+                            backgroundColor: highlighted ? '#e3e3e3' : 'transparent'
+                        }}
                       >
                         {item.label}
                       </div>
@@ -78,7 +115,18 @@ const TagSearchBar = () => {
                     inputProps=
                         {{
                             type: 'text',
-                            placeholder: 'Enter Tags',
+                            placeholder: 'Enter Tags'
+                        }}
+                    menuStyle= 
+                        {{
+                            borderRadius: '3px',
+                            boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
+                            background: 'rgba(255, 255, 255, 0.9)',
+                            padding: '2px 0',
+                            fontSize: '90%',
+                            position: 'fixed',
+                            overflow: 'auto',
+                            maxHeight: '30%', // TODO: don't cheat, let it flow to the bottom
                         }}
                 />
             </div>
