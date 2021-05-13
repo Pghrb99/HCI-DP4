@@ -1,4 +1,4 @@
-import './TagSearchPage.css';
+import './TagSearchPage.scss';
 import TagSearchBar from '../components/TagSearchBar'
 import SideMenu from '../components/SideMenu'
 import TopBar from '../components/TopBar'
