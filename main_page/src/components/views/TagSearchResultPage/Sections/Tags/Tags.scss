@@ -1,0 +1,9 @@
+.Tags {
+    display: flex;
+	flex-wrap: wrap;
+	padding: 0;
+	margin: 8px 0 0 0;
+	.Tag {
+		margin: 0 8px 8px 0;
+	}
+}

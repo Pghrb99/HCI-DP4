@@ -1,0 +1,25 @@
+$include-color: #77be9b;
+$include-hover-color: #3aa770;
+$exclude-color: #de9898;
+$exclude-hover-color: #db7070;
+
+.Tag {
+	box-shadow: 1px 1px 1px grey;
+    width: auto;
+	height: 30px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: $include-color;
+	color: white;
+	padding: 0 8px;
+	font-size: 12px;
+    font-weight: bold;
+	list-style: none;
+	border-radius: 6px;
+	.tagName {
+        margin-left: 3px;
+		margin-top: 0px;
+        margin-bottom: 3px;
+	}
+}

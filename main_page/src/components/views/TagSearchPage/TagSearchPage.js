@@ -1,11 +1,13 @@
 import './TagSearchPage.scss';
 import TagSearchBar from './Sections/TagSearchBar/TagSearchBar'
 import TopBar from './Sections/TopBar/TopBar'
-import logo from './Sections/imgs/logo.svg' 
+import Sidemenu from './Sections/SideMenu/Sidemenu'
+import logo from './Sections/imgs/logo.svg'
 
 function TagSearchPage() {
   return (
     <div className="TagSearchPage">
+      <Sidemenu />
       <TopBar userName={"Changhae"} isSignedIn={true}/>
       <img src={logo} id="logo"/>
       <TagSearchBar mode={true}/>

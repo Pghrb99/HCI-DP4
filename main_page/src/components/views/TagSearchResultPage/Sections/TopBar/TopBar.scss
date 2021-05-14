@@ -1,0 +1,33 @@
+#nav-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    .align-self-start {
+        align-self: flex-start;
+    }
+    .align-self-center {
+        align-self: center;
+    }
+    .align-self-end {
+        align-self: flex-end;
+    }
+    #search-result {
+        font-size: 36px;
+        font-weight: lighter;
+        color: white;
+    }
+    #tags {
+        margin-left: 20px;
+        color: white;
+    }
+    .nav-text{
+        color: white;
+        font-size: 16px;
+    }
+    #nav-userName{
+        font-weight: bold;
+    }
+}
+.nav-bar {
+    background-color: #2e2a30;
+}

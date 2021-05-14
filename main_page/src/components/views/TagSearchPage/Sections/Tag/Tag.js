@@ -9,7 +9,7 @@ const Tag = ({name, isInclude, onRemove}) => {
             <li className="Include">
                 <FaPlus color="white" className="tag-icon"/>
                 <span className="tagName">{name}</span>
-                <span className="wrapper" onClick={() => onRemove(name)}>
+                <span className="wrapper" onClick={() => onRemove && onRemove(name)}>
                     <IoCloseCircle className="tag-close-icon"/>
                 </span>
             </li>
@@ -20,7 +20,7 @@ const Tag = ({name, isInclude, onRemove}) => {
         <li className="Exclude">
             <IoBan color="white" className="tag-icon"/>
             <span className="tagName">{name}</span>
-            <span className="wrapper" onClick={() => onRemove(name)}>
+            <span className="wrapper" onClick={() => onRemove && onRemove(name)}>
                 <IoCloseCircle className="tag-close-icon"/>
             </span>
         </li>
