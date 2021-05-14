@@ -2,6 +2,9 @@
     display: flex;
     width: 100%;
     flex-direction: column;
+    background-color: rgb(135, 157, 185);
+    box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.10);
+    padding: 0;
     .align-self-start {
         align-self: flex-start;
     }
@@ -13,7 +16,7 @@
     }
     #search-result {
         font-size: 36px;
-        font-weight: lighter;
+        font-weight: bold;
         color: white;
     }
     #tags {
@@ -27,7 +30,4 @@
     #nav-userName{
         font-weight: bold;
     }
-}
-.nav-bar {
-    background-color: #2e2a30;
 }

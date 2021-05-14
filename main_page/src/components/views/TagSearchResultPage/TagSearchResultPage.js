@@ -20,28 +20,28 @@ const TagSearchResultPage = () => {
         name: "Ice Hockey",
         imgSrc: img1,
         tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
+        chartData:[5,7,5.6,9,10]
 
     },
     {
         name: "Ice Hockey",
         imgSrc: img1,
         tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
+        chartData:[1.2,9,3,4.6,10]
 
     },
     {
         name: "Ice Hockey",
         imgSrc: img1,
         tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
+        chartData:[10,2.5,6,8,10]
 
     },
     {
         name: "Ice Hockey",
         imgSrc: img1,
         tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
+        chartData:[7,5,5,6,]
 
     },
     {
@@ -110,7 +110,6 @@ const TagSearchResultPage = () => {
     ]
     return (
         <div>
-
             <Sidemenu/>
             <TopBar tags={[{name: "Hi", isInclude: true},{name: "Bye", isInclude: false}]} isSignedIn={false} name={"Changhae"}/>
             <SearchOptions />

@@ -24,7 +24,7 @@ const ActivityCard = ({imgSrc, title, tags, text, chartData}) => {
     return (
         <OverlayTrigger
         placement="auto"
-        // delay={{ show: 100, hide: 200 }}
+        delay={{ show: 400, hide: 0 }}
         overlay={popover}
         >
             <Card style={{ width: '15rem' }} className="Card">
