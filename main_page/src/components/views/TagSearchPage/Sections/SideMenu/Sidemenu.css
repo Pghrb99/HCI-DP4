@@ -2,6 +2,7 @@
 
 .wrapper {
     display: block;
+    text-align: center;
 }
 
 .sidemenu_logo {
@@ -147,4 +148,5 @@ a[data-toggle="collapse"] {
     color: #356864;
     border: 0;
     cursor: pointer;
+    z-index: 1;
 }
