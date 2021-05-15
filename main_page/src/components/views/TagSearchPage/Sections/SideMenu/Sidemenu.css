@@ -81,7 +81,9 @@ a, a:hover, a:focus {
 }
 
 #sidebar ul li.active > a {
-    padding-bottom: 10px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    text-align: center;
     margin-bottom: 20px;
 }
 
@@ -90,6 +92,7 @@ a, a:hover, a:focus {
     background:#E3FFEB;
     font-weight: 500;
     font-size: 20px;
+    font-weight: 600;
 }
 
 ul ul a {
@@ -138,6 +141,7 @@ a[data-toggle="collapse"] {
     top: 10px;
     right: 10px;
     cursor: pointer;
+    font-size: 30px;
 }
 
 #sidebarCollapse {
@@ -145,7 +149,7 @@ a[data-toggle="collapse"] {
     position: fixed;
     top: 0px;
     left: 10px;
-    color: #459469;
+    color: #356864;
     border: 0;
     cursor: pointer;
     font-size: 40px;
