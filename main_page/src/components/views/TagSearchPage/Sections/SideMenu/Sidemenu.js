@@ -51,7 +51,7 @@ const Sidemenu = () => {
             </nav>
             <div id="content">
                 <button type="button" id="sidebarCollapse" class="btn btn-info" onClick={clickSide}>
-                    <FontAwesomeIcon icon={faBars} size="2x"/>
+                    <FontAwesomeIcon icon={faBars}/>
                 </button>
             </div>
             <div class="overlay" onClick={clickCollapse}></div>
