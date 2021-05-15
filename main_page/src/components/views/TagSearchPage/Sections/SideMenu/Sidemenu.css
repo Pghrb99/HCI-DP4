@@ -143,10 +143,11 @@ a[data-toggle="collapse"] {
 #sidebarCollapse {
     background-color: transparent;
     position: fixed;
-    top: 10px;
+    top: 0px;
     left: 10px;
-    color: #356864;
+    color: #459469;
     border: 0;
     cursor: pointer;
+    font-size: 40px;
     z-index: 1;
 }
