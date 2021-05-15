@@ -1,0 +1,26 @@
+#hori-bar {
+    position: sticky;
+    top: 200px;
+    left: 0px;
+    text-align: center;
+    width: 100%;
+    z-index: 2;
+}
+
+#hori-bar a {
+    float: left;
+    display: block;
+    width: 12.5%;
+    height: 35px;
+    padding-top: 2px;
+    text-decoration: none;
+    background-color: #C7FFD8;
+    color: #356864;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+#hori-bar a:hover {
+    background-color: #92fcb2;
+}
