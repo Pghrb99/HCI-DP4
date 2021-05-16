@@ -2,7 +2,7 @@ import React from 'react'
 import {Col} from 'react-bootstrap'
 import {Nav, Navbar, Form, FormControl, Button} from 'react-bootstrap'
 import logo from '../imgs/logo.svg'
-import Tags from '../../../TagSearchPage/Sections/Tags/Tags'
+import Tags from '../Tags/Tags'
 import './TopBar.scss'
 
 const TopBar = ({tags, isSignedIn, name}) => {
