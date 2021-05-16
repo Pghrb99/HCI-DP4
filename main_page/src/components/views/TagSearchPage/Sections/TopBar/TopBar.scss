@@ -1,16 +1,20 @@
 $text-color: #07887f;
 
 .TopBar {
-    color: $text-color;
-    font-size: 18px;
-    float: right;
-    display: block;
+  color: $text-color;
+  font-size: 18px;
+  float: right;
+  display: block;
 
-    .userName, .menu {
-        margin-left: 40px;
-        margin-right: 5px;
-    }
-    .userName {
-        font-weight: bold;
-    }
+  .menu {
+    margin-left: 40px;
+    margin-right: 5px;
+    color: $text-color;
+    text-decoration: none;
+  }
+  .userName {
+    margin-left: 40px;
+    margin-right: 5px;
+    font-weight: bold;
+  }
 }
