@@ -9,6 +9,8 @@ import {
 import TagSearchPage from './views/TagSearchPage/TagSearchPage';
 import TagSearchResultPage from './views/TagSearchResultPage/TagSearchResultPage'
 import ActivityInfoPage from './views/ActivityInfoPage/ActivityInfoPage'
+import LoginPage from './views/LoginPage/LoginPage'
+//import RegisterPage from './views/RegisterPage/RegisterPage'
 
 import './App.css';
 
@@ -28,6 +30,8 @@ function App() {
           <Route exact path="/" component={TagSearchPage} />
           <Route exact path="/result" component={TagSearchResultPage} />
           <Route exact path="/info" component={ActivityInfoPage} />
+          <Route exact path="/login" component={LoginPage} />
+          {/*<Route exact path="/register" component={RegisterPage} />*/}
         </Switch>
       </div>
     </Router>

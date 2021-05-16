@@ -5,7 +5,7 @@ import TopBar from './Sections/TopBar/TopBar';
 import HorizontalBar from './Sections/HorizontalBar/HorizontalBar'
 import InfoDocument from './Sections/InfoDocument/InfoDocument';
 
-const ActivityInfoPage = () => {
+const ActivityInfoPage = (props) => {
     return (
         <div class="ActivityInfoPage">
             <Sidemenu />

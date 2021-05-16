@@ -7,7 +7,7 @@ import SearchOptions from './Sections/SearchOptions/SearchOptions'
 import Sidemenu from '../TagSearchPage/Sections/SideMenu/Sidemenu'
 
 
-const TagSearchResultPage = () => {
+const TagSearchResultPage = (props) => {
     const cards = [
     {
         name: "Ice Hockey",

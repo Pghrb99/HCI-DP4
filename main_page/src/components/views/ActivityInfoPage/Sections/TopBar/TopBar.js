@@ -7,7 +7,7 @@ import './TopBar.scss'
 import $ from 'jquery';
 
 
-const TopBar = ({ tags, isSignedIn, name }) => {
+const TopBar = ({ tags, isSignedIn, name}) => {
     const [start, setStart] = useState(false);
     const [cancle, setCancle] = useState(false);
     const [ongoing, setOngoing] = useState(false);
@@ -26,6 +26,7 @@ const TopBar = ({ tags, isSignedIn, name }) => {
     }
     const clickCNo = () => setCancle(false);
 
+
     return (
         <div id="AIP-nav-container">
             <div className="align-self-end">
@@ -36,7 +37,7 @@ const TopBar = ({ tags, isSignedIn, name }) => {
                     </Nav>
                     :
                     <Nav className="mt-3">
-                        <Nav.Link className="me-4"><span className="nav-text" id="nav-signIn" >Sign In</span></Nav.Link>
+                        <Nav.Link className="me-4" href="/login"><span className="nav-text" id="nav-signIn" >Sign In</span></Nav.Link>
                         <Button
                             variant="outline-dark"
                             className="me-5"
