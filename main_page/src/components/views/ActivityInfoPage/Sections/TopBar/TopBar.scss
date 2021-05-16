@@ -17,7 +17,6 @@
         z-index: 1;
     }
     .align-self-end {
-        margin-right: 30px;
         align-self: flex-end;
         z-index: 1;
     }
@@ -59,7 +58,7 @@
 
 #AIP-start {
     float: right;
-    margin: 30px 30px 0 0;
+    margin: 30px 50px 0 0;
     border: none;
     cursor: pointer;
     padding: 0 20px 0 20px;
@@ -69,7 +68,7 @@
 
 #AIP-ongoing {
     float: right;
-    margin: 30px 30px 0 0;
+    margin: 30px 50px 0 0;
     border: none;
     cursor: pointer;
     padding: 0 20px 0 20px;
