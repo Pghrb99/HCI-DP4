@@ -25,15 +25,9 @@ function App() {
           of them to render at a time
         */}
         <Switch>
-          <Route exact path="/">
-            <TagSearchPage />
-          </Route>
-          <Route exact path="/result">
-            <TagSearchResultPage />
-          </Route>
-          <Route exact path="/info">
-            <ActivityInfoPage />
-          </Route>
+          <Route exact path="/" component={TagSearchPage} />
+          <Route exact path="/result" component={TagSearchResultPage} />
+          <Route exact path="/info" component={ActivityInfoPage} />
         </Switch>
       </div>
     </Router>
