@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { Col } from 'react-bootstrap'
 import { Nav, Modal, ModalHeader, Navbar, Form, FormControl, Button } from 'react-bootstrap'
 import logo from '../imgs/logo.svg'
-import Tags from '../../../TagSearchPage/Sections/Tags/Tags'
+import Tags from '../../../TagSearchResultPage/Sections/Tags/Tags'
 import './TopBar.scss'
 import $ from 'jquery';
 import bg from '../imgs/hockey_world_1400.png'
