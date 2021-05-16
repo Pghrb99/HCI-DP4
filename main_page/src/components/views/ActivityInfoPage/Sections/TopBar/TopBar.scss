@@ -21,8 +21,8 @@
         align-self: flex-end;
         z-index: 1;
     }
-    #search-result {
-        font-size: 36px;
+    #AIP-activity-name {
+        font-size: 40px;
         font-weight: bold;
         color: white;
     }
@@ -42,7 +42,7 @@
 
 #AIP-nav-container::after {
     width: 100%;
-    height: 190px;
+    height: 200px;
     background-color: rgb(135, 157, 185);
     position: absolute;
     top: 0;
@@ -54,6 +54,7 @@
 
 #AIP-reltags {
     float: left;
+    font-size: 20px;
 }
 
 #AIP-start {

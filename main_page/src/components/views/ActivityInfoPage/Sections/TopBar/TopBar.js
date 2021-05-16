@@ -45,7 +45,7 @@ const TopBar = ({ tags, isSignedIn, name }) => {
                     </Nav>
                 }
             </div>
-            <div className="align-self-center" id="search-result">
+            <div className="align-self-center" id="AIP-activity-name">
                 Ice Hockey
             </div>
             <div className="align-self-start" id="AIP-tags">

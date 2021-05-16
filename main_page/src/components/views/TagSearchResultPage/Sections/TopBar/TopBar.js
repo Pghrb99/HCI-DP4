@@ -11,15 +11,15 @@ const TopBar = ({tags, isSignedIn, name}) => {
             <div className="align-self-end">
                 {isSignedIn ?
                 <Nav className="mt-3">
-                    <Nav.Link  className="me-4"><span className="nav-text" id="nav-userName">{name}</span></Nav.Link>
-                    <Nav.Link  className="me-5"><span className="nav-text" id="nav-signOut">Sign Out</span></Nav.Link>
+                    <Nav.Link  className="mr-4"><span className="nav-text" id="nav-userName">{name}</span></Nav.Link>
+                    <Nav.Link  className="mr-5"><span className="nav-text" id="nav-signOut">Sign Out</span></Nav.Link>
                 </Nav>
                 :
                 <Nav className="mt-3">
-                    <Nav.Link  className="me-4"><span className="nav-text"id="nav-signIn" >Sign In</span></Nav.Link>
+                    <Nav.Link  className="mr-4"><span className="nav-text"id="nav-signIn" >Sign In</span></Nav.Link>
                     <Button 
                         variant="outline-dark"
-                        className="me-5"
+                        className="mr-5"
                     > <span className="nav-text" id="nav-signUp">Sign Up</span>
                     </Button>
                 </Nav>
