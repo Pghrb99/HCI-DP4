@@ -1,0 +1,32 @@
+.AIP-reviews-component {
+    margin-bottom: 20px;
+    
+    .badge {
+        padding: 4px 10px 7px 10px;
+        margin-right: 5px;
+        font-size: 18px;
+        font-weight: normal;
+    }
+    
+    .card-title {
+        font-size: 24px;
+    }
+    
+    .card-text {
+        color:black;
+        padding-bottom: 0;
+        margin-top: 10px;
+        font-size: 20px;
+    }
+    
+    .AIP-reviews-points {
+        margin-right: 20px;
+        float: left;
+        font-size: 18px;
+    }
+    
+    .AIP-reviews-likes {
+        float: right;
+        font-size: 18px;
+    }
+}

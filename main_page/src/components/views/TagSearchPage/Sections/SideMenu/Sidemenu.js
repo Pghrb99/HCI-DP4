@@ -1,5 +1,5 @@
 import React from 'react';
-import './Sidemenu.css';
+import './Sidemenu.scss';
 import $ from 'jquery';
 import logo from '../imgs/logo.svg'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

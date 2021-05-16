@@ -2,14 +2,14 @@ import React, {useState} from 'react'
 import { Col } from 'react-bootstrap'
 import { Nav, Modal, ModalHeader, Navbar, Form, FormControl, Button } from 'react-bootstrap'
 import logo from '../imgs/logo.svg'
-import Tags from '../../../TagSearchPage/Sections/Tags/Tags'
+import Tags from '../../../TagSearchResultPage/Sections/Tags/Tags'
 import './TopBar.scss'
 import $ from 'jquery';
+import bg from '../imgs/hockey_world_1400.png'
 
-
-const TopBar = ({ tags, isSignedIn, name}) => {
+const TopBar = ({ tags, isSignedIn, name }) => {
     const [start, setStart] = useState(false);
-    const [cancle, setCancle] = useState(false);
+    const [cancel, setCancel] = useState(false);
     const [ongoing, setOngoing] = useState(false);
     
     const clickStart = () => setStart(true);
@@ -19,35 +19,33 @@ const TopBar = ({ tags, isSignedIn, name}) => {
     }
     const clickSNo = () => setStart(false);
 
-    const clickCancle = () => setCancle(true);
+    const clickCancel = () => setCancel(true);
     const clickCYes = () => {
         setOngoing(false);
-        setCancle(false);
+        setCancel(false);
     }
-    const clickCNo = () => setCancle(false);
-
+    const clickCNo = () => setCancel(false);
 
     return (
-        <div id="AIP-nav-container">
+        <div id="AIP-nav-container" style={{backgroundImage: `url(${bg})`}}>
             <div className="align-self-end">
                 {isSignedIn ?
                     <Nav className="mt-3">
-                        <Nav.Link className="me-4"><span className="nav-text" id="nav-userName">{name}</span></Nav.Link>
-                        <Nav.Link className="me-5"><span className="nav-text" id="nav-signOut">Sign Out</span></Nav.Link>
+                        <Nav.Link className="mr-4"><span className="nav-text" id="nav-userName">{name}</span></Nav.Link>
+                        <Nav.Link className="mr-5"><span className="nav-text" id="nav-signOut">Sign Out</span></Nav.Link>
                     </Nav>
                     :
                     <Nav className="mt-3">
-                        <Nav.Link className="me-4" href="/login"><span className="nav-text" id="nav-signIn" >Sign In</span></Nav.Link>
+                        <Nav.Link className="mr-4"><span className="nav-text" id="nav-signIn" >Sign In</span></Nav.Link>
                         <Button
                             variant="outline-dark"
-                            className="me-5"
-                            href="/register"
+                            className="mr-5"
                         > <span className="nav-text" id="nav-signUp">Sign Up</span>
                         </Button>
                     </Nav>
                 }
             </div>
-            <div className="align-self-center" id="search-result">
+            <div className="align-self-center" id="AIP-activity-name">
                 Ice Hockey
             </div>
             <div className="align-self-start" id="AIP-tags">
@@ -56,7 +54,8 @@ const TopBar = ({ tags, isSignedIn, name}) => {
                     <Tags tags={tags} />
                 </div>
                 { !ongoing && <Button id="AIP-start" onClick={clickStart}>Start!</Button> }
-                { ongoing && <Button variant='secondary' id='AIP-ongoing' onClick={clickCancle}>Ongoing</Button> }
+                { ongoing && <Button variant='secondary' id='AIP-ongoing' onClick={clickCancel}>Ongoing | X</Button> }
+                { ongoing && <Button variant='info' id='AIP-ongoing' onClick={clickCancel}>My Progress</Button> }
                 <Modal show={start} onHide={clickSNo}>
                     <Modal.Header closeButton>
                         <Modal.Title id="AIP-modal-title">Start Activity</Modal.Title>
@@ -71,11 +70,11 @@ const TopBar = ({ tags, isSignedIn, name}) => {
                         </Button>
                     </Modal.Footer>
                 </Modal>
-                <Modal show={cancle} onHide={clickCNo}>
+                <Modal show={cancel} onHide={clickCNo}>
                     <Modal.Header closeButton>
-                        <Modal.Title id="AIP-modal-title">Cancle Activity</Modal.Title>
+                        <Modal.Title id="AIP-modal-title">Cancel Activity</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Are you sure you want to cancle?</Modal.Body>
+                    <Modal.Body>Are you sure you want to cancel?</Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" onClick={clickCYes}>
                             Yes
