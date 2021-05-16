@@ -153,5 +153,5 @@ a[data-toggle="collapse"] {
     border: 0;
     cursor: pointer;
     font-size: 40px;
-    z-index: 1;
+    z-index: 11;
 }
