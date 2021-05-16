@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import styled from 'styled-components'
 import { Card, Popover, OverlayTrigger } from 'react-bootstrap'
 import RadarChart from '../RadarChart/RadarChart'
-import Tags from '../Tags/Tags'
+import ActivityTags from '../ActivityTags/ActivityTags'
 import './ActivityCard.scss'
 
 const StyledPopover = styled(Popover)`
@@ -31,7 +31,7 @@ const ActivityCard = ({imgSrc, title, tags, text, chartData}) => {
                 <Card.Img variant="top" src={imgSrc} width={267} height={162}/>
                 <Card.Body>
                     <Card.Title>{title}</Card.Title>
-                    <Tags tags={tags}/>
+                    <ActivityTags tags={tags}/>
                 </Card.Body>
             </Card>
         </OverlayTrigger>
