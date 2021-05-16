@@ -6,7 +6,7 @@ import './Tag.scss'
 const Tag = ({name, isInclude}) => {
     if (isInclude){
         return (
-            <li className="Include">
+            <li className="Applied-Include">
                 <FaPlus color="white" className="tag-icon"/>
                 <span className="tagName">{name}</span>
             </li>
@@ -14,7 +14,7 @@ const Tag = ({name, isInclude}) => {
     }
 
     return (
-        <li className="Exclude">
+        <li className="Applied-Exclude">
             <IoBan color="white" className="tag-icon"/>
             <span className="tagName">{name}</span>
         </li>

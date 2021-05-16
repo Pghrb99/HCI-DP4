@@ -3,7 +3,7 @@ $include-hover-color: #3aa770;
 $exclude-color: #de9898;
 $exclude-hover-color: #db7070;
 
-.Include, .Exclude {
+.Applied-Include, .Applied-Exclude {
 	box-shadow: 1px 1px 1px grey;
     width: auto;
 	height: 35px;
@@ -11,7 +11,7 @@ $exclude-hover-color: #db7070;
 	align-items: center;
 	justify-content: center;
 	color: white;
-	padding: 0 8px;
+	padding: 0 15px;
 	font-size: 16px;
     font-weight: bold;
 	list-style: none;
@@ -28,10 +28,10 @@ $exclude-hover-color: #db7070;
 	}
 }
 
-.Include {
+.Applied-Include {
     background-color: $include-color;
 }
 
-.Exclude {
+.Applied-Exclude {
     background-color: $exclude-color;
 }
