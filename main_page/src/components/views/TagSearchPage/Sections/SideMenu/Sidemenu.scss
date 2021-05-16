@@ -1,0 +1,155 @@
+.wrapper {
+    display: block;
+    text-align: center;
+
+    .sidemenu_logo {
+        margin-top: 40px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 150px;
+        pointer-events: none;
+    }
+    
+    body {
+        background:white;
+    }
+    
+    p {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.1em;
+        font-weight: 300;
+        line-height: 1.7em;
+        color: #999;
+    }
+    
+    a, a:hover, a:focus {
+        color: inherit;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+    
+    #sidebar {
+        min-width: 250px;
+        max-width: 250px;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        /* top layer */
+        z-index: 9999;
+        /* don't forget to add all the previously mentioned styles here too */
+        background: #C7FFD8;
+        color: #356864;
+        transition: all 0.3s;
+        margin-left: -250px;
+    }
+    
+    
+    #sidebar.active {
+        margin-left: 0px;
+    }
+    
+    
+    #sidebar .sidebar-header {
+        padding: 20px;
+        background: #C7FFD8;
+    }
+    
+    #sidebar ul.components {
+        padding: 20px 0;
+        /*border-bottom: 1px solid #47748b;*/
+    }
+    
+    #sidebar ul p {
+        color: #356864;
+        padding: 10px;
+        font-weight: 500;
+    }
+    
+    #sidebar ul li a {
+        text-decoration-line: none;
+        padding: 10px;
+        font-size: 1.1em;
+        display: block;
+    }
+    #sidebar ul li.active > a:hover {
+        background: #c5dacb;
+    }
+    
+    #sidebar ul li.active > a {
+        padding-top: 7px;
+        padding-bottom: 7px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    #sidebar ul li.active > a, a[aria-expanded="true"] {
+        color: #356864;
+        background:#E3FFEB;
+        font-weight: 500;
+        font-size: 20px;
+        font-weight: 600;
+    }
+    
+    ul ul a {
+        font-size: 0.9em !important;
+        padding-left: 30px !important;
+        background: #E3FFEB;
+    }
+    
+    a[data-toggle="collapse"] {
+        position: relative;
+    }
+    
+    .dropdown-toggle::after {
+        display: block;
+        position: absolute;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+    }
+    
+    .overlay {
+        display: none;
+        position: fixed;
+        /* full screen */
+        width: 100vw;
+        height: 100vh;
+        /* transparent black */
+        background: rgba(0, 0, 0, 0.5);
+        /* middle layer, i.e. appears below the sidebar */
+        z-index: 998;
+        opacity: 0;
+        /* animate the transition */
+        transition: all 0.5s ease-in-out;
+    }
+    /* display .overlay when it has the .active class */
+    .overlay.active {
+        display: block;
+        opacity: 1;
+    }
+    
+    #dismiss {
+        width: 35px;
+        height: 35px;
+        position: absolute;
+        /* top right corner of the sidebar */
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        font-size: 30px;
+    }
+    
+    #sidebarCollapse {
+        background-color: transparent;
+        position: fixed;
+        top: 0px;
+        left: 10px;
+        color: #356864;
+        border: 0;
+        cursor: pointer;
+        font-size: 40px;
+        z-index: 11;
+    }
+}
+

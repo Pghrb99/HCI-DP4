@@ -4,14 +4,18 @@ import Sidemenu from '../TagSearchPage/Sections/SideMenu/Sidemenu';
 import TopBar from './Sections/TopBar/TopBar';
 import HorizontalBar from './Sections/HorizontalBar/HorizontalBar'
 import InfoDocument from './Sections/InfoDocument/InfoDocument';
+import GoTop from '../GoTop/GoTop'
 
-const ActivityInfoPage = (props) => {
+const ActivityInfoPage = () => {
     return (
-        <div class="ActivityInfoPage">
+        <div id="ActivityInfoPage">
             <Sidemenu />
             <TopBar tags={[{name: "Hi", isInclude: true},{name: "Bye", isInclude: false}]} isSignedIn={false} name={"Changhae"}/>
-            <HorizontalBar/>
-            <InfoDocument data={[1,2,3,4,5]}/>
+            <div id="AIP-hori-div">
+                <HorizontalBar/>
+                <InfoDocument data={[1,2,3,4,5]}/>
+            </div>
+            <GoTop/>
         </div>
     )
 }
