@@ -4,7 +4,7 @@ import './Tags.scss'
 
 const Tags = ({tags}) => {
     return (
-        <ul className='Tags'>
+        <ul className='Applied-Tags'>
             {tags.map((tag) => (
                 <Tag 
                     name={tag.name} 
