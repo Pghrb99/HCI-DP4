@@ -41,6 +41,7 @@ const TopBar = ({ tags, isSignedIn, name}) => {
                         <Button
                             variant="outline-dark"
                             className="me-5"
+                            href="/register"
                         > <span className="nav-text" id="nav-signUp">Sign Up</span>
                         </Button>
                     </Nav>
