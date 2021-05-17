@@ -9,6 +9,16 @@
     background-size: cover;
     background-position: center;
     z-index: 0;
+
+    #AIP-label {
+        position: absolute;
+        top: 20px;
+        left: 70px;
+        color: white;
+        font-size: 24px;
+        z-index: 1;
+    }
+
     .align-self-start {
         align-self: flex-start;
         z-index: 1;
@@ -57,17 +67,7 @@
     font-size: 20px;
 }
 
-#AIP-start {
-    float: right;
-    margin: 30px 50px 0 0;
-    border: none;
-    cursor: pointer;
-    padding: 0 20px 0 20px;
-    font-size: 24px;
-    font-weight: 600;
-}
-
-#AIP-ongoing {
+#AIP-topbar-button {
     float: right;
     margin: 30px 50px 0 0;
     border: none;
