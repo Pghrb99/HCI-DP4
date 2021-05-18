@@ -1,12 +1,9 @@
-# main_page
-npm install
+## Starting
+In the folder 'main_page', execute 'npm install' and 'npm start'.
 
-npm install react-bootstrap bootstrap@4.6.0
-
-npm install jquery
-
-npm install @fortawesome/fontawesome-svg-core
-
-npm install @fortawesome/free-solid-svg-icons @fortawesome/free-regular-svg-icons @fortawesome/free-brands-svg-icons
-
-npm i @fortawesome/react-fontawesome
+## Installed libraries
+* react-bootstrap bootstrap@4.5.3
+* jquery
+* @fortawesome/fontawesome-svg-core
+* @fortawesome/free-solid-svg-icons @fortawesome/free-regular-svg-icons @fortawesome/free-brands-svg-icons
+* @fortawesome/react-fontawesome
