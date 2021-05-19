@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Nav, Modal, Button, Pagination } from 'react-bootstrap'
+import { Nav, Modal, Button } from 'react-bootstrap'
 import Tags from '../../../TagSearchResultPage/Sections/Tags/Tags'
 import './TopBar.scss'
 import bg from '../imgs/hockey_world_1400.png'
@@ -10,6 +10,7 @@ const TopBar = ({ tags, isSignedIn, name }) => {
     const [start, setStart] = useState(false);
     const [cancel, setCancel] = useState(false);
     const [ongoing, setOngoing] = useState(false);
+    const [isInfo, setIsInfo] = useState(true);
     
     const clickStart = () => setStart(true);
     const clickSYes = () => {
@@ -25,17 +26,21 @@ const TopBar = ({ tags, isSignedIn, name }) => {
     }
     const clickCNo = () => setCancel(false);
 
+    const clickSeeProgress = () => {
+        setTimeout(function() {
+            setIsInfo(false);
+        }, 300)
+    }
+    const clickSeeInfo = () => {
+        setTimeout(function() {
+            setIsInfo(true);
+        }, 300)
+    }
+
     return (
         <div id="AIP-nav-container" style={{backgroundImage: `url(${bg})`}}>
-            <Pagination id="AIP-label">
-                <Pagination.Item id="AIP-info-label" active={true}>Activity Information</Pagination.Item>
-                <Pagination.Item id="AIP-prog-label" active={false}>My Progress</Pagination.Item>
-                {/*{isSignedIn ?
-                    <Pagination.Item id="AIP-prog-label" active={false}>My Progress</Pagination.Item>
-                    :
-                    <Pagination.Item id="AIP-prog-label" active={false} disabled>My Progress</Pagination.Item>
-                }*/}
-            </Pagination>
+            {isInfo && <span id="AIP-label">Activity Information</span>}
+            {!isInfo && <span id="AIP-label">My Progress</span>}
             <div className="align-self-end">
                 {isSignedIn ?
                     <Nav className="mt-3">
@@ -63,6 +68,8 @@ const TopBar = ({ tags, isSignedIn, name }) => {
                 </div>
                 { !ongoing && <Button id="AIP-topbar-button" onClick={clickStart}>Start!</Button> }
                 { ongoing && <Button variant='secondary' id='AIP-topbar-button' onClick={clickCancel}>Ongoing | X</Button> }
+                { ongoing && isInfo && <Button variant='info' id='AIP-topbar-button' onClick={clickSeeProgress}>See Progress</Button> }
+                { ongoing && !isInfo && <Button variant='info' id='AIP-topbar-button' onClick={clickSeeInfo}>See Info</Button> }
                 <Modal show={start} onHide={clickSNo}>
                     <Modal.Header closeButton>
                         <Modal.Title id="AIP-modal-title">Start Activity</Modal.Title>

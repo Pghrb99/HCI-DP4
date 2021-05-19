@@ -1,5 +1,5 @@
 #infodocument {
-    padding: 20px 70px 0 70px;
+    padding: 20px 70px 20px 70px;
     position: relative;
     background-color: white;
 
@@ -86,13 +86,14 @@
     display: grid !important;
     grid-template-columns: repeat(2, 1fr);
     .list-group-item {
+        padding: 10px 0 10px 0;
         border: none;
         font-size: 18px;
 
         .badge {
             background-color: #535353;
-            padding: 10px 15px 10px 15px;
-            margin-right: 10px;
+            padding: 10px 10px 10px 10px;
+            margin-right: 5px;
             font-size: 20px;
         }
     }
@@ -104,12 +105,31 @@
     padding-top: 3px;
     padding-bottom: 3px;
     float: right;
-    background-color: #5C996B;
+    background-color: #5C996B;  
+    border: none;
     font-size: 20px;
+}
+
+#AIP-achievements-more:hover {
+    background-color: #4c8059;
 }
 
 #AIP-achievements {
     margin-bottom: 10px;
+}
+
+#AIP-reviews-write {
+    margin-top: 10px;
+    width: 200px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    background-color: #5C996B;
+    border: none;
+    font-size: 20px;
+}
+
+#AIP-reviews-write:hover {
+    background-color: #4c8059;
 }
 
 #AIP-communities-table {

@@ -1,0 +1,48 @@
+#progressdocument {
+    padding: 20px 70px 20px 70px;
+    position: relative;
+    background-color: white;
+
+    a {
+        margin-right: 30px;
+    }
+
+    h2 {
+        padding-top: 30px;
+        font-size: 30px;
+        font-weight: bold;
+    }
+}
+
+#infodocument h3 {
+    padding-top: 10px;
+    font-size: 24px;
+}
+
+#MMP-percentage-bar {
+    height: 30px;
+    font-size: 20px;
+}
+
+#MMP-achievements-list {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr);
+    .list-group-item {
+        padding: 10px 0 10px 0;
+        border: none;
+        font-size: 18px;
+
+        .badge {
+            background-color: #535353;
+            padding: 10px 10px 10px 10px;
+            margin-right: 5px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .MMP-success {
+            background-color: blue;
+        }
+
+    }
+}

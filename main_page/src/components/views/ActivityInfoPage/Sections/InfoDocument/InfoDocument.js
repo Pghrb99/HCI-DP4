@@ -79,13 +79,14 @@ const InfoDocument = ({ data }) => {
                         <Badge variant="secondary">Getting into shot</Badge> Score more than 5 out of 10 penalty shots.
                     </ListGroup.Item>
                     <ListGroup.Item>
-                        <Badge variant="secondary">Shooting accurately</Badge> Shoot the ball from one goal to the other.
+                        <Badge variant="secondary">Shooting accurately</Badge> Score a goal from one goal to the other.
                     </ListGroup.Item>
                 </ListGroup>
                 <Button id="AIP-achievements-more">See more</Button>
             </div>
             <div id="AIP-reviews">
                 <h2>Reviews</h2>
+                <Button id="AIP-reviews-write">Write a Review</Button>
                 <h3>Positive Opinions</h3>
                 <div class="AIP-reviews-positive">
                     <Review isPositive={true} name={"Harry Potter"} years={5} achiev={20} content="You'll find it super fun. I promise." data={[1, 2, 3, 4, 5]} like={31} />
