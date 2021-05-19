@@ -5,6 +5,8 @@ import img1 from '../imgs/ice_hockey.jpg'
 import img2 from '../imgs/ice_hockey2.png'
 import img3 from '../imgs/ice_hockey3.png'
 import Review from '../Review/Review'
+import { faEllipsisH, faPencilAlt } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const InfoDocument = ({ data }) => {
     return (
@@ -82,11 +84,12 @@ const InfoDocument = ({ data }) => {
                         <Badge variant="secondary">Shooting accurately</Badge> Score a goal from one goal to the other.
                     </ListGroup.Item>
                 </ListGroup>
-                <Button id="AIP-achievements-more">See more</Button>
+                <Button id="AIP-achievements-more"><FontAwesomeIcon icon={faEllipsisH} style={{marginRight: "10px"}}/>See more</Button>
             </div>
             <div id="AIP-reviews">
                 <h2>Reviews</h2>
-                <Button id="AIP-reviews-write">Write a Review</Button>
+                <Button id="AIP-reviews-write"><FontAwesomeIcon icon={faPencilAlt} style={{marginRight: "10px"}}/>Write a Review</Button>
+                <br></br>
                 <h3>Positive Opinions</h3>
                 <div class="AIP-reviews-positive">
                     <Review isPositive={true} name={"Harry Potter"} years={5} achiev={20} content="You'll find it super fun. I promise." data={[1, 2, 3, 4, 5]} like={31} />

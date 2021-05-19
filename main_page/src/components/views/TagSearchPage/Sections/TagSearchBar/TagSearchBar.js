@@ -5,6 +5,8 @@ import Tags from '../Tags/Tags'
 import SearchButton from '../SearchButton/SearchButton'
 import "../Toggle/Toggle.scss"
 import '../TagSearchBar/TagSearchBar.scss'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const TagSearchBar = () => {
     const [mode, setMode] = useState(true);
@@ -131,6 +133,7 @@ const TagSearchBar = () => {
                 />
             </div>
             <div>
+                {/*<FontAwesomeIcon icon={faSearch}/>*/}
                 <SearchButton />
             </div>
         </div>
