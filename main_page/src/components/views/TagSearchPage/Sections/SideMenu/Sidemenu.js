@@ -43,10 +43,10 @@ const Sidemenu = () => {
                         <a href="#"><FontAwesomeIcon icon={faList} style={{marginRight: "10px"}}/>Categories</a>
                     </li>
                     <li class="active">
-                        <a href="#"><FontAwesomeIcon icon={faUser} style={{marginRight: "10px"}}/>Hot Activities</a>
+                        <a href="#"><FontAwesomeIcon icon={faHotjar} style={{marginRight: "10px"}}/>Hot Activities</a>
                     </li>
                     <li class="active">
-                        <a href="#"><FontAwesomeIcon icon={faHotjar} style={{marginRight: "10px"}}/>My Activites</a>
+                        <a href="#"><FontAwesomeIcon icon={faUser} style={{marginRight: "10px"}}/>My Activites</a>
                     </li>
                 </ul>
             </nav>

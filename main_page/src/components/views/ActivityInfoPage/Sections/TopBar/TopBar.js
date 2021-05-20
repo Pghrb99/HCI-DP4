@@ -1,5 +1,6 @@
-import React, {useState} from 'react'
-import { Nav, Modal, Button, Pagination } from 'react-bootstrap'
+import React, { useState } from 'react'
+import { Nav, Modal, Button, Pagination } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 import Tags from '../../../TagSearchResultPage/Sections/Tags/Tags'
 import './TopBar.scss'
 import bg from '../imgs/hockey_world_1400.png'
@@ -29,11 +30,11 @@ const TopBar = ({ tags, isSignedIn, name }) => {
         <div id="AIP-nav-container" style={{backgroundImage: `url(${bg})`}}>
             <Pagination id="AIP-label">
                 <Pagination.Item id="AIP-info-label" active={true}>Activity Information</Pagination.Item>
-                <Pagination.Item id="AIP-prog-label" active={false}>My Progress</Pagination.Item>
+                <Pagination.Item id="AIP-prog-label" active={false}><Link to={"/myprogress"} style={{color: "rgb(77, 163, 77)"}}>My Progress</Link></Pagination.Item>
                 {/*{isSignedIn ?
-                    <Pagination.Item id="AIP-prog-label" active={false}>My Progress</Pagination.Item>
+                    <Pagination.Item id="AIP-prog-label" active={false}><Link to={"/myprogress"} style={{color: "rgb(77, 163, 77)"}}>My Progress</Link></Pagination.Item>
                     :
-                    <Pagination.Item id="AIP-prog-label" active={false} disabled>My Progress</Pagination.Item>
+                    <Pagination.Item id="AIP-prog-label" active={false} disabled><Link to={"/myprogress"} style={{color: "rgb(77, 163, 77)"}}>My Progress</Link></Pagination.Item>
                 }*/}
             </Pagination>
             <div className="align-self-end">

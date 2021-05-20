@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Nav, Modal, Button, Pagination } from 'react-bootstrap'
+import { Nav, Modal, Button, Pagination } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 import Tags from '../../../TagSearchResultPage/Sections/Tags/Tags'
 import './TopBar.scss'
 import bg from '../imgs/hockey_world_1400.png'
@@ -18,7 +19,7 @@ const TopBar = ({ tags, isSignedIn, name }) => {
     return (
         <div id="MPP-nav-container" style={{ backgroundImage: `url(${bg})` }}>
             <Pagination id="MPP-label">
-                <Pagination.Item id="MMP-info-label" active={false}>Activity Information</Pagination.Item>
+                <Pagination.Item id="MMP-info-label" active={false}><Link to={"/info"} style={{color: "rgb(77, 163, 77)"}}>Activity Information</Link></Pagination.Item>
                 <Pagination.Item id="MMP-prog-label" active={true}>My Progress</Pagination.Item>
             </Pagination>
             <div className="align-self-end">
