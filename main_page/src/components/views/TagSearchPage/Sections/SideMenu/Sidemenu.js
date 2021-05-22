@@ -1,9 +1,10 @@
 import React from 'react';
-import './Sidemenu.css';
+import './Sidemenu.scss';
 import $ from 'jquery';
 import logo from '../imgs/logo.svg'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faBars } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faBars, faHome, faTags, faList, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faHotjar } from '@fortawesome/free-brands-svg-icons';
 
 function clickSide() {
     $('#sidebar').addClass('active');
@@ -33,19 +34,19 @@ const Sidemenu = () => {
                 <ul class="list-unstyled components">
                     {/*<p>Dummy Heading</p>*/}
                     <li class="active">
-                        <a href="#">Name Search</a>
+                        <a href="#"><FontAwesomeIcon icon={faHome} style={{marginRight: "10px"}}/>Name Search</a>
                     </li>
                     <li class="active">
-                        <a href="#">Tag Search</a>
+                        <a href="#"><FontAwesomeIcon icon={faTags} style={{marginRight: "10px"}}/>Tag Search</a>
                     </li>
                     <li class="active">
-                        <a href="#">Categories</a>
+                        <a href="#"><FontAwesomeIcon icon={faList} style={{marginRight: "10px"}}/>Categories</a>
                     </li>
                     <li class="active">
-                        <a href="#">Hot Activities</a>
+                        <a href="#"><FontAwesomeIcon icon={faHotjar} style={{marginRight: "10px"}}/>Hot Activities</a>
                     </li>
                     <li class="active">
-                        <a href="#">My Activites</a>
+                        <a href="#"><FontAwesomeIcon icon={faUser} style={{marginRight: "10px"}}/>My Activites</a>
                     </li>
                 </ul>
             </nav>

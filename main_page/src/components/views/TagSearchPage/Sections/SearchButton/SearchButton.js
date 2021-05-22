@@ -5,7 +5,7 @@ import './SearchButton.scss'
 const SearchButton = () => {
     return (
         <div className="SearchButton">
-            <BsSearch className="search-icon"/>
+            <BsSearch className="search-icon" />
         </div>
     )
 }

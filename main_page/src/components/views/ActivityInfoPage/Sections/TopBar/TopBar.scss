@@ -1,13 +1,37 @@
 #AIP-nav-container {
     display: flex;
     width: 100%;
+    height: 200px;
     flex-direction: column;
     box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.10);
     padding: 0;
-    background-image: url('../imgs/hockey_world_1400.png');
+    /*background-image: url('../imgs/hockey_world_1400.png');*/
     background-size: cover;
     background-position: center;
     z-index: 0;
+
+    #AIP-label {
+        position: absolute;
+        top: 20px;
+        left: 70px;
+        color: white;
+        font-size: 20px;
+        font-weight: 600;
+        z-index: 1;
+    }
+
+    #AIP-info-label {
+        padding: 5px 10px 5px 10px;
+        background-color:rgb(77, 163, 77);
+        border: none;
+    }
+    
+    #AIP-prog-label {
+        padding: 5px 10px 5px 10px;
+        color: rgb(77, 163, 77);
+        border: none;
+    }
+
     .align-self-start {
         align-self: flex-start;
         z-index: 1;
@@ -17,18 +41,17 @@
         z-index: 1;
     }
     .align-self-end {
-        margin-right: 30px;
         align-self: flex-end;
         z-index: 1;
     }
-    #search-result {
-        font-size: 36px;
+    #AIP-activity-name {
+        font-size: 40px;
         font-weight: bold;
         color: white;
     }
     #AIP-tags {
         width: 100%;
-        padding-left: 20px;
+        padding-left: 70px;
         color: white;
     }
     .nav-text{
@@ -42,7 +65,7 @@
 
 #AIP-nav-container::after {
     width: 100%;
-    height: 190px;
+    height: 200px;
     background-color: rgb(135, 157, 185);
     position: absolute;
     top: 0;
@@ -54,21 +77,12 @@
 
 #AIP-reltags {
     float: left;
+    font-size: 20px;
 }
 
-#AIP-start {
+#AIP-topbar-button {
     float: right;
-    margin: 30px 30px 0 0;
-    border: none;
-    cursor: pointer;
-    padding: 0 20px 0 20px;
-    font-size: 24px;
-    font-weight: 600;
-}
-
-#AIP-ongoing {
-    float: right;
-    margin: 30px 30px 0 0;
+    margin: 30px 50px 0 0;
     border: none;
     cursor: pointer;
     padding: 0 20px 0 20px;
