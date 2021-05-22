@@ -1,0 +1,23 @@
+.NameSearchBar {
+	width: 480px;
+	box-sizing: border-box;
+	display: flex;
+	margin: 0 auto;
+	
+	.inputField {
+		padding: 0 8px;
+		border: 1px solid rgb(214, 216, 218);
+		border-radius: 6px;
+		&:focus-within {
+			border: 1px solid #0052cc;
+			box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1)
+		}
+	}
+}
+
+
+@media screen and (max-width: 567px) {
+	.inputField {
+		width: calc(100vw - 32px);
+	}
+}
