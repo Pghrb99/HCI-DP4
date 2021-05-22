@@ -1,0 +1,13 @@
+.CP-CardContainer {
+    margin: 0px 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    .CategoryCard {
+        margin: 30px 0;
+    }
+    .card-column {
+        display: flex;
+        justify-content: center;
+    }
+}
