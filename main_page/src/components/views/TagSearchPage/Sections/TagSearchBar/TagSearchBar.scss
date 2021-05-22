@@ -22,15 +22,13 @@
 			border: 1px solid #0052cc;
 			box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1)
 		}
-		input {
+		.input {
 			flex: 1;
 			border: none;
+			box-shadow: none;
 			height: 46px;
 			font-size: 14px;
 			padding: 4px 0 0 0;
-			&:focus {
-				outline: transparent;
-			}
 		}
 	}
 }

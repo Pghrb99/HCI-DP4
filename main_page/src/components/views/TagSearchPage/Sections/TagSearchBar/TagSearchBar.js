@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import Autocomplete from 'react-autocomplete'
+import { AutoComplete, Input} from 'antd';
 import Toggle from 'react-toggle'
 import Tags from '../Tags/Tags'
 import SearchButton from '../SearchButton/SearchButton'
@@ -12,6 +13,15 @@ const TagSearchBar = () => {
     const [mode, setMode] = useState(true);
     const [tags, setTags] = useState([]);
     const [text, setText] = useState("");
+    const [options, setOptions] = useState([
+        {value: 'Water', label: 'Water'},
+        {value: 'Outdoor', label: 'Outdoor'},
+        {value: 'Extreme', label: 'Extreme'},
+        {value: 'Relax', label: 'Relax'},
+        {value: 'Solo', label: 'Solo'},
+        {value: 'Party', label: 'Party'},
+        {value: 'Thrill', label: 'Thrill'},
+    ]);
 
     const onModeChange = (e) => {
         setMode(e.target.checked);
@@ -26,10 +36,13 @@ const TagSearchBar = () => {
             name: val,
             isInclude: mode,
         };
-        setTags([...tags, newTag])
         setText("");
+        setTags([...tags, newTag]);
     }
 
+    // const onSearch = (searchText) => {
+
+    // }
     const onRemove = (name) => {
         setTags(tags.filter(tag => tag.name!==name))
     }
@@ -55,82 +68,27 @@ const TagSearchBar = () => {
 
             <div className="inputField" >
                 <Tags tags={tags} onRemove={onRemove}/>
-                <Autocomplete
-                    items={[
-                        { label: 'Air' },
-                        { label: 'Acrobatic' },
-                        { label: 'Ball' },
-                        { label: 'Climbing' },
-                        { label: 'Water' },
-                        { label: 'Indoor' },
-                        { label: 'Outdoor' },
-                        { label: 'Combat' },
-                        { label: 'Strength' },
-                        { label: 'Ball' },
-                        { label: 'Climbing' },
-                        { label: 'Water' },
-                        { label: 'Indoor' },
-                        { label: 'Outdoor' },
-                        { label: 'Combat' },
-                        { label: 'Strength' },
-                        { label: 'Ball' },
-                        { label: 'Climbing' },
-                        { label: 'Water' },
-                        { label: 'Indoor' },
-                        { label: 'Outdoor' },
-                        { label: 'Combat' },
-                        { label: 'Strength' },
-                        { label: 'Ball' },
-                        { label: 'Climbing' },
-                        { label: 'Water' },
-                        { label: 'Indoor' },
-                        { label: 'Outdoor' },
-                        { label: 'Combat' },
-                        { label: 'Strength' },
-                        { label: 'Ball' },
-                        { label: 'Climbing' },
-                        { label: 'Water' },
-                        { label: 'Indoor' },
-                        { label: 'Outdoor' },
-                        { label: 'Combat' },
-                        { label: 'Strength' },
-                        ]}
-                    
-                    shouldItemRender={function (item, value) {
-                        return item.label.toLowerCase().indexOf(value.toLowerCase()) > -1 && !tags.map(x => x.name).includes(item.label)
-                    }}
-                    getItemValue={item => item.label}
-                    renderItem={(item, highlighted) =>
-                      <div
-                        key={item.id}
-                        style={{
-                            cursor: 'default',
-                            backgroundColor: highlighted ? '#e3e3e3' : 'transparent'
-                        }}
-                      >
-                        {item.label}
-                      </div>
-                    }
-                    value={text}
-                    onChange={onTextChange}
-                    onSelect={onTextSelect}
-                    inputProps=
-                        {{
-                            type: 'text',
-                            placeholder: 'Enter Tags'
-                        }}
-                    menuStyle= 
-                        {{
-                            borderRadius: '3px',
-                            boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
-                            background: 'rgba(255, 255, 255, 0.9)',
-                            padding: '2px 0',
-                            fontSize: '90%',
-                            position: 'fixed',
-                            overflow: 'auto',
-                            maxHeight: '30%', // TODO: don't cheat, let it flow to the bottom
-                        }}
-                />
+                <AutoComplete
+                value={text}
+                options={options}
+                onSelect={onTextSelect}
+                open={text.length >= 2}
+                // onSearch={onSearch}
+                backfill={true}
+                defaultActiveFirstOption={true}
+                filterOption={(inputValue, option) =>
+                    option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                    && !tags.map(x => x.name).includes(option.value)
+                }
+                >
+                    <Input
+                        placeholder="Enter tags"
+                        className="input"
+                        style={{ width: 100, height: 48 }}
+                        onChange={onTextChange}
+                    />
+
+                </ AutoComplete>
             </div>
             <div>
                 {/*<FontAwesomeIcon icon={faSearch}/>*/}
