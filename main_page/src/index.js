@@ -4,7 +4,8 @@ import './index.css';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import "antd/dist/antd.css"
+import "antd/dist/antd.css";
+import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 
 ReactDOM.render(
   <React.StrictMode>

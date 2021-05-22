@@ -5,7 +5,7 @@ import Tags from '../../../TagSearchResultPage/Sections/Tags/Tags'
 import './TopBar.scss'
 import bg from '../imgs/hockey_world_1400.png'
 
-// 새로운 horibar, progressdocument 만들어야 함
+// 페이지 넘어갈 때마다 ongoing 정보 그대로 전달해줘야 함(prop 사용...?)
 
 const TopBar = ({ tags, isSignedIn, name }) => {
     const [start, setStart] = useState(false);
@@ -29,9 +29,9 @@ const TopBar = ({ tags, isSignedIn, name }) => {
     return (
         <div id="AIP-nav-container" style={{backgroundImage: `url(${bg})`}}>
             <Pagination id="AIP-label">
-                <Pagination.Item id="AIP-info-label" active={true}>Activity Information</Pagination.Item>
-                <Pagination.Item id="AIP-prog-label" active={false}><Link to={"/myprogress"} style={{color: "rgb(77, 163, 77)"}}>My Progress</Link></Pagination.Item>
-                {/*{isSignedIn ?
+                <Pagination.Item id="AIP-info-label" variant="success" active={true}>Activity Information</Pagination.Item>
+                <Pagination.Item id="AIP-prog-label" variant="success" active={false}><Link to={"/myprogress"} style={{color: "rgb(77, 163, 77)"}}>My Progress</Link></Pagination.Item>
+                {/*{(isSignedIn && ongoing) ?
                     <Pagination.Item id="AIP-prog-label" active={false}><Link to={"/myprogress"} style={{color: "rgb(77, 163, 77)"}}>My Progress</Link></Pagination.Item>
                     :
                     <Pagination.Item id="AIP-prog-label" active={false} disabled><Link to={"/myprogress"} style={{color: "rgb(77, 163, 77)"}}>My Progress</Link></Pagination.Item>
@@ -68,7 +68,9 @@ const TopBar = ({ tags, isSignedIn, name }) => {
                     <Modal.Header closeButton>
                         <Modal.Title id="AIP-modal-title">Start Activity</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Are you sure you want to start?</Modal.Body>
+                    <Modal.Body>
+                        <p style={{fontFamily:'arial', color:'black', fontSize:'18px', marginLeft:"0"}}>Are you sure you want to start?</p>
+                    </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" onClick={clickSYes}>
                             Yes
@@ -82,7 +84,9 @@ const TopBar = ({ tags, isSignedIn, name }) => {
                     <Modal.Header closeButton>
                         <Modal.Title id="AIP-modal-title">Cancel Activity</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Are you sure you want to cancel?</Modal.Body>
+                    <Modal.Body>
+                        <p style={{fontFamily:'arial', color:'black', fontSize:'18px', marginLeft:"0"}}>Are you sure you want to cancel?</p>
+                    </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" onClick={clickCYes}>
                             Yes

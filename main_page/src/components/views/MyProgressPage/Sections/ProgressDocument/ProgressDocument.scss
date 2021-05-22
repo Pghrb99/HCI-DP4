@@ -12,6 +12,7 @@
         font-size: 30px;
         font-weight: bold;
     }
+
 }
 
 #infodocument h3 {
@@ -45,4 +46,38 @@
         }
 
     }
+
+}
+
+#MPP-achievements-modify {
+    width: 250px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    float: right;
+    background-color: #5C996B;
+    border: none;
+    font-size: 20px;
+}
+
+#MPP-achievements-modify:hover {
+    background-color: #4c8059;
+}
+
+#MMP-reviews-write {
+    width: 200px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    float: right;
+    background-color: #5C996B;
+    border: none;
+    font-size: 20px;
+}
+
+#MMP-reviews-write:hover {
+    background-color: #4c8059;
+}
+
+#MMP-reviews-formlabel {
+    font-size: 20px;
+    font-weight: 600;
 }

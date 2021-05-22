@@ -5,6 +5,7 @@ import Mypagehover from '../Mypagehover/Mypagehover'
 import Tags from '../../../../TagSearchResultPage/Sections/Tags/Tags'
 import ActivityTags from '../../../../TagSearchResultPage/Sections/ActivityTags/ActivityTags'
 import './ActivityCard.scss'
+import { Link } from "react-router-dom";
 
 const StyledPopover = styled(Popover)`
       min-width: 320px;
@@ -31,7 +32,7 @@ const ActivityCard = ({imgSrc, title, tags, text, chartData}) => {
             <Card style={{ width: '15rem' }} className="Card">
                 <Card.Img variant="top" src={imgSrc} width={267} height={162}/>
                 <Card.Body>
-                    <Card.Title>{title}</Card.Title>
+                    <Card.Title><Link to={"/info"} style={{textDecoration: 'underline', color : 'black'}}>{title}</Link></Card.Title>
                     {/* <Tags tags={tags}/> */}
                     <ActivityTags tags={tags}/>
                 </Card.Body>

@@ -14,6 +14,8 @@ import RegisterPage from './views/RegisterPage/RegisterPage'
 import MyProgressPage from './views/MyProgressPage/MyProgressPage';
 import Mypage from './views/ActivityInfoPage/Sections/Mypage/Mypage'
 import CategoryPage from './views/CategoryPage/CategoryPage';
+import HotActivityPage from './views/HotActivityPage/HotActivityPage'
+import NameSearchPage from './views/NameSearchPage/NameSearchPage'
 
 import './App.css';
 
@@ -38,6 +40,8 @@ function App() {
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/register" component={RegisterPage} />
           <Route exact path="/mypage" component={Mypage} />
+          <Route exact path="/hotactivity" component={HotActivityPage} />
+          <Route exact path="/namesearch" component={NameSearchPage} />
         </Switch>
       </div>
     </Router>

@@ -19,8 +19,8 @@ const TopBar = ({ tags, isSignedIn, name }) => {
     return (
         <div id="MPP-nav-container" style={{ backgroundImage: `url(${bg})` }}>
             <Pagination id="MPP-label">
-                <Pagination.Item id="MMP-info-label" active={false}><Link to={"/info"} style={{color: "rgb(77, 163, 77)"}}>Activity Information</Link></Pagination.Item>
-                <Pagination.Item id="MMP-prog-label" active={true}>My Progress</Pagination.Item>
+                <Pagination.Item id="MMP-info-label" variant="success" active={false}><Link to={"/info"} style={{color: "rgb(77, 163, 77)"}}>Activity Information</Link></Pagination.Item>
+                <Pagination.Item id="MMP-prog-label" variant="success" active={true}>My Progress</Pagination.Item>
             </Pagination>
             <div className="align-self-end">
                 {isSignedIn ?
@@ -54,10 +54,12 @@ const TopBar = ({ tags, isSignedIn, name }) => {
                     <Modal.Header closeButton>
                         <Modal.Title id="MPP-modal-title">Cancel Activity</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Are you sure you want to cancel?</Modal.Body>
+                    <Modal.Body>
+                        <p style={{fontFamily:'arial', color:'black', fontSize:'18px', marginLeft:"0"}}>Are you sure you want to cancel?</p>
+                    </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" onClick={clickCYes}>
-                            Yes
+                            <Link to={"/info"} style={{color:"white"}}>Yes</Link>
                         </Button>
                         <Button variant="danger" onClick={clickCNo}>
                             No
