@@ -1,11 +1,9 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import { Card, Popover, OverlayTrigger } from 'react-bootstrap'
-import Mypagehover from '../Mypagehover/Mypagehover'
-import Tags from '../../../../TagSearchResultPage/Sections/Tags/Tags'
-import ActivityTags from '../../../../TagSearchResultPage/Sections/ActivityTags/ActivityTags'
+import RadarChart from '../RadarChart/RadarChart'
+import ActivityTags from '../ActivityTags/ActivityTags'
 import './ActivityCard.scss'
-import { Link } from "react-router-dom";
 
 const StyledPopover = styled(Popover)`
       min-width: 320px;
@@ -14,12 +12,12 @@ const StyledPopover = styled(Popover)`
       margin: 0px;
       opacity: 0.98;
 `
-const ActivityCard = ({imgSrc, title, tags, text, chartData}) => {
+const ActivityCard = ({imgSrc, title, tags, chartData}) => {
     const popover = (
         <StyledPopover className="popover-container">
           <StyledPopover.Title as="h3">Activity Info</StyledPopover.Title>
           <StyledPopover.Content>
-            <Mypagehover  />
+            <RadarChart name={title} chartData={chartData} />
           </StyledPopover.Content>
         </StyledPopover>
       );
@@ -32,8 +30,7 @@ const ActivityCard = ({imgSrc, title, tags, text, chartData}) => {
             <Card style={{ width: '15rem' }} className="Card">
                 <Card.Img variant="top" src={imgSrc} width={267} height={162}/>
                 <Card.Body>
-                    <Card.Title><Link to={"/info"} style={{textDecoration: 'underline', color : 'black'}}>{title}</Link></Card.Title>
-                    {/* <Tags tags={tags}/> */}
+                    <Card.Title>{title}</Card.Title>
                     <ActivityTags tags={tags}/>
                 </Card.Body>
             </Card>

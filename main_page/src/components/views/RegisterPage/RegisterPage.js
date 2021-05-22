@@ -1,5 +1,5 @@
 import './RegisterPage.scss';
-import Sidemenu from '../../views/TagSearchPage/Sections/SideMenu/Sidemenu'
+import Sidemenu from './Sections/SideMenu/Sidemenu'
 
 import logo from './Sections/imgs/logo.svg'
 

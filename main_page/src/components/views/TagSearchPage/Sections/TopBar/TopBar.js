@@ -1,6 +1,5 @@
 import React from 'react'
 import '../TopBar/TopBar.scss'
-import { Link } from "react-router-dom";
 
 const TopBar = ({isSignedIn, userName}) => {
     if (isSignedIn) {
@@ -13,8 +12,8 @@ const TopBar = ({isSignedIn, userName}) => {
     }
     return (
         <div className="TopBar">
-            <Link to={"/login"} className="menu">Sign In</Link>
-            <Link to={"/register"} className="menu">Sign Up</Link>
+            <a className="menu" href="/login">Sign In</a>
+            <a className="menu" href="/register">Sign Up</a>
         </div>
     )
 

@@ -13,7 +13,7 @@ const TopBar = ({isSignedIn, userName}) => {
     return (
         <div className="TopBar">
             <a className="menu" href="/login">Sign In</a>
-            <a className="menu" href="/register">Sign Up</a>
+            <span className="menu" href="/register">Sign Up</span>
         </div>
     )
 

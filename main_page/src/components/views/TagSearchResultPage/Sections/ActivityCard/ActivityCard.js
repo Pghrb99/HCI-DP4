@@ -4,7 +4,6 @@ import { Card, Popover, OverlayTrigger } from 'react-bootstrap'
 import RadarChart from '../RadarChart/RadarChart'
 import ActivityTags from '../ActivityTags/ActivityTags'
 import './ActivityCard.scss'
-import { Link } from "react-router-dom";
 
 const StyledPopover = styled(Popover)`
       min-width: 320px;
@@ -28,15 +27,13 @@ const ActivityCard = ({imgSrc, title, tags, text, chartData}) => {
         delay={{ show: 400, hide: 0 }}
         overlay={popover}
         >
-          <Link to={"/info"}>
             <Card style={{ width: '15rem' }} className="Card">
                 <Card.Img variant="top" src={imgSrc} width={267} height={162}/>
                 <Card.Body>
-                    <Card.Title style={{color : 'black'}}>{title}</Card.Title>
+                    <Card.Title>{title}</Card.Title>
                     <ActivityTags tags={tags}/>
                 </Card.Body>
             </Card>
-            </Link>
         </OverlayTrigger>
     )
 }

@@ -30,12 +30,12 @@ const TopBar = ({ tags, isSignedIn, name }) => {
                     </Nav>
                     :
                     <Nav className="mt-3">
-                        <Nav.Link className="mr-4"><Link to={"/login"}><span className="nav-text" id="nav-signIn" >Sign In</span></Link></Nav.Link>
-                        <Link to={"/register"}><Button
+                        <Nav.Link className="mr-4"><span className="nav-text" id="nav-signIn" >Sign In</span></Nav.Link>
+                        <Button
                             variant="outline-dark"
                             className="mr-5"
                         > <span className="nav-text" id="nav-signUp">Sign Up</span>
-                        </Button></Link>
+                        </Button>
                     </Nav>
                 }
             </div>

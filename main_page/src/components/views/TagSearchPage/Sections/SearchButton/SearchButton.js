@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const SearchButton = () => {
     return (
         <div className="SearchButton">
-            <Link to={"/result"}><BsSearch className="search-icon" /></Link>
+            <Link to={"/info"}><BsSearch className="search-icon" /></Link>
         </div>
     )
 }
