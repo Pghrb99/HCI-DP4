@@ -1,0 +1,30 @@
+.NameSearchPage {
+    text-align: center;
+    body {
+        background: rgb(247, 247, 247) !important;
+      }
+
+      .NameSearchBar {
+        margin: 0 auto;
+      }
+      
+      .TopBar {
+        position: absolute;
+        top: 30px;
+        right: 50px;
+      }
+      
+      #logo {
+        margin-top: 7%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 20px;
+        height: 30vmin;
+        pointer-events: none;
+      }      
+}
+
+
+
+
+
