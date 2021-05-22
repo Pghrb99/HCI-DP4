@@ -68,7 +68,9 @@ const TopBar = ({ tags, isSignedIn, name }) => {
                     <Modal.Header closeButton>
                         <Modal.Title id="AIP-modal-title">Start Activity</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Are you sure you want to start?</Modal.Body>
+                    <Modal.Body>
+                        <p style={{fontFamily:'arial', color:'black', fontSize:'18px'}}>Are you sure you want to start?</p>
+                    </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" onClick={clickSYes}>
                             Yes
@@ -82,7 +84,9 @@ const TopBar = ({ tags, isSignedIn, name }) => {
                     <Modal.Header closeButton>
                         <Modal.Title id="AIP-modal-title">Cancel Activity</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Are you sure you want to cancel?</Modal.Body>
+                    <Modal.Body>
+                        <p style={{fontFamily:'arial', color:'black', fontSize:'18px'}}>Are you sure you want to cancel?</p>
+                    </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" onClick={clickCYes}>
                             Yes
