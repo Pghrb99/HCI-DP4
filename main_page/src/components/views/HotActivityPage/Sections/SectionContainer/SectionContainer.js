@@ -1,6 +1,6 @@
 import React from 'react'
 import {Col} from 'react-bootstrap'
-import ActivityCard from '../ActivityCard/ActivityCard'
+import ActivityCard from '../../../TagSearchResultPage/Sections/ActivityCard/ActivityCard'
 import './SectionContainer.scss'
 
 const SectionContainer = ({sectionName, cards}) => {
