@@ -57,7 +57,7 @@ const TopBar = ({ tags, isSignedIn, name }) => {
                     <Modal.Body>Are you sure you want to cancel?</Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" onClick={clickCYes}>
-                            Yes
+                            <Link to={"/info"} style={{color:"white"}}>Yes</Link>
                         </Button>
                         <Button variant="danger" onClick={clickCNo}>
                             No
