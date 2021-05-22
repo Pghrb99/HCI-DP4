@@ -28,15 +28,17 @@ const ActivityCard = ({imgSrc, title, tags, text, chartData}) => {
         placement="auto"
         delay={{ show: 400, hide: 0 }}
         overlay={popover}
-        >
+        > 
+        <Link to={"/info"}>
             <Card style={{ width: '15rem' }} className="Card">
                 <Card.Img variant="top" src={imgSrc} width={267} height={162}/>
                 <Card.Body>
-                    <Card.Title><Link to={"/info"} style={{textDecoration: 'underline', color : 'black'}}>{title}</Link></Card.Title>
+                    <Card.Title style={{color : 'black',  textAlign: 'left' }}>{title}</Card.Title>
                     {/* <Tags tags={tags}/> */}
                     <ActivityTags tags={tags}/>
                 </Card.Body>
             </Card>
+            </Link>
         </OverlayTrigger>
     )
 }

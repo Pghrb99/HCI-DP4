@@ -16,7 +16,6 @@ import Mypage from './views/ActivityInfoPage/Sections/Mypage/Mypage'
 import CategoryPage from './views/CategoryPage/CategoryPage';
 import HotActivityPage from './views/HotActivityPage/HotActivityPage'
 import NameSearchPage from './views/NameSearchPage/NameSearchPage'
-
 import './App.css';
 
 function App() {

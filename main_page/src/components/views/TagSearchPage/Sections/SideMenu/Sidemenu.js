@@ -45,7 +45,7 @@ const Sidemenu = () => {
                     <Link to={"/"}><FontAwesomeIcon icon={faTags} style={{marginRight: "10px"}}/>Tag Search</Link>
                     </li>
                     <li class="active">
-                    <Link to={"/"}><FontAwesomeIcon icon={faList} style={{marginRight: "10px"}}/>Categories</Link>
+                    <Link to={"/category"}><FontAwesomeIcon icon={faList} style={{marginRight: "10px"}}/>Categories</Link>
                     </li>
                     <li class="active">
                     <Link to={"/hotactivity"}><FontAwesomeIcon icon={faHotjar} style={{marginRight: "10px"}}/>Hot Activities</Link>
