@@ -123,7 +123,7 @@ const ProgressDocument = ({ c, t }) => {
                         <Modal.Title id="AIP-modal-title">Accomplish Activity</Modal.Title>
                     </Modal.Header>
                     <Modal.Body style={{ fontSize: "18px" }}>
-                    <p style={{fontFamily:'arial', color:'black', fontSize:'18px'}}>Are you sure you attained the activity? If it is true, please upload a proof photo.</p>
+                        <p style={{fontFamily:'arial', color:'black', fontSize:'18px', marginLeft:"0"}}>Are you sure you attained the activity? If it is true, please upload a proof photo.</p>
                         {/*<input type="file" name="file" id="file" class="inputfile" accept=".jpg, .jpeg, .png"/>*/}
                         <Form>
                             <Form.Group>
@@ -145,7 +145,7 @@ const ProgressDocument = ({ c, t }) => {
                         <Modal.Title id="AIP-modal-title">Accomplish Activity</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <p style={{fontFamily:'arial', color:'black', fontSize:'18px'}}>Are you sure you cancel the activity?</p>
+                        <p style={{fontFamily:'arial', color:'black', fontSize:'18px', marginLeft:"0"}}>Are you sure you cancel the activity?</p>
                         {/*img tag 추가*/}
                     </Modal.Body>
                     <Modal.Footer>

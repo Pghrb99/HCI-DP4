@@ -54,7 +54,9 @@ const TopBar = ({ tags, isSignedIn, name }) => {
                     <Modal.Header closeButton>
                         <Modal.Title id="MPP-modal-title">Cancel Activity</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Are you sure you want to cancel?</Modal.Body>
+                    <Modal.Body>
+                        <p style={{fontFamily:'arial', color:'black', fontSize:'18px', marginLeft:"0"}}>Are you sure you want to cancel?</p>
+                    </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" onClick={clickCYes}>
                             <Link to={"/info"} style={{color:"white"}}>Yes</Link>
