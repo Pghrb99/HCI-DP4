@@ -39,26 +39,16 @@ const Mypage = () => {
         }
         ]
 
-
-
-
-    return ( <div>
-                
-                        {/* <Log_in_out isSignedIn={true} id="image" name="KIMMINSEOK" /> */}
-                        <TopBar isSignedIn='1' name='Kimminseok' />
-
-                        <Sidemenu />
-
-                {/* <div className="maintext"> */}
-                <div >
-
-                    <Cardbox className="maintext1" cards={cards}/> 
-
-                </div>
-
+    return (
+        <div>
+            <Sidemenu />
+            {/* <Log_in_out isSignedIn={true} id="image" name="KIMMINSEOK" /> */}
+            <TopBar isSignedIn='1' name='Kimminseok' />
+            {/* <div className="maintext"> */}
+            <div >
+                <Cardbox className="maintext1" cards={cards}/> 
             </div>
-
-            // </div>
+        </div>
     )
 }
 export default Mypage;

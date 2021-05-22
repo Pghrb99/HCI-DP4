@@ -29,8 +29,8 @@ const TopBar = ({ tags, isSignedIn, name }) => {
     return (
         <div id="AIP-nav-container" style={{backgroundImage: `url(${bg})`}}>
             <Pagination id="AIP-label">
-                <Pagination.Item id="AIP-info-label" active={true}>Activity Information</Pagination.Item>
-                <Pagination.Item id="AIP-prog-label" active={false}><Link to={"/myprogress"} style={{color: "rgb(77, 163, 77)"}}>My Progress</Link></Pagination.Item>
+                <Pagination.Item id="AIP-info-label" variant="success" active={true}>Activity Information</Pagination.Item>
+                <Pagination.Item id="AIP-prog-label" variant="success" active={false}><Link to={"/myprogress"} style={{color: "rgb(77, 163, 77)"}}>My Progress</Link></Pagination.Item>
                 {/*{(isSignedIn && ongoing) ?
                     <Pagination.Item id="AIP-prog-label" active={false}><Link to={"/myprogress"} style={{color: "rgb(77, 163, 77)"}}>My Progress</Link></Pagination.Item>
                     :

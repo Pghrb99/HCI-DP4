@@ -19,8 +19,8 @@ const TopBar = ({ tags, isSignedIn, name }) => {
     return (
         <div id="MPP-nav-container" style={{ backgroundImage: `url(${bg})` }}>
             <Pagination id="MPP-label">
-                <Pagination.Item id="MMP-info-label" active={false}><Link to={"/info"} style={{color: "rgb(77, 163, 77)"}}>Activity Information</Link></Pagination.Item>
-                <Pagination.Item id="MMP-prog-label" active={true}>My Progress</Pagination.Item>
+                <Pagination.Item id="MMP-info-label" variant="success" active={false}><Link to={"/info"} style={{color: "rgb(77, 163, 77)"}}>Activity Information</Link></Pagination.Item>
+                <Pagination.Item id="MMP-prog-label" variant="success" active={true}>My Progress</Pagination.Item>
             </Pagination>
             <div className="align-self-end">
                 {isSignedIn ?
