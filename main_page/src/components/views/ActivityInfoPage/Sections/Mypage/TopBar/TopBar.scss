@@ -1,0 +1,42 @@
+#nav-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    background-color: rgb(135, 157, 185);
+    box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.10);
+    padding: 0;
+    .align-self-start {
+        align-self: flex-start;
+    }
+    .mypage-center {
+        // padding-top: 4vh;
+        padding-bottom: 2vh;
+        // color: #356864;
+        font-size: 50px;
+        align-self: center;
+        z-index: 1;
+        // font-size: 36px;
+        font-weight: bold;
+        color: white;
+        
+    }
+    .align-self-end {
+        align-self: flex-end;
+    }
+    // #search-result {
+    //     font-size: 36px;
+    //     font-weight: bold;
+    //     color: white;
+    // }
+    #tags {
+        margin-left: 20px;
+        color: white;
+    }
+    .nav-text{
+        color: white;
+        font-size: 16px;
+    }
+    #nav-userName{
+        font-weight: bold;
+    }
+}

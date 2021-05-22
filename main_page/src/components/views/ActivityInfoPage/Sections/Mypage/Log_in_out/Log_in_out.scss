@@ -1,0 +1,52 @@
+#logo_mypage {
+    margin-top: 7%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    height: 8vmin;
+    pointer-events: none;
+    opacity : 0.7;
+  }
+
+
+#AIP-nav-container-1 {
+    display: flex;
+    // height: 20vh;
+    height: 100%;
+    flex-basis: auto;
+    // width: 100vw;
+    flex-direction: column;
+    padding: 0;
+    background-position: center;
+    background-color: #c5dacb;
+    z-index: 0;
+    
+    .mypage-center {
+        padding-top: 4vh;
+        color: #356864;
+        font-size: 55px;
+        align-self: center;
+        z-index: 1;
+    }
+    .mypage-end {
+        margin-right: 8vw;
+        align-self: flex-end;
+        z-index: 1;
+    }
+    .nav-text{
+        color: black;
+        font-size: 20px;
+        font-weight: bold;
+        opacity : 0.7;
+    }
+    // #nav-userName{
+    //     font-weight: bold;
+    //     color : "black";
+    //     opacity: 1;
+    // }
+    // #nav-signOut{
+    //     font-weight: bold;
+    //     color : "black";
+    //     opacity: 1;
+    // }
+}
