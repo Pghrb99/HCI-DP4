@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Card, Popover, OverlayTrigger } from 'react-bootstrap'
 import Mypagehover from '../Mypagehover/Mypagehover'
 import Tags from '../../../../TagSearchResultPage/Sections/Tags/Tags'
+import ActivityTags from '../../../../TagSearchResultPage/Sections/ActivityTags/ActivityTags'
 import './ActivityCard.scss'
 
 const StyledPopover = styled(Popover)`
@@ -31,7 +32,8 @@ const ActivityCard = ({imgSrc, title, tags, text, chartData}) => {
                 <Card.Img variant="top" src={imgSrc} width={267} height={162}/>
                 <Card.Body>
                     <Card.Title>{title}</Card.Title>
-                    <Tags tags={tags}/>
+                    {/* <Tags tags={tags}/> */}
+                    <ActivityTags tags={tags}/>
                 </Card.Body>
             </Card>
         </OverlayTrigger>

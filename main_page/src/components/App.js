@@ -12,6 +12,7 @@ import ActivityInfoPage from './views/ActivityInfoPage/ActivityInfoPage'
 import LoginPage from './views/LoginPage/LoginPage'
 import RegisterPage from './views/RegisterPage/RegisterPage'
 import MyProgressPage from './views/MyProgressPage/MyProgressPage';
+import Mypage from './views/ActivityInfoPage/Sections/Mypage/Mypage'
 
 import './App.css';
 
@@ -34,6 +35,7 @@ function App() {
           <Route exact path="/myprogress" component={MyProgressPage} />
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/register" component={RegisterPage} />
+          <Route exact path="/mypage" component={Mypage} />
         </Switch>
       </div>
     </Router>
