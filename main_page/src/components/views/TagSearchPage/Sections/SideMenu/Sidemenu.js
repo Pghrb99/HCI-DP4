@@ -5,6 +5,7 @@ import logo from '../imgs/logo.svg'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faBars, faHome, faTags, faList, faUser } from "@fortawesome/free-solid-svg-icons";
 import { faHotjar } from '@fortawesome/free-brands-svg-icons';
+import { Link } from "react-router-dom";
 
 function clickSide() {
     $('#sidebar').addClass('active');
@@ -28,25 +29,25 @@ const Sidemenu = () => {
                 </div>
 
                 <div class="sidebar-header">
-                    <img src={logo} class="sidemenu_logo"/>
+                <Link to={"/"}><img src={logo} class="sidemenu_logo"/></Link>
                 </div>
 
                 <ul class="list-unstyled components">
                     {/*<p>Dummy Heading</p>*/}
                     <li class="active">
-                        <a href="#"><FontAwesomeIcon icon={faHome} style={{marginRight: "10px"}}/>Name Search</a>
+                        <Link to={"/namesearch"}><FontAwesomeIcon icon={faHome} style={{marginRight: "10px"}}/>Name Search</Link>
                     </li>
                     <li class="active">
-                        <a href="#"><FontAwesomeIcon icon={faTags} style={{marginRight: "10px"}}/>Tag Search</a>
+                    <Link to={"/"}><FontAwesomeIcon icon={faTags} style={{marginRight: "10px"}}/>Tag Search</Link>
                     </li>
                     <li class="active">
-                        <a href="#"><FontAwesomeIcon icon={faList} style={{marginRight: "10px"}}/>Categories</a>
+                    <Link to={"/"}><FontAwesomeIcon icon={faList} style={{marginRight: "10px"}}/>Categories</Link>
                     </li>
                     <li class="active">
-                        <a href="#"><FontAwesomeIcon icon={faHotjar} style={{marginRight: "10px"}}/>Hot Activities</a>
+                    <Link to={"/hotactivity"}><FontAwesomeIcon icon={faHotjar} style={{marginRight: "10px"}}/>Hot Activities</Link>
                     </li>
                     <li class="active">
-                        <a href="#"><FontAwesomeIcon icon={faUser} style={{marginRight: "10px"}}/>My Activites</a>
+                    <Link to={"/mypage"}><FontAwesomeIcon icon={faUser} style={{marginRight: "10px"}}/>My Activites</Link>
                     </li>
                 </ul>
             </nav>
