@@ -2,6 +2,7 @@ import React from 'react'
 import {Nav, Navbar, Form, FormControl, Button} from 'react-bootstrap'
 import logo from '../imgs/logo.svg'
 import './TopBar.scss'
+import { Link } from "react-router-dom";
 
 const TopBar = ({isSignedIn, name}) => {
     return (
@@ -14,12 +15,12 @@ const TopBar = ({isSignedIn, name}) => {
                 </Nav>
                 :
                 <Nav className="mt-3">
-                    <Nav.Link  className="mr-4"><span className="nav-text"id="nav-signIn" >Sign In</span></Nav.Link>
-                    <Button 
+                    <Nav.Link  className="mr-4"><Link to={"/login"}><span className="nav-text"id="nav-signIn" >Sign In</span></Link></Nav.Link>
+                    <Link to={"/register"}><Button 
                         variant="outline-dark"
                         className="mr-5"
                     > <span className="nav-text" id="nav-signUp">Sign Up</span>
-                    </Button>
+                    </Button></Link>
                 </Nav>
                 }
             </div>
