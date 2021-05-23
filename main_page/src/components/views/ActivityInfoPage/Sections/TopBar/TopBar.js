@@ -4,13 +4,12 @@ import { Link } from "react-router-dom";
 import Tags from '../../../TagSearchResultPage/Sections/Tags/Tags'
 import './TopBar.scss'
 import bg from '../imgs/hockey_world_1400.png'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-// 페이지 넘어갈 때마다 ongoing 정보 그대로 전달해줘야 함(prop 사용...?)
-
-const TopBar = ({ tags, isSignedIn, name }) => {
+const TopBar = ({ tags, isSignedIn, name, removeReview, submit, setSubmit, ongoing, setOngoing }) => {
     const [start, setStart] = useState(false);
     const [cancel, setCancel] = useState(false);
-    const [ongoing, setOngoing] = useState(false);
     
     const clickStart = () => setStart(true);
     const clickSYes = () => {
@@ -21,6 +20,10 @@ const TopBar = ({ tags, isSignedIn, name }) => {
 
     const clickCancel = () => setCancel(true);
     const clickCYes = () => {
+        if (submit) {
+            removeReview();
+            setSubmit(false);
+        }
         setOngoing(false);
         setCancel(false);
     }
@@ -28,14 +31,10 @@ const TopBar = ({ tags, isSignedIn, name }) => {
 
     return (
         <div id="AIP-nav-container" style={{backgroundImage: `url(${bg})`}}>
-            <Pagination id="AIP-label">
+            <Pagination variant="success" id="AIP-label">
                 <Pagination.Item id="AIP-info-label" variant="success" active={true}>Activity Information</Pagination.Item>
-                <Pagination.Item id="AIP-prog-label" variant="success" active={false}><Link to={"/myprogress"} style={{color: "rgb(77, 163, 77)"}}>My Progress</Link></Pagination.Item>
-                {/*{(isSignedIn && ongoing) ?
-                    <Pagination.Item id="AIP-prog-label" active={false}><Link to={"/myprogress"} style={{color: "rgb(77, 163, 77)"}}>My Progress</Link></Pagination.Item>
-                    :
-                    <Pagination.Item id="AIP-prog-label" active={false} disabled><Link to={"/myprogress"} style={{color: "rgb(77, 163, 77)"}}>My Progress</Link></Pagination.Item>
-                }*/}
+                <Pagination.Item id="AIP-prog-label" variant="success" active={false} disabled={!ongoing}><Link to={"/myprogress"} style={{color: "rgb(77, 163, 77)"}}>My Progress</Link></Pagination.Item>
+                {/*isSignedIn && 추가 필요*/}
             </Pagination>
             <div className="align-self-end">
                 {isSignedIn ?
@@ -63,13 +62,14 @@ const TopBar = ({ tags, isSignedIn, name }) => {
                     <Tags tags={tags} />
                 </div>
                 { !ongoing && <Button id="AIP-topbar-button" onClick={clickStart}>Start!</Button> }
-                { ongoing && <Button variant='secondary' id='AIP-topbar-button' onClick={clickCancel}>Ongoing | X</Button> }
+                { ongoing && <Button variant='secondary' id='AIP-topbar-button' onClick={clickCancel}>Ongoing<FontAwesomeIcon icon={faTimes} style={{marginLeft:'10px'}}/></Button> }
                 <Modal show={start} onHide={clickSNo}>
                     <Modal.Header closeButton>
                         <Modal.Title id="AIP-modal-title">Start Activity</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <p style={{fontFamily:'arial', color:'black', fontSize:'18px', marginLeft:"0"}}>Are you sure you want to start?</p>
+                        <p style={{fontFamily:'arial', color:'black', fontSize:'18px', marginLeft:"0"}}>(If you want to cancel the activity, click the 'Ongoing' button which will be created.)</p>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" onClick={clickSYes}>
@@ -86,6 +86,7 @@ const TopBar = ({ tags, isSignedIn, name }) => {
                     </Modal.Header>
                     <Modal.Body>
                         <p style={{fontFamily:'arial', color:'black', fontSize:'18px', marginLeft:"0"}}>Are you sure you want to cancel?</p>
+                        <p style={{fontFamily:'arial', color:'black', fontSize:'18px', marginLeft:"0"}}>(If you select 'Yes,' your review will be removed autometically.)</p>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" onClick={clickCYes}>

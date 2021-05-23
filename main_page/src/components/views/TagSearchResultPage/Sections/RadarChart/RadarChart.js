@@ -1,7 +1,5 @@
 import React from 'react'
 import { Radar } from 'react-chartjs-2'
-import { FaBold } from 'react-icons/fa'
-import styled from 'styled-components'
 import './RadarChart.scss'
 
 const RadarChart = ({name, chartData}) => {

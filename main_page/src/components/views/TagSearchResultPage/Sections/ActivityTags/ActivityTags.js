@@ -2,7 +2,7 @@ import React from 'react'
 import ActivityTag from '../ActivityTag/ActivityTag'
 import './ActivityTags.scss'
 
-const ActivityTags = ({tags, onRemove}) => {
+const ActivityTags = ({tags}) => {
     return (
         <ul className='ActivityTags'>
             {tags.map((tag) => (

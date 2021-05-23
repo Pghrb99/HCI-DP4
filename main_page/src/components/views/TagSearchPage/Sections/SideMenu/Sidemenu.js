@@ -29,7 +29,11 @@ const Sidemenu = () => {
                 </div>
 
                 <div class="sidebar-header">
-                <Link to={"/"}><img src={logo} class="sidemenu_logo"/></Link>
+                    <Link to={"/"} style={{height:"150px"}} onClick={clickCollapse}>
+                        <div>
+                            <img src={logo} class="sidemenu_logo"/>
+                        </div>
+                    </Link>
                 </div>
 
                 <ul class="list-unstyled components">

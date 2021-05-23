@@ -6,14 +6,15 @@ import ProgressDocument from './Sections/ProgressDocument/ProgressDocument'
 import HorizontalBar from './Sections/HorizontalBar/HorizontalBar';
 import GoTop from '../GoTop/GoTop';
 
-const MyProgressPage = () => {
+const MyProgressPage = ({reviewlist, addReview, removeReview, submit, setSubmit, ongoing, setOngoing}) => {
+    
     return (
         <div id="MyProgressPage">
             <Sidemenu/>
-            <TopBar tags={[{name: "Hi", isInclude: true},{name: "Bye", isInclude: false}]} isSignedIn={false} name={"Changhae"}/>
+            <TopBar tags={[{name: "Hi", isInclude: true},{name: "Bye", isInclude: false}]} isSignedIn={false} name={"Changhae"} removeReview={removeReview} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing}/>
             <div id="AIP-hori-div">
                 <HorizontalBar/>
-                <ProgressDocument c={0} t={7}/>
+                <ProgressDocument c={0} t={7} reviewlist={reviewlist} addReview={addReview} removeReview={removeReview} submit={submit} setSubmit={setSubmit}/>
             </div>
             <GoTop/>
         </div>
