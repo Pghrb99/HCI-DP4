@@ -1,9 +1,11 @@
-import React, {useState} from 'react'
-import { Card } from 'antd';
+import React from 'react'
+import { Card, Typography } from 'antd';
 
 const { Meta } = Card;
 
 const CategoryCard = ({img, title}) => {
+  const { Title } = Typography;
+
     return (
       <Card 
       className="CategoryCard"
@@ -11,7 +13,7 @@ const CategoryCard = ({img, title}) => {
       style={{ width: 300 }}
       cover={<img alt={img.alt} src={img.src} />}
     >
-      <Meta title={title} style={{textAlign: "center"}}/>
+      <Meta title={<Title level={4}>{title}</Title>} style={{textAlign: "center"}}/>
     </Card>
     )
 }
