@@ -5,10 +5,11 @@ import Tags from '../../../TagSearchResultPage/Sections/Tags/Tags'
 import './TopBar.scss'
 import bg from '../imgs/hockey_world_1400.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 const TopBar = ({ tags, isSignedIn, name, removeReview, submit, setSubmit, ongoing, setOngoing }) => {
     const [cancel, setCancel] = useState(false);
+    const [finish, setFinish] = useState(false);
 
     const clickCancel = () => setCancel(true);
     const clickCYes = () => {
@@ -20,6 +21,8 @@ const TopBar = ({ tags, isSignedIn, name, removeReview, submit, setSubmit, ongoi
         setCancel(false);
     }
     const clickCNo = () => setCancel(false);
+
+    const clickFinish = () => setFinish(true);
 
     return (
         <div id="MPP-nav-container" style={{ backgroundImage: `url(${bg})` }}>
@@ -52,7 +55,15 @@ const TopBar = ({ tags, isSignedIn, name, removeReview, submit, setSubmit, ongoi
                     <span >Related tags : </span>
                     <Tags tags={tags} />
                 </div>
-                <Button variant='secondary' id='MPP-topbar-button' onClick={clickCancel}>Ongoing<FontAwesomeIcon icon={faTimes} style={{marginLeft:'10px'}}/></Button>
+                {finish ?
+                    <Button variant='success' id='MPP-topbar-complete' disabled style={{cursor:'default'}}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>
+                    :
+                    <div>
+                        <Button variant='success' id='MPP-topbar-complete' onClick={clickFinish}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>
+                        <Button variant='secondary' id='MPP-topbar-ongoing' onClick={clickCancel}>Ongoing<FontAwesomeIcon icon={faTimes} style={{marginLeft:'10px'}}/></Button>
+                    </div>
+                }
+                
                 {/* ongoing, see_info은 눌리면 activityinfopage로 이동*/}
 
                 <Modal show={cancel} onHide={clickCNo}>
