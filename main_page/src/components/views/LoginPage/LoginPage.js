@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import './LoginPage.scss';
 import TopBar from './Sections/TopBar/TopBar'
 import Sidemenu from '../../views/TagSearchPage/Sections/SideMenu/Sidemenu'
@@ -46,8 +47,6 @@ function LoginPage(props) {
       
       <Content className="container">
 
-        <Card className="container" style={{padding: "24px", backgroundColor: "rgb(247, 247, 247)"}} >
-
         <Form
           {...formItemLayout}
           name="normal_login"
@@ -86,11 +85,10 @@ function LoginPage(props) {
               <Button type="primary" htmlType="submit" className="login-form-button">
                 Log in
               </Button>
-              Or <a href="">register now!</a>
+              Or <Link to={"/register"}>register now!</Link>
             </Space>
           </Form.Item>
         </Form>
-        </Card>
 
       </Content>
     </Layout>

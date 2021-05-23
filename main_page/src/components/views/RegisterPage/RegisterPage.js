@@ -56,21 +56,8 @@ function RegisterPage(props) {
     console.log('Received values of form: ', values);
   };
 
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select
-        style={{
-          width: 70,
-        }}
-      >
-        <Option value="86">+86</Option>
-        <Option value="87">+87</Option>
-      </Select>
-    </Form.Item>
-  );
+
   const [autoCompleteResult, setAutoCompleteResult] = useState([]);
-
-
 
   return (
     <Layout style={{backgroundColor: "rgb(247, 247, 247)"}}>
@@ -80,7 +67,7 @@ function RegisterPage(props) {
       </Header>
 
       <Content className="container">
-        <Card style={{padding: "24px", backgroundColor: "rgb(247, 247, 247)"}}>
+        
 
           <Form
           {...formItemLayout}
@@ -88,8 +75,6 @@ function RegisterPage(props) {
           name="register"
           onFinish={onFinish}
           initialValues={{
-            residence: ['zhejiang', 'hangzhou', 'xihu'],
-            prefix: '86',
           }}
           scrollToFirstError
           >
@@ -154,7 +139,6 @@ function RegisterPage(props) {
             </Button>
           </Form.Item>
         </Form>
-        </Card>
       </Content>
     </Layout>
 
