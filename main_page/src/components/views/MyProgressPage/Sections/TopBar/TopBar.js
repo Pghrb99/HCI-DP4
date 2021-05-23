@@ -3,14 +3,19 @@ import { Nav, Modal, Button, Pagination } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import Tags from '../../../TagSearchResultPage/Sections/Tags/Tags'
 import './TopBar.scss'
-import bg from '../imgs/hockey_world_1400.png'
+import bg from '../imgs/hockey_world_1400.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-const TopBar = ({ tags, isSignedIn, name }) => {
+const TopBar = ({ tags, isSignedIn, name, removeReview, submit, setSubmit, ongoing, setOngoing }) => {
     const [cancel, setCancel] = useState(false);
-    const [ongoing, setOngoing] = useState(false);
 
     const clickCancel = () => setCancel(true);
     const clickCYes = () => {
+        if (submit) {
+            removeReview();
+            setSubmit(false);
+        }
         setOngoing(false);
         setCancel(false);
     }
@@ -18,7 +23,7 @@ const TopBar = ({ tags, isSignedIn, name }) => {
 
     return (
         <div id="MPP-nav-container" style={{ backgroundImage: `url(${bg})` }}>
-            <Pagination id="MPP-label">
+            <Pagination variant="success" id="MPP-label">
                 <Pagination.Item id="MMP-info-label" variant="success" active={false}><Link to={"/info"} style={{color: "rgb(77, 163, 77)"}}>Activity Information</Link></Pagination.Item>
                 <Pagination.Item id="MMP-prog-label" variant="success" active={true}>My Progress</Pagination.Item>
             </Pagination>
@@ -47,7 +52,7 @@ const TopBar = ({ tags, isSignedIn, name }) => {
                     <span >Related tags : </span>
                     <Tags tags={tags} />
                 </div>
-                <Button variant='secondary' id='MPP-topbar-button' onClick={clickCancel}>Ongoing | X</Button>
+                <Button variant='secondary' id='MPP-topbar-button' onClick={clickCancel}>Ongoing<FontAwesomeIcon icon={faTimes} style={{marginLeft:'10px'}}/></Button>
                 {/* ongoing, see_info은 눌리면 activityinfopage로 이동*/}
 
                 <Modal show={cancel} onHide={clickCNo}>
@@ -56,6 +61,7 @@ const TopBar = ({ tags, isSignedIn, name }) => {
                     </Modal.Header>
                     <Modal.Body>
                         <p style={{fontFamily:'arial', color:'black', fontSize:'18px', marginLeft:"0"}}>Are you sure you want to cancel?</p>
+                        <p style={{fontFamily:'arial', color:'black', fontSize:'18px', marginLeft:"0"}}>(If you select 'Yes,' your review will be removed autometically.)</p>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" onClick={clickCYes}>
