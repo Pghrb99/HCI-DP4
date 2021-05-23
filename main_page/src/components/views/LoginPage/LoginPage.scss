@@ -1,24 +1,30 @@
 body {
   background: rgb(247, 247, 247) !important;
 }
+
+#components-form-demo-normal-login .login-form {
+  max-width: 300px;
+}
+#components-form-demo-normal-login .login-form-forgot {
+  float: right;
+}
+#components-form-demo-normal-login .ant-col-rtl .login-form-forgot {
+  float: left;
+}
+#components-form-demo-normal-login .login-form-button {
+  width: 100%;
+}
 .LoginPage {
   text-align: center;
 }
-.TagSearchBar {
-  margin: 0 auto;
-}
 
+.container {
+  margin: 0 auto;
+  max-width: 768px;
+  min-width: 460px;
+}
 .TopBar {
   position: absolute;
   top: 30px;
   right: 50px;
-}
-
-#logo {
-  margin-top: 7%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 20px;
-  height: 30vmin;
-  pointer-events: none;
 }

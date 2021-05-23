@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{ Suspense }from 'react'
 import {
   BrowserRouter as Router,
   Switch,
@@ -21,32 +21,34 @@ import './App.css';
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <div>
-          
-          {/*
-            A <Switch> looks through all its children <Route>
-            elements and renders the first one whose path
-            matches the current URL. Use a <Switch> any time
-            you have multiple routes, but you want only one
-            of them to render at a time
-          */}
-          <Switch>
-            <Route exact path="/" component={TagSearchPage} />
-            <Route exact path="/result" component={TagSearchResultPage} />
-            <Route exact path="/info" component={ActivityInfoPage} />
-            <Route exact path="/myprogress" component={MyProgressPage} />
-            <Route exact path="/category" component={CategoryPage} />
-            <Route exact path="/login" component={LoginPage} />
-            <Route exact path="/register" component={RegisterPage} />
-            <Route exact path="/mypage" component={Mypage} />
-            <Route exact path="/hotactivity" component={HotActivityPage} />
-            <Route exact path="/namesearch" component={NameSearchPage} />
-          </Switch>
-        </div>
-      </Router>
-    </AuthProvider>
+    <Suspense fallback={(<div>Loading...</div>)}>
+      <AuthProvider>
+        <Router>
+          <div>
+            
+            {/*
+              A <Switch> looks through all its children <Route>
+              elements and renders the first one whose path
+              matches the current URL. Use a <Switch> any time
+              you have multiple routes, but you want only one
+              of them to render at a time
+            */}
+            <Switch>
+              <Route exact path="/" component={TagSearchPage} />
+              <Route exact path="/result" component={TagSearchResultPage} />
+              <Route exact path="/info" component={ActivityInfoPage} />
+              <Route exact path="/myprogress" component={MyProgressPage} />
+              <Route exact path="/category" component={CategoryPage} />
+              <Route exact path="/login" component={LoginPage} />
+              <Route exact path="/register" component={RegisterPage} />
+              <Route exact path="/mypage" component={Mypage} />
+              <Route exact path="/hotactivity" component={HotActivityPage} />
+              <Route exact path="/namesearch" component={NameSearchPage} />
+            </Switch>
+          </div>
+        </Router>
+      </AuthProvider>
+    </Suspense>
   );
 }
 
