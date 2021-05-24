@@ -1,119 +1,182 @@
-import React from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
+import React, {useState, useEffect} from 'react'
 import TopBar from './Sections/TopBar/TopBar'
 import CardContainer from './Sections/CardContainer/CardContainer'
-import img1 from './Sections/imgs/ice_hockey.jpg'
 import SearchOptions from './Sections/SearchOptions/SearchOptions'
 import Sidemenu from '../TagSearchPage/Sections/SideMenu/Sidemenu'
+import {Typography} from 'antd'
+import { useLocation } from 'react-router'
+import {db} from 'firebase.js'
 
 
-const TagSearchResultPage = (props) => {
-    const cards = [
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
+const TagSearchResultPage = () => {
 
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[5,7,5.6,9,10]
+    
+// if(typeof location.state.option != 'undefined'){
+    
+//     let addcard;
+//     let cards = []
+//     let snapshot;
+//     let name;
+//     name = location.state.option;
 
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1.2,9,3,4.6,10]
+//     let namearray=[];
+//     for (let i=0; i<name.length; i++) namearray.push(name[i].value)
+    
 
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[10,2.5,6,8,10]
+//     const onPriorityChange = (value) => {
+//         // cards = (prev) => [...prev].sort((x,y) => (y.chartData[value]-x.chartData[value]));
+//         cards.sort((x,y) => (y.chartData[value]-x.chartData[value]));
+//         console.log(cards)
+//     }
 
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[7,5,5,6,]
 
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
 
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
+//     (async () => {
+//         snapshot = await db.collection('Activities').get();
+//         snapshot.forEach(doc => {
+//             if(namearray.indexOf(doc.data().name) != -1 ){
+//         addcard = { name:doc.data().name, 
+//                     tags : Object.keys(doc.get("tags")).map(x => ({name: x})),
+//                     chartData: doc.data().numerics,
+//                     img: doc.data().cardImg.src
+//                     }
+//         cards.push(addcard);
+//         }});
+//         })();
 
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
+//         cards.sort((x,y) => (y.chartData[0]-x.chartData[0]))
 
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
+//         return (
+//             <div>
+//                 <Sidemenu/>
+//                 <TopBar isSignedIn={false} name={"Changhae"}/>
+//                 <SearchOptions onPriorityChange={onPriorityChange}/>
+//                 <CardContainer cards={cards}/>            
+//             </div>
+//         )
 
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
+//     }
 
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
+    const location = useLocation();
+    const {Title} = Typography;
+    const tags = location.state.tags;
+    const category = location.state.category;
+    const name = location.state.option;
+    const [cards, setCards] = useState([]);
+    const [noResults, setNoResults] = useState(false);
 
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
+    const onPriorityChange = (value) => {
+        setCards(prev => [...prev].sort((x,y) => (y.chartData[value]-x.chartData[value])));
+    }
 
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
+    useEffect(() => {
+        if(typeof category !== 'undefined') {
+            let activityRef = db.collection('Activities').where("categories", "array-contains", category);
+            let result = [];
+            activityRef.get().then((querySnapshot => {
+                for (let i in querySnapshot.docs) {
+                    const doc = querySnapshot.docs[i]
+                    const tagObj = doc.get("tags");
+                    result.push( {
+                        name: doc.get("name"),
+                        img: doc.get("cardImg"),
+                        tags: Object.keys(doc.get("tags")).map(x => ({name: x})),
+                        chartData: doc.get("numerics"),
+                        key: doc.id
+                    });
+                }
+                result.sort((x,y) => (y.chartData[0]-x.chartData[0]))
+                setCards(result);
+                if(result.length==0) {
+                    setNoResults(true);
+                }
+            }));
+            return;
+        }
+        
+        if(typeof tags !== 'undefined') {
+        let activityRef = db.collection('Activities');
+        tags.forEach(tag => {
+            if (tag.isInclude) {
+                activityRef = activityRef.where(`tags.${tag.name}` , '==' , true);
+            }
+        });
 
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
+        const excludeNames = tags.filter(x => !x.isInclude).map(x => x.name);
+        let result = [];
+        activityRef.get().then((querySnapshot => {
+            docsfor: for (let i in querySnapshot.docs) {
+                const doc = querySnapshot.docs[i]
+                const tagObj = doc.get("tags");
+                for (let excludeName of excludeNames) {
+                    if(excludeName in tagObj) {
+                        continue docsfor;
+                    }
+                }
+                result.push( {
+                    name: doc.get("name"),
+                    img: doc.get("cardImg"),
+                    tags: Object.keys(doc.get("tags")).map(x => ({name: x})),
+                    chartData: doc.get("numerics"),
+                    key: doc.id
+                });
+            }
+            result.sort((x,y) => (y.chartData[0]-x.chartData[0]))
+            setCards(result);
+            if(result.length==0) {
+                setNoResults(true);
+            }
+            }));
+        }
+    
 
-    },
-    ]
+    if(typeof name !== 'undefined') {
+        let namearray=[];
+        let result = [];
+        let addcard;
+console.log(name);
+
+        for (let i=0; i<name.length; i++) namearray.push(name[i].value);
+
+        let snapshot = db.collection('Activities');
+
+        snapshot.get().then((querySnapshot => {
+            for (let i in querySnapshot.docs) {
+                const doc = querySnapshot.docs[i]
+        // snapshot.forEach(doc => {
+        if(namearray.indexOf(doc.data().name) != -1 ){
+            result.push({ name:doc.data().name, 
+                    tags : Object.keys(doc.get("tags")).map(x => ({name: x})),
+                    chartData: doc.data().numerics,
+                    img: doc.data().cardImg.src
+                    });
+        // }});
+            }
+        }
+        console.log(result);
+        result.sort((x,y) => (y.chartData[0]-x.chartData[0]))
+        setCards(result);
+        // console.log(result);
+        if(result.length==0) {
+            setNoResults(true);
+        }
+    }))
+}
+}, []);
+
     return (
         <div>
             <Sidemenu/>
-            <TopBar tags={[{name: "Hi", isInclude: true},{name: "Bye", isInclude: false}]} isSignedIn={false} name={"Changhae"}/>
-            <SearchOptions />
-            <CardContainer cards={cards}/>            
+            <TopBar tags={tags} category={category} isSignedIn={false} name={"Changhae"}/>
+            <SearchOptions onPriorityChange={onPriorityChange}/>
+            {!noResults 
+            ? <CardContainer cards={cards}/>
+            : <Title level={1}
+            style={{
+                textAlign: "center",
+                marginTop: 100,
+                color: "grey"
+                }}>No Results Found</Title>}            
         </div>
     )
 }
