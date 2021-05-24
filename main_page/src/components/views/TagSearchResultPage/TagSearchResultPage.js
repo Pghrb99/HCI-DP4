@@ -6,9 +6,11 @@ import Sidemenu from '../TagSearchPage/Sections/SideMenu/Sidemenu'
 import {Typography} from 'antd'
 import { useLocation } from 'react-router'
 import {db} from 'firebase.js'
+import { useAuth } from '../../../contexts/AuthContext'
 
 
 const TagSearchResultPage = () => {
+    const {currentUser} = useAuth();
     const {Title} = Typography;
     const location = useLocation();
     const tags = location.state.tags;
@@ -83,7 +85,7 @@ const TagSearchResultPage = () => {
     return (
         <div>
             <Sidemenu/>
-            <TopBar tags={tags} category={category} isSignedIn={false} name={"Changhae"}/>
+            <TopBar tags={tags} category={category} userName={currentUser && currentUser.email} isSignedIn={currentUser}/>
             <SearchOptions onPriorityChange={onPriorityChange}/>
             {!noResults ? <CardContainer cards={cards}/>: <Title level={1}
             style={{

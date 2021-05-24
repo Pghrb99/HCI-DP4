@@ -18,6 +18,8 @@ import HotActivityPage from './views/HotActivityPage/HotActivityPage'
 import NameSearchPage from './views/NameSearchPage/NameSearchPage'
 import { AuthProvider } from '../contexts/AuthContext'
 import PrivateRoute from "./PrivateRoute"
+import NonuserRoute from "./NonuserRoute"
+
 import './App.css';
 
 function App() {
@@ -137,8 +139,8 @@ function App() {
                         <Route exact path="/info" render={() => <ActivityInfoPage achievlist={achievlist} setAchievlist={setAchievlist} tags={tags} setTags={setTags} reviewlist={reviewlist} addReview={addReview} removeReview={removeReview} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing} complete={complete} setComplete={setComplete}/>}/>
                         
                         <Route exact path="/category" component={CategoryPage} />
-                        <Route exact path="/login" component={LoginPage} />
-                        <Route exact path="/register" component={RegisterPage} />
+                        <NonuserRoute exact path="/login" component={LoginPage} />
+                        <NonuserRoute exact path="/register" component={RegisterPage} />
                         <Route exact path="/hotactivity" component={HotActivityPage} />
                         <Route exact path="/namesearch" component={NameSearchPage} />
                     </Switch>
