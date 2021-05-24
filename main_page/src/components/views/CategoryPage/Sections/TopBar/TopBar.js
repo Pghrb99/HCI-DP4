@@ -12,7 +12,7 @@ const TopBar = ({isSignedIn, userName}) => {
         await logOut();
     }
     return (
-        <div id="nav-container">
+        <div id="CP-nav-container">
             <div className="align-self-end">
                 {isSignedIn ?
                 <Nav className="mt-3">
