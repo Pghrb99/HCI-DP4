@@ -1,10 +1,14 @@
+import { Link } from "react-router-dom";
 import React, { useState } from 'react';
+import { useAuth } from '../../../contexts/AuthContext'
+
+
 import './RegisterPage.scss';
-import TopBar from './Sections/TopBar/TopBar'
 import Sidemenu from '../../views/TagSearchPage/Sections/SideMenu/Sidemenu'
 import {  EyeInvisibleOutlined, EyeTwoTone, UserOutlined  } from '@ant-design/icons';
 
 import {   
+  Alert,
   Layout, 
   Space,
   Card, 
@@ -25,13 +29,13 @@ const { Option } = Select;
 const formItemLayout = {
   labelCol: {
     xs: { span: 24,
-          offset: 4, },
+          offset: 0, },
     sm: { span: 8,
           offset: 0, },
   },
   wrapperCol: {
     xs: { span: 24 ,
-          offset: 4, },
+          offset: 0, },
     sm: { span: 8,
           offset: 0,  },
   },
@@ -51,8 +55,23 @@ const tailFormItemLayout = {
 
 function RegisterPage(props) {
   const [form] = Form.useForm();
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const onFinish = (values) => {
+  const { signUp, currentUser } = useAuth()
+  const onClose = () => {
+      setError('')
+  }
+  const onFinish = async (values) => {
+    try {
+      setError('')
+      setLoading(true)
+      await signUp(values.email, values.password);
+      props.history.push("/login");
+    } catch {
+      setError('Failed to create an account')
+    }
+    setLoading(false)
     console.log('Received values of form: ', values);
   };
 
@@ -61,14 +80,13 @@ function RegisterPage(props) {
 
   return (
     <Layout style={{backgroundColor: "rgb(247, 247, 247)"}}>
-      <Header style={{backgroundColor: "rgb(247, 247, 247)"}}>
+      <Header style={{height: "80px", backgroundColor: "rgb(247, 247, 247)"}}>
         <Sidemenu />
-        <TopBar userName={"Changhae"} isSignedIn={false} />
+        
       </Header>
 
       <Content className="container">
-        
-
+      
           <Form
           {...formItemLayout}
           form={form}
@@ -98,10 +116,15 @@ function RegisterPage(props) {
           <Form.Item
             name="password"
             label="Password"
+            validateFirst="parallel"
             rules={[
               {
                 required: true,
                 message: 'Please input your password!',
+              },
+              {              
+                min: 6,
+                message: 'Use 6 characters or more for your password',
               },
             ]}
             hasFeedback
@@ -134,12 +157,19 @@ function RegisterPage(props) {
           </Form.Item>
 
           <Form.Item {...tailFormItemLayout}>
-            <Button type="primary" htmlType="submit">
-              Register
-            </Button>
+            <Space>
+              <Button disabled={loading} type="primary" htmlType="submit">
+                Register
+              </Button>
+              Or <Link to={"/login"}>log in now!</Link>
+            </Space>
+
           </Form.Item>
         </Form>
       </Content>
+      <Footer style={{height: "80px", backgroundColor: "rgb(247, 247, 247)"}}>
+        {error && <Alert message={error} showIcon type="error" closable onClose={onClose}/>}
+      </Footer>
     </Layout>
 
   );
