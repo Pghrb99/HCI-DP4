@@ -9,13 +9,12 @@ const TopBar = ({isSignedIn, userName}) => {
     const history = useHistory();
     async function handleLogout() {
         await logOut();
-        history.push('/login');
     }
     if (isSignedIn) {
         return (
             <div className="TopBar">
-                <span className="userName">{userName}</span>
-                <span className="menu" onClick={handleLogout}>Sign Out</span>
+                <Link to={"/mypage"} className="userName">{userName}</Link>
+                <Link to={"#/"} className="menu" onClick={handleLogout}>Sign Out</Link>
             </div>
         )
     }
