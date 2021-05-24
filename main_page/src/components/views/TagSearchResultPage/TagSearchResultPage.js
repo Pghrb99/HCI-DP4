@@ -95,10 +95,11 @@ const TagSearchResultPage = () => {
                     const doc = querySnapshot.docs[i];
                     if(namearray.indexOf(doc.data().name) != -1 ){
                         result.push({ 
-                            name:doc.data().name, 
+                            name:doc.get("name"),
                             tags : Object.keys(doc.get("tags")).map(x => ({name: x})),
-                            chartData: doc.data().numerics,
-                            img: doc.data().cardImg.src
+                            chartData: doc.get("numerics"),
+                            img: doc.get("cardImg"),
+                            key: doc.id
                         });
                     }
                 }
