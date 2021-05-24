@@ -14,7 +14,7 @@ const TopBar = ({isSignedIn, userName}) => {
         return (
             <div className="TopBar">
                 <Link to={"/mypage"} className="userName">{userName}</Link>
-                <Link to={"/login"} className="menu" onClick={handleLogout}>Sign Out</Link>
+                <Link to={"#/"} className="menu" onClick={handleLogout}>Sign Out</Link>
             </div>
         )
     }

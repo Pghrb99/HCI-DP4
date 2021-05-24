@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../../contexts/AuthContext'
 
 import './LoginPage.scss';
@@ -7,7 +7,7 @@ import Sidemenu from '../../views/TagSearchPage/Sections/SideMenu/Sidemenu'
 import {  Form, Input, Button, Checkbox, Space, Card, Layout, Alert, Row, Col  } from 'antd';
 import {  UserOutlined, LockOutlined  } from '@ant-design/icons';
 import logo from './Sections/imgs/logo.svg'
-
+import { useCookies } from 'react-cookie';
 
 const { Header, Footer, Sider, Content } = Layout;
 const formItemLayout = {
@@ -38,6 +38,9 @@ const tailFormItemLayout = {
 };
 
 function LoginPage(props) {
+  const [email, setEmail] = useState("");
+  const [cookies, setCookie, removeCookie] = useCookies(['rememberEmail']);
+
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -45,11 +48,23 @@ function LoginPage(props) {
   const onClose = () => {
       setError('')
   }
+
+  useEffect(() => {
+      if(cookies.rememberEmail !== undefined) {
+        setEmail(cookies.rememberEmail);
+      }
+  }, []);
+
   const onFinish = async (values) => {
     try {
       setError('')
       setLoading(true)
       await signIn(values.username, values.password);
+      if(values.remember){
+          setCookie('rememberEmail', values.username, {maxAge: 2000});
+      } else {
+        removeCookie('rememberEmail');
+      }
       props.history.push('/');
     } catch {
       setError('Failed to login')
@@ -74,7 +89,10 @@ function LoginPage(props) {
           {...formItemLayout}
           name="normal_login"
           className="login-form"
-          initialValues={{ remember: true }}
+          initialValues={{ 
+            remember: true,
+            username: cookies.rememberEmail,
+           }}
           onFinish={onFinish}
         >
           <Form.Item

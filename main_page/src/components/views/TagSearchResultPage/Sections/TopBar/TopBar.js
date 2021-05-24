@@ -5,12 +5,20 @@ import logo from '../imgs/logo.svg'
 import Tags from '../Tags/Tags'
 import './TopBar.scss'
 import { Link } from "react-router-dom";
+import { useHistory } from 'react-router';
 import { useAuth } from '../../../../../contexts/AuthContext'
 
 const TopBar = ({tags, category, isSignedIn, userName}) => {
     const { logOut } = useAuth();
+    const history = useHistory();
     async function handleLogout() {
         await logOut();
+        history.push({
+            pathname: '/result',
+            state: {
+                tags: tags
+            }
+        })
     }
     return (
         <div id="TSRP-nav-container">
@@ -18,16 +26,16 @@ const TopBar = ({tags, category, isSignedIn, userName}) => {
                 {isSignedIn ?
                 <Nav className="mt-3">
                     <Nav.Link  className="mr-4"><Link to={"/mypage"}><span className="nav-text" id="nav-userName">{userName}</span></Link></Nav.Link>
-                    <Nav.Link  className="mr-5" ><Link to={"/login"} onClick={handleLogout}><span className="nav-text" id="nav-signOut">Sign Out</span></Link></Nav.Link>
+                    <Nav.Link  className="mr-5" ><span className="nav-text" id="nav-signOut" onClick={handleLogout}>Sign Out</span></Nav.Link>
                 </Nav>
                 :
                 <Nav className="mt-3">
-                    <Nav.Link  className="mr-4"><span className="nav-text"id="nav-signIn" >Sign In</span></Nav.Link>
-                    <Button 
+                    <Nav.Link  className="mr-4"><Link to={"/login"}><span className="nav-text"id="nav-signIn" >Sign In</span></Link></Nav.Link>
+                    <Link to={"/register"}><Button 
                         variant="outline-dark"
                         className="mr-5"
                     > <span className="nav-text" id="nav-signUp">Sign Up</span>
-                    </Button>
+                    </Button></Link>
                 </Nav>
                 }
             </div>
