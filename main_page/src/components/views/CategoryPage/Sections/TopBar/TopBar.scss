@@ -1,9 +1,9 @@
-#nav-container {
+#CP-nav-container {
     display: flex;
     width: 100%;
     height: 190px;
     flex-direction: column;
-    background-color: rgb(135, 157, 185);
+    background-color: #313131;
     box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.10);
     padding: 0;
     .align-self-start {
@@ -16,8 +16,8 @@
         align-self: flex-end;
     }
     #search-result {
-        font-size: 40px;
-        font-weight: bold;
+        font-size: 50px;
+        // font-weight: bold;
         color: white;
     }
     #tags {
