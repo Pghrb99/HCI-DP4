@@ -80,9 +80,9 @@
     font-size: 20px;
 }
 
-#AIP-topbar-button {
+#AIP-topbar-start {
     float: right;
-    margin: 30px 50px 0 0;
+    margin: 38px 50px 0 0;
     border: none;
     cursor: pointer;
     padding: 0 20px 0 20px;
@@ -90,10 +90,28 @@
     font-weight: 600;
 }
 
-#AIP-modal-title {
-    font-weight: bold;
+#AIP-topbar-complete {
+    float: right;
+    margin: 38px 50px 0 0;
+    border: none;
+    cursor: pointer;
+    padding: 0 20px 0 20px;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+
+#AIP-topbar-ongoing {
+    float: right;
+    margin: 38px 30px 0 0;
+    border: none;
+    cursor: pointer;
+    padding: 0 20px 0 20px;
+    font-size: 24px;
+    font-weight: 600;
 }
 
 .modal-header {
     display: block;
+    
 }

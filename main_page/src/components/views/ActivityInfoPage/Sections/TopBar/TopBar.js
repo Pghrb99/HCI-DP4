@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { Nav, Modal, Button, Pagination } from 'react-bootstrap';
-import { Link } from "react-router-dom";
+import { Link, useLoca } from "react-router-dom";
 import Tags from '../../../TagSearchResultPage/Sections/Tags/Tags'
 import './TopBar.scss'
 import bg from '../imgs/hockey_world_1400.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 
-const TopBar = ({ tags, isSignedIn, name, removeReview, submit, setSubmit, ongoing, setOngoing }) => {
+const TopBar = ({ tags, setTags, isSignedIn, name, removeReview, submit, setSubmit, ongoing, setOngoing, complete, setComplete }) => {
     const [start, setStart] = useState(false);
     const [cancel, setCancel] = useState(false);
     
@@ -28,6 +28,8 @@ const TopBar = ({ tags, isSignedIn, name, removeReview, submit, setSubmit, ongoi
         setCancel(false);
     }
     const clickCNo = () => setCancel(false);
+
+    const clickComplete = () => setComplete(true);
 
     return (
         <div id="AIP-nav-container" style={{backgroundImage: `url(${bg})`}}>
@@ -57,15 +59,25 @@ const TopBar = ({ tags, isSignedIn, name, removeReview, submit, setSubmit, ongoi
                 Ice Hockey
             </div>
             <div className="align-self-start" id="AIP-tags">
-                <div id="AIP-reltags">
+                <div id="AIP-reltags" style={{width:'50%'}}>
                     <span >Related tags : </span>
-                    <Tags tags={tags} />
+                    {ongoing ?
+                        <Tags tags={tags} setTags={setTags} plusbutton={true}/>
+                        :
+                        <Tags tags={tags} setTags={setTags} plusbutton={false}/>
+                    }
                 </div>
-                { !ongoing && <Button id="AIP-topbar-button" onClick={clickStart}>Start!</Button> }
-                { ongoing && <Button variant='secondary' id='AIP-topbar-button' onClick={clickCancel}>Ongoing<FontAwesomeIcon icon={faTimes} style={{marginLeft:'10px'}}/></Button> }
+                { !ongoing && <Button id="AIP-topbar-start" onClick={clickStart}>Start!</Button> }
+                { ongoing && !complete && 
+                    <div>
+                        <Button variant='success' id='AIP-topbar-complete' onClick={clickComplete}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>
+                        <Button variant='secondary' id='AIP-topbar-ongoing' onClick={clickCancel}>Ongoing<FontAwesomeIcon icon={faTimes} style={{marginLeft:'10px'}}/></Button>
+                    </div>
+                }
+                { ongoing && complete && <Button variant='success' id='AIP-topbar-complete' disabled style={{cursor:'default'}}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>}
                 <Modal show={start} onHide={clickSNo}>
                     <Modal.Header closeButton>
-                        <Modal.Title id="AIP-modal-title">Start Activity</Modal.Title>
+                        <Modal.Title>Start Activity</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <p style={{fontFamily:'arial', color:'black', fontSize:'18px', marginLeft:"0"}}>Are you sure you want to start?</p>
