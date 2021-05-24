@@ -25,6 +25,26 @@
     font-size: 20px;
 }
 
+#MMP-achievements-modallist {
+    .list-group-item {
+        padding: 10px 0 10px 0;
+        border: none;
+        font-size: 18px;
+
+        .badge {
+            background-color: #8a88ac;
+            padding: 10px 10px 10px 10px;
+            margin-right: 5px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .MMP-success {
+            background-color: #1f2a9b;
+        }
+    }
+}
+
 #MMP-achievements-list {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr);
@@ -34,7 +54,7 @@
         font-size: 18px;
 
         .badge {
-            background-color: #535353;
+            background-color: #8a88ac;
             padding: 10px 10px 10px 10px;
             margin-right: 5px;
             font-size: 20px;
@@ -42,17 +62,16 @@
         }
 
         .MMP-success {
-            background-color: blue;
+            background-color: #1f2a9b;
         }
-
     }
-
 }
 
 #MPP-achievements-modify {
     width: 250px;
     padding-top: 3px;
     padding-bottom: 3px;
+    margin-top: 30px;
     float: right;
     background-color: #5C996B;
     border: none;

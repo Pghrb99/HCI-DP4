@@ -9,8 +9,8 @@ import Review from '../Review/Review'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronCircleDown, faChevronCircleUp, faPencilAlt } from "@fortawesome/free-solid-svg-icons"
 
-const InfoDocument = ({ data, reviewlist, addReview, removeReview, submit, setSubmit, ongoing, setOngoing }) => {
-    const attained=5;
+const InfoDocument = ({ achievlist, setAchievlist, data, reviewlist, addReview, removeReview, submit, setSubmit, ongoing, setOngoing }) => {
+    
     const [review, setReview] = useState(false);
     const [text, setText] = useState(submit ? reviewlist[0]['content'] : "");
     const [recommend, setRecommend] = useState(submit ? reviewlist[0]['isPositive'] : true);
@@ -18,20 +18,43 @@ const InfoDocument = ({ data, reviewlist, addReview, removeReview, submit, setSu
     const [remove, setRemove] = useState(false);
     const [more, setMore] = useState(false);
 
-    const changeReviewList = (achievdiff) => {
-        if (submit) {
-            removeReview();
-        }
-        addReview({
-            isPositive: recommend,
-            isMe: true,
-            name: "Changhae Lee",
-            years: 1,
-            achiev: attained+achievdiff,
-            content: text,
-            data: range,
-            like: 0
+    const calculateCompleted = () => {
+        var cnt = 0;
+        achievlist.forEach(achiev => {
+            if (achiev['isCompleted']) {
+                cnt++;
+            }
         });
+        return cnt;
+    }
+
+    const changeReviewList = () => {
+        if (submit) {
+            const ach = reviewlist[0]['achiev'];
+            removeReview();
+            addReview({
+                isPositive: recommend,
+                isMe: true,
+                name: "Changhae Lee",
+                years: 1,
+                achiev: ach,
+                content: text,
+                data: range,
+                like: 0
+            });
+        }
+        else {
+            addReview({
+                isPositive: recommend,
+                isMe: true,
+                name: "Changhae Lee",
+                years: 1,
+                achiev: calculateCompleted(),
+                content: text,
+                data: range,
+                like: 0
+            });
+        }
     }
 
     const clickReview = () => {
@@ -41,7 +64,7 @@ const InfoDocument = ({ data, reviewlist, addReview, removeReview, submit, setSu
     const clickRYes = () => {
         setSubmit(true);
         setReview(false);
-        changeReviewList(0);
+        changeReviewList();
     }
 
     const clickRNo = () =>{
@@ -101,7 +124,7 @@ const InfoDocument = ({ data, reviewlist, addReview, removeReview, submit, setSu
                     </ListGroup.Item>
                 </ListGroup>
             </div>
-            <div id="AIP-images">
+            <div id="AIP-images" style={{ marginTop: '30px' }}>
                 <h2>Images</h2>
                 <ListGroup id="AIP-images-list" horizontal>
                     <ListGroup.Item><img src={img1} class="AIP-images-img"></img></ListGroup.Item>
@@ -109,13 +132,13 @@ const InfoDocument = ({ data, reviewlist, addReview, removeReview, submit, setSu
                     <ListGroup.Item><img src={img3} class="AIP-images-img"></img></ListGroup.Item>
                 </ListGroup>
             </div>
-            <div id="AIP-videos">
+            <div id="AIP-videos" style={{ marginTop: '30px' }}>
                 <h2>Videos</h2>
                 <div id="AIP-videos-youtube">
                     <iframe width="560" height="315" src="https://www.youtube.com/embed/HSUdZ9sOQRU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
-            <div id="AIP-description">
+            <div id="AIP-description" style={{ marginTop: '30px' }}>
                 <h2>Description</h2>
                 <div class="AIP-article">
                     Ice hockey is a contact team sport played on ice, usually in an indoor or outdoor rink, in which two teams of skaters use their sticks to shoot a vulcanized rubber puck into their opponent's net to score goals. The sport is known to be fast-paced and physical, with teams usually fielding six players at a time: one goaltender to stop the puck from going into their own net, two defensemen, and three forwards who skate the span of the ice trying to control the puck and score goals against the opposing team.
@@ -123,12 +146,12 @@ const InfoDocument = ({ data, reviewlist, addReview, removeReview, submit, setSu
                 <a target="_blank" href="https://en.wikipedia.org/wiki/Ice_hockey" class="AIP-article">Wikipedia</a>
                 <a target="_blank" href="https://namu.wiki/w/%EC%95%84%EC%9D%B4%EC%8A%A4%ED%95%98%ED%82%A4" class="AIP-article">나무위키</a>
             </div>
-            <div id="AIP-requirments">
+            <div id="AIP-requirments" style={{ marginTop: '30px' }}>
                 <h2>Requirments</h2>
                 <div class="AIP-article">Supplies: Helmet, guards, skates, sticks, gloves</div>
                 <div class="AIP-article">Number of people: 12 (each team consists of 6 players)</div>
             </div>
-            <div id="AIP-achievements">
+            <div id="AIP-achievements" style={{ marginTop: '30px' }}>
                 <h2>Achievements</h2>
                 <ListGroup id="AIP-achievements-list">
                     <ListGroup.Item>
@@ -164,9 +187,10 @@ const InfoDocument = ({ data, reviewlist, addReview, removeReview, submit, setSu
                         <Button id="AIP-achievements-more" variant="secondary" onClick={clickMore}><FontAwesomeIcon icon={faChevronCircleUp}/></Button>
                         :
                         <Button id="AIP-achievements-more" variant="secondary" onClick={clickMore}><FontAwesomeIcon icon={faChevronCircleDown}/></Button>
-                    }                </div>
+                    }
+                </div>
             </div>
-            <div id="AIP-reviews">
+            <div id="AIP-reviews" style={{ marginTop: '30px' }}>
                 <div style={{width:'100%', display:'inline-block'}}>
                     <h2 style={{float:'left'}}>Reviews</h2>
                     {submit ?
@@ -271,7 +295,7 @@ const InfoDocument = ({ data, reviewlist, addReview, removeReview, submit, setSu
                     })}
                 </div>
             </div>
-            <div id="AIP-communities">
+            <div id="AIP-communities" style={{ marginTop: '30px' }}>
                 <h2>Communities</h2>
                 <a target="_blank" href="https://gall.dcinside.com/icehockey" class="AIP-article">dcinside.com</a>
                 <a target="_blank" href="https://about.hockeycommunity.com/en-CA/" class="AIP-article">Hockey Community</a>
