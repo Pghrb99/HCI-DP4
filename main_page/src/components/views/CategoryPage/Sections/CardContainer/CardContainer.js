@@ -3,7 +3,7 @@ import {Row, Col} from 'antd'
 import CategoryCard from '../CategoryCard/CategoryCard'
 import './CardContainer.scss'
 
-const CardContainer = ({cards}) => {
+const CardContainer = ({cards, onClick}) => {
     return (
         <div className="CP-CardContainer">
             <Row>
@@ -14,6 +14,7 @@ const CardContainer = ({cards}) => {
                             title={card.title} 
                             img={card.img}
                             key={index}
+                            onClick={onClick}
                             />
                              )
                     ))}
@@ -26,6 +27,7 @@ const CardContainer = ({cards}) => {
                             title={card.title} 
                             img={card.img}
                             key={index}
+                            onClick={onClick}
                             />
                              )
                     ))}
@@ -38,6 +40,7 @@ const CardContainer = ({cards}) => {
                             title={card.title} 
                             img={card.img}
                             key={index}
+                            onClick={onClick}
                             />
                              )
                     ))}
@@ -50,6 +53,7 @@ const CardContainer = ({cards}) => {
                             title={card.title} 
                             img={card.img}
                             key={index}
+                            onClick={onClick}
                             />
                              )
                     ))}

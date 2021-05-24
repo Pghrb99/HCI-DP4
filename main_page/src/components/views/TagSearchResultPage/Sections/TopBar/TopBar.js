@@ -5,7 +5,7 @@ import logo from '../imgs/logo.svg'
 import Tags from '../Tags/Tags'
 import './TopBar.scss'
 
-const TopBar = ({tags, isSignedIn, name}) => {
+const TopBar = ({tags, category, isSignedIn, name}) => {
     return (
         <div id="TSRP-nav-container">
             <div className="align-self-end">
@@ -26,11 +26,14 @@ const TopBar = ({tags, isSignedIn, name}) => {
                 }
             </div>
             <div className="align-self-center" id="search-result">
-                Search result
+                {typeof category == 'undefined' ? "Search result" : "Category: "+category}
             </div>
+            {
+                typeof tags != 'undefined' &&
             <div className="align-self-start" id="tags">   
                 <span>Tags applied :</span><Tags tags={tags}/>
             </div>
+            }
         </div>
     )
 }

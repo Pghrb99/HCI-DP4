@@ -12,6 +12,7 @@ const TagSearchResultPage = () => {
     const {Title} = Typography;
     const location = useLocation();
     const tags = location.state.tags;
+    const category = location.state.category;
     const [cards, setCards] = useState([]);
     const [noResults, setNoResults] = useState(false);
 
@@ -20,6 +21,30 @@ const TagSearchResultPage = () => {
     }
 
     useEffect(() => {
+        if(typeof category !== 'undefined') {
+            let activityRef = db.collection('Activities').where("categories", "array-contains", category);
+            let result = [];
+            activityRef.get().then((querySnapshot => {
+                for (let i in querySnapshot.docs) {
+                    const doc = querySnapshot.docs[i]
+                    const tagObj = doc.get("tags");
+                    result.push( {
+                        name: doc.get("name"),
+                        img: doc.get("cardImg"),
+                        tags: Object.keys(doc.get("tags")).map(x => ({name: x})),
+                        chartData: doc.get("numerics"),
+                        key: doc.id
+                    });
+                }
+                result.sort((x,y) => (y.chartData[0]-x.chartData[0]))
+                setCards(result);
+                if(result.length==0) {
+                    setNoResults(true);
+                }
+            }));
+            return;
+        }
+        if(typeof tags !== 'undefined') {
         let activityRef = db.collection('Activities');
         tags.forEach(tag => {
             if (tag.isInclude) {
@@ -51,13 +76,14 @@ const TagSearchResultPage = () => {
             if(result.length==0) {
                 setNoResults(true);
             }
-        }))
+            }));
+        }
     }, []);
 
     return (
         <div>
             <Sidemenu/>
-            <TopBar tags={tags} isSignedIn={false} name={"Changhae"}/>
+            <TopBar tags={tags} category={category} isSignedIn={false} name={"Changhae"}/>
             <SearchOptions onPriorityChange={onPriorityChange}/>
             {!noResults ? <CardContainer cards={cards}/>: <Title level={1}
             style={{
