@@ -7,6 +7,7 @@ const Tags = ({tags, onRemove}) => {
         <ul className='Tags'>
             {tags.map((tag) => (
                 <Tag 
+                    key={tag.name}
                     name={tag.name} 
                     isInclude={tag.isInclude}
                     onRemove={onRemove} 
