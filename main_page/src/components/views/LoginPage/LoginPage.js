@@ -50,7 +50,7 @@ function LoginPage(props) {
       setError('')
       setLoading(true)
       await signIn(values.username, values.password);
-      props.history.push("/");
+      props.history.goBack();
     } catch {
       setError('Failed to login')
     }
