@@ -1,7 +1,7 @@
 import './NameSearchPage.scss';
 import NameSearchBar from './Sections/NameSearchBar/NameSearchBar'
 import TopBar from './Sections/TopBar/TopBar'
-import Sidemenu from '../TagSearchPage/Sections/SideMenu/Sidemenu'
+import Sidemenu from '../SideMenu/Sidemenu'
 import logo from './Sections/imgs/logo.svg'
 import { useAuth } from '../../../contexts/AuthContext'
 

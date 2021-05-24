@@ -4,7 +4,7 @@ import { useAuth } from '../../../contexts/AuthContext'
 
 
 import './RegisterPage.scss';
-import Sidemenu from '../../views/TagSearchPage/Sections/SideMenu/Sidemenu'
+import Sidemenu from '../SideMenu/Sidemenu'
 import {  EyeInvisibleOutlined, EyeTwoTone, UserOutlined  } from '@ant-design/icons';
 import logo from './Sections/imgs/logo.svg'
 

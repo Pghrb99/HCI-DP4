@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import TopBar from './Sections/TopBar/TopBar'
 import CardContainer from './Sections/CardContainer/CardContainer'
-import Sidemenu from '../TagSearchPage/Sections/SideMenu/Sidemenu'
+import Sidemenu from '../SideMenu/Sidemenu'
 import img1 from './Sections/imgs/ice_hockey.jpg'
 import {db} from 'firebase.js'
 import { useHistory } from 'react-router'

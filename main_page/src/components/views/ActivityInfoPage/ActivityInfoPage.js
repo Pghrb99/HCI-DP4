@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import './ActivityInfoPage.scss'
-import Sidemenu from '../TagSearchPage/Sections/SideMenu/Sidemenu';
+import Sidemenu from '../SideMenu/Sidemenu';
 import TopBar from './Sections/TopBar/TopBar';
 import HorizontalBar from './Sections/HorizontalBar/HorizontalBar'
 import InfoDocument from './Sections/InfoDocument/InfoDocument';

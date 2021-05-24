@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../../contexts/AuthContext'
 
 import './LoginPage.scss';
-import Sidemenu from '../../views/TagSearchPage/Sections/SideMenu/Sidemenu'
+import Sidemenu from '../SideMenu/Sidemenu'
 import {  Form, Input, Button, Checkbox, Space, Card, Layout, Alert, Row, Col  } from 'antd';
 import {  UserOutlined, LockOutlined  } from '@ant-design/icons';
 import logo from './Sections/imgs/logo.svg'

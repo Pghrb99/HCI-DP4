@@ -1,7 +1,7 @@
 import React from 'react'
 import TopBar from './Sections/TopBar/TopBar'
 import SectionContainer from './Sections/SectionContainer/SectionContainer'
-import Sidemenu from '../TagSearchPage/Sections/SideMenu/Sidemenu'
+import Sidemenu from '../SideMenu/Sidemenu'
 import img1 from './Sections/imgs/ice_hockey.jpg'
 import { Divider } from 'antd'
 import { useAuth } from '../../../contexts/AuthContext'

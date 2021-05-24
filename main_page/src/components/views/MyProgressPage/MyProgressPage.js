@@ -1,6 +1,6 @@
 import React from 'react'
 import './MyProgressPage.scss'
-import Sidemenu from '../TagSearchPage/Sections/SideMenu/Sidemenu';
+import Sidemenu from '../SideMenu/Sidemenu';
 import TopBar from './Sections/TopBar/TopBar';
 import ProgressDocument from './Sections/ProgressDocument/ProgressDocument'
 import HorizontalBar from './Sections/HorizontalBar/HorizontalBar';

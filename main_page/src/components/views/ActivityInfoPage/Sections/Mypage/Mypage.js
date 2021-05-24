@@ -1,7 +1,7 @@
 import React from 'react'
 import './Mypage.scss'
 import hockey_world_1400 from '../imgs/hockey_world_1400.png'
-import Sidemenu from '../../../TagSearchPage/Sections/SideMenu/Sidemenu';
+import Sidemenu from '../../../SideMenu/Sidemenu';
 import Log_in_out from './Log_in_out/Log_in_out';
 import Cardbox from '../Mypage/Cardbox/Cardbox'
 import TopBar from './TopBar/TopBar'
