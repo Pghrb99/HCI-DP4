@@ -3,7 +3,7 @@ import './TagSearchPage.scss';
 import TagSearchBar from './Sections/TagSearchBar/TagSearchBar'
 import TopBar from './Sections/TopBar/TopBar'
 import Sidemenu from './Sections/SideMenu/Sidemenu'
-import logo from './Sections/imgs/logo.svg'
+import logo from './Sections/imgs/tagLogo.svg'
 import {useHistory } from 'react-router';
 
 function TagSearchPage(props) {

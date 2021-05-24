@@ -10,7 +10,6 @@ const CategoryCard = ({img, title}) => {
       <Card 
       className="CategoryCard"
       hoverable
-      style={{ width: 300 }}
       cover={<img alt={img.alt} src={img.src} />}
     >
       <Meta title={<Title level={4}>{title}</Title>} style={{textAlign: "center"}}/>
