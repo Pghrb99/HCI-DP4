@@ -4,9 +4,11 @@ import SectionContainer from './Sections/SectionContainer/SectionContainer'
 import Sidemenu from '../TagSearchPage/Sections/SideMenu/Sidemenu'
 import img1 from './Sections/imgs/ice_hockey.jpg'
 import { Divider } from 'antd'
+import { useAuth } from '../../../contexts/AuthContext'
 
 const HotActivityPage = () => {
     
+    const {currentUser} = useAuth();
     const cards = {
         topRated: [
         {
@@ -104,7 +106,7 @@ const HotActivityPage = () => {
     return (
         <div>
             <Sidemenu/>
-            <TopBar tags={[{name: "Hi", isInclude: true},{name: "Bye", isInclude: false}]} isSignedIn={false} name={"Changhae"}/>
+            <TopBar tags={[{name: "Hi", isInclude: true},{name: "Bye", isInclude: false}]} userName={currentUser && currentUser.email} isSignedIn={currentUser}/>
             <SectionContainer sectionName={"Top Rated"} cards={cards.topRated}/>
             <Divider />
             <SectionContainer sectionName={"Trending"} cards={cards.trending}/>

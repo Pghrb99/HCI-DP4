@@ -5,10 +5,12 @@ import Sidemenu from '../TagSearchPage/Sections/SideMenu/Sidemenu'
 import img1 from './Sections/imgs/ice_hockey.jpg'
 import {db} from 'firebase.js'
 import { useHistory } from 'react-router'
+import { useAuth } from '../../../contexts/AuthContext'
 
 
 const CategoryPage = () => {
     
+    const {currentUser} = useAuth();
     const [cards, setCards] = useState([]);
     const history = useHistory();
     const onClick = (category) => {
@@ -38,7 +40,7 @@ const CategoryPage = () => {
     return (
         <div>
             <Sidemenu/>
-            <TopBar tags={[{name: "Hi", isInclude: true},{name: "Bye", isInclude: false}]} isSignedIn={false} name={"Changhae"}/>
+            <TopBar tags={[{name: "Hi", isInclude: true},{name: "Bye", isInclude: false}]} userName={currentUser && currentUser.email} isSignedIn={currentUser}/>
             <CardContainer cards={cards} onClick={onClick}/>
         </div>
     )
