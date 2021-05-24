@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import React, { useState } from 'react';
 import { ProgressBar, ListGroup, Badge, Modal, Button, ButtonGroup, ToggleButton, Form} from 'react-bootstrap'
 import RangeSlider from 'react-bootstrap-range-slider';
 import './ProgressDocument.scss';
@@ -8,20 +8,34 @@ import Review from '../../../ActivityInfoPage/Sections/Review/Review';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusSquare, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 
-const ProgressDocument = ({ c, t }) => {
+const ProgressDocument = ({ c, t, reviewlist, addReview, removeReview, submit, setSubmit }) => {
     const [prove, setProve] = useState(false);
     const [cancel, setCancel] = useState(false);
     const [completed, setCompleted] = useState(c);
     const [file, setFile] = useState(null);
     const [review, setReview] = useState(false);
-    const [recommend, setRecommend] = useState(true);
-    const [range1, setRange1] = useState(5);
-    const [range2, setRange2] = useState(5);
-    const [range3, setRange3] = useState(5);
-    const [range4, setRange4] = useState(5);
-    const [range5, setRange5] = useState(5);
+    const [text, setText] = useState(submit ? reviewlist[0]['content'] : "");
+    const [recommend, setRecommend] = useState(submit ? reviewlist[0]['isPositive'] : true);
+    const [range, setRange] = useState(submit ? reviewlist[0]['data'] : [5, 5, 5, 5, 5]);
+    const [remove, setRemove] = useState(false);
     const total = t;
     const percent = (completed / total * 100).toFixed(2);
+
+    function changeReviewList(achievdiff) {
+        if (submit) {
+            removeReview();
+        }
+        addReview({
+            isPositive: recommend,
+            isMe: true,
+            name: "Changhae Lee",
+            years: 1,
+            achiev: completed+achievdiff,
+            content: text,
+            data: range,
+            like: 0
+        });
+    }
 
     function clickLabel(event) {
         event.currentTarget.className += " MMP-temp";
@@ -40,6 +54,7 @@ const ProgressDocument = ({ c, t }) => {
             $(".MMP-temp").attr('class', "badge badge-secondary MMP-success");
             setCompleted(completed + 1);
             setProve(false);
+            changeReviewList(1);
         }
         else {
             alert("No Photo!")
@@ -55,6 +70,7 @@ const ProgressDocument = ({ c, t }) => {
         $(".MMP-temp").attr('class', "badge badge-secondary");
         setCompleted(completed - 1);
         setCancel(false);
+        changeReviewList(-1);
     }
 
     function clickCNo() {
@@ -67,23 +83,30 @@ const ProgressDocument = ({ c, t }) => {
     }
 
     function clickRYes() {
+        setSubmit(true);
         setReview(false);
+        changeReviewList(0);
     }
 
     function clickRNo() {
         setReview(false);
     }
 
-    function clickRecommend() {
-        console.log($('#MMP-reviews-recommend').attr("class"));
-        $('#MMP-reviews-recommend').toggleClass("MMP-reviews-clicked");
-        $('#MMP-reviews-notrecommend').removeClass("MMP-reviews-clicked");
-        console.log($('#MMP-reviews-recommend').attr("class"));
+    function clickRemove() {
+        setRemove(true);
     }
 
-    function clickNotrecommend() {
-        $('#MMP-reviews-recommend').removeClass("MMP-reviews-clicked");
-        $('#MMP-reviews-notrecommend').toggleClass("MMP-reviews-clicked");
+    function clickXYes() {
+        setText("");
+        setRecommend(true);
+        setRange([5, 5, 5, 5, 5]);
+        setSubmit(false);
+        setRemove(false);
+        removeReview();
+    }
+
+    function clickXNo() {
+        setRemove(false);
     }
 
     return (
@@ -158,25 +181,35 @@ const ProgressDocument = ({ c, t }) => {
                     </Modal.Footer>
                 </Modal>
             </div>
-            <div id="MMP-reviews">
-                <h2>Reviews</h2>
-                <Button id="MMP-reviews-write" variant="success" onClick={clickReview}><FontAwesomeIcon icon={faPencilAlt} style={{marginRight: "10px"}}/>Write a Review</Button>
+            <div id="MMP-reviews" style={{marginTop:'30px'}}>
+                <div style={{width:'100%', display:'inline-block'}}>
+                <h2 style={{float:'left'}}>Reviews</h2>
+                {submit ?
+                    <div>
+                        <Button id="MMP-reviews-remove" variant="danger" onClick={clickRemove}><FontAwesomeIcon icon={faPencilAlt} style={{marginRight: "10px"}}/>Remove your Review</Button>
+                        <Button id="MMP-reviews-write" variant="success" onClick={clickReview}><FontAwesomeIcon icon={faPencilAlt} style={{marginRight: "10px"}}/>Modify your Review</Button>
+                    </div>
+                    :
+                    <Button id="MMP-reviews-write" variant="success" onClick={clickReview}><FontAwesomeIcon icon={faPencilAlt} style={{marginRight: "10px"}}/>Write a Review</Button>
+                }
+                </div>
                 <Modal show={review} onHide={clickRNo}>
                     <Modal.Header closeButton>
-                        <Modal.Title id="AIP-modal-title">Write a Review</Modal.Title>
+                        {submit ?
+                            <Modal.Title>Modify your Review</Modal.Title>
+                            :
+                            <Modal.Title>Write a Review</Modal.Title>
+                        }
                     </Modal.Header>
                     <Modal.Body>
+                        
                         <Form>
                             <Form.Group controlId="MMP-text">
                                 <Form.Label id="MMP-reviews-formlabel">Text</Form.Label>
-                                <Form.Control as="textarea" rows={3} />
+                                <Form.Control as="textarea" rows={3} value={text} onChange={e => {setText(e.target.value)}}/>
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label id="MMP-reviews-formlabel">Do you recommend this activity?</Form.Label>
-                                {/*<div className="mb-3">
-                                    <Form.Check inline label="Recommend" style={{fontSize:"20px"}}/>
-                                    <Form.Check inline label="Not Recommend"/>
-                                </div>*/}
                                 <ButtonGroup toggle>
                                     <ToggleButton id="MMP-reviews-recommend" type="radio" variant="success" checked={recommend} onChange={() => setRecommend(true)} style={recommend ? {backgroundColor:"rgb(77, 163, 77)", border:"none"} : {backgroundColor:"#BBBBBB", border:"none"}}>
                                         Recommend
@@ -188,27 +221,15 @@ const ProgressDocument = ({ c, t }) => {
                             </Form.Group>
                             <Form.Group controlId="MMP-range">
                                 <Form.Label id="MMP-reviews-formlabel">Easy to start</Form.Label>
-                                <RangeSlider value={range1} max={10} step={1} variant='success' onChange={e => setRange1(e.target.value)}/>
+                                <RangeSlider value={range[0]} max={10} step={1} variant='success' onChange={e => setRange([e.target.value, range[1], range[2], range[3], range[4]])}/>
                                 <Form.Label id="MMP-reviews-formlabel">Cost of equipment</Form.Label>
-                                <RangeSlider value={range2} max={10} step={1} variant='success' onChange={e => setRange2(e.target.value)}/>
+                                <RangeSlider value={range[1]} max={10} step={1} variant='success' onChange={e => setRange([range[0], e.target.value, range[2], range[3], range[4]])}/>
                                 <Form.Label id="MMP-reviews-formlabel">Schedule-flexible</Form.Label>
-                                <RangeSlider value={range3} max={10} step={1} variant='success' onChange={e => setRange3(e.target.value)}/>
+                                <RangeSlider value={range[2]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], e.target.value, range[3], range[4]])}/>
                                 <Form.Label id="MMP-reviews-formlabel">Safe</Form.Label>
-                                <RangeSlider value={range4} max={10} step={1} variant='success' onChange={e => setRange4(e.target.value)}/>
+                                <RangeSlider value={range[3]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], range[2], e.target.value, range[4]])}/>
                                 <Form.Label id="MMP-reviews-formlabel">Good for health</Form.Label>
-                                <RangeSlider value={range5} max={10} step={1} variant='success' onChange={e => setRange5(e.target.value)}/>
-                                {/*
-                                <Form.Label>Easy to start</Form.Label>
-                                <Form.Control type="range" variant="secondary" custom />
-                                <Form.Label>Cost of equipment</Form.Label>
-                                <Form.Control type="range" custom />
-                                <Form.Label>Schedule-flexible</Form.Label>
-                                <Form.Control type="range" custom />
-                                <Form.Label>Safe</Form.Label>
-                                <Form.Control type="range" custom />
-                                <Form.Label>Good for health</Form.Label>
-                                <Form.Control type="range" custom />
-                                */}
+                                <RangeSlider value={range[4]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], range[2], range[3], e.target.value])}/>
                             </Form.Group>
                         </Form>
                     </Modal.Body>
@@ -221,14 +242,47 @@ const ProgressDocument = ({ c, t }) => {
                         </Button>
                     </Modal.Footer>
                 </Modal>
+                <Modal show={remove} onHide={clickXNo}>
+                    <Modal.Header closeButton>
+                        <Modal.Title id="AIP-modal-title">Remove your Review</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body style={{ fontSize: "18px" }}>
+                        <p style={{fontFamily:'arial', color:'black', fontSize:'18px', marginLeft:"0"}}>Are you sure you remove your review?</p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="danger" onClick={clickXYes}>
+                            Remove
+                        </Button>
+                        <Button variant="secondary" onClick={clickXNo}>
+                            Cancel
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
                 <h3>Positive Opinions</h3>
-                <div class="AIP-reviews-positive">
-                    <Review isPositive={true} name={"Harry Potter"} years={5} achiev={20} content="You'll find it super fun. I promise." data={[1, 2, 3, 4, 5]} like={31} />
-                    <Review isPositive={true} name={"Harry Potter"} years={5} achiev={20} content="You'll find it super fun. I promise." data={[1, 2, 3, 4, 5]} like={31} />
+                <div id="MMP-reviews-positive">
+                    {reviewlist.map(review => {
+                        if (review['isPositive']) {
+                            if (review['isMe']){
+                                return <Review isPositive={true} isMe={true} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']} clickReview={clickReview} clickRemove={clickRemove}/>
+                            }
+                            else {
+                                return <Review isPositive={true} isMe={false} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']}/>
+                            }
+                        }  
+                    })}
                 </div>
                 <h3>Negative Opinions</h3>
-                <div class="AIP-reviews-negative">
-                    <Review isPositive={false} name={"Steven Yeun"} years={1} achiev={6} content="It's soooo dangerous. I've broken my leg :(" data={[5, 4, 3, 2, 1]} like={17} />
+                <div id="MMP-reviews-negative">
+                    {reviewlist.map(review => {
+                        if (!review['isPositive']) {
+                            if (review['isMe']){
+                                return <Review isPositive={false} isMe={true} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']} clickReview={clickReview} clickRemove={clickRemove}/>
+                            }
+                            else {
+                                return <Review isPositive={false} isMe={false} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']}/>
+                            }
+                        }
+                    })}
                 </div>
             </div>
         </div>

@@ -64,9 +64,10 @@
 }
 
 #MMP-reviews-write {
-    width: 200px;
+    width: 250px;
     padding-top: 3px;
     padding-bottom: 3px;
+    margin-top: 30px;
     float: right;
     background-color: #5C996B;
     border: none;
@@ -75,6 +76,22 @@
 
 #MMP-reviews-write:hover {
     background-color: #4c8059;
+}
+
+#MMP-reviews-remove {
+    width: 250px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin-top: 30px;
+    margin-left: 20px;
+    float: right;
+    background-color: rgb(218, 54, 54);
+    border: none;
+    font-size: 20px;
+}
+
+#MMP-reviews-remove:hover {
+    background-color: rgb(177, 30, 30);
 }
 
 #MMP-reviews-formlabel {
