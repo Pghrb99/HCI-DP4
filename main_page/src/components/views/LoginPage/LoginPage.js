@@ -4,8 +4,9 @@ import { useAuth } from '../../../contexts/AuthContext'
 
 import './LoginPage.scss';
 import Sidemenu from '../../views/TagSearchPage/Sections/SideMenu/Sidemenu'
-import {  Form, Input, Button, Checkbox, Space, Card, Layout, Alert  } from 'antd';
+import {  Form, Input, Button, Checkbox, Space, Card, Layout, Alert, Row, Col  } from 'antd';
 import {  UserOutlined, LockOutlined  } from '@ant-design/icons';
+import logo from './Sections/imgs/logo.svg'
 
 
 const { Header, Footer, Sider, Content } = Layout;
@@ -64,7 +65,11 @@ function LoginPage(props) {
       </Header>
       
       <Content className="container">
-
+        <Row>
+          <Col xs={{span: 16, offset: 4}}  sm={{span: 8, offset: 8}}>
+            <Link to={"/"} className="logo"> <img src={logo}/> </Link>
+          </Col>
+        </Row>
         <Form
           {...formItemLayout}
           name="normal_login"

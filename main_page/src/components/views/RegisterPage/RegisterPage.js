@@ -6,6 +6,7 @@ import { useAuth } from '../../../contexts/AuthContext'
 import './RegisterPage.scss';
 import Sidemenu from '../../views/TagSearchPage/Sections/SideMenu/Sidemenu'
 import {  EyeInvisibleOutlined, EyeTwoTone, UserOutlined  } from '@ant-design/icons';
+import logo from './Sections/imgs/logo.svg'
 
 import {   
   Alert,
@@ -86,7 +87,12 @@ function RegisterPage(props) {
       </Header>
 
       <Content className="container">
-      
+          <Row>
+            <Col xs={{span: 16, offset: 4}}  sm={{span: 8, offset: 8}}>
+              <Link to={"/"} className="logo"> <img src={logo}/> </Link>
+            </Col>
+          </Row>
+          
           <Form
           {...formItemLayout}
           form={form}

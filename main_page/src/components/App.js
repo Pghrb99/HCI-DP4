@@ -17,6 +17,7 @@ import CategoryPage from './views/CategoryPage/CategoryPage';
 import HotActivityPage from './views/HotActivityPage/HotActivityPage'
 import NameSearchPage from './views/NameSearchPage/NameSearchPage'
 import { AuthProvider } from '../contexts/AuthContext'
+import PrivateRoute from "./PrivateRoute"
 import './App.css';
 
 function App() {
@@ -127,14 +128,17 @@ function App() {
             of them to render at a time
           */}
                     <Switch>
+                    
+                        <PrivateRoute exact path="/mypage" component={Mypage} />
+                        <PrivateRoute exact path="/myprogress" render={() => <MyProgressPage achievlist={achievlist} setAchievlist={setAchievlist} tags={tags} setTags={setTags} reviewlist={reviewlist} addReview={addReview} removeReview={removeReview} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing} complete={complete} setComplete={setComplete}/>} />
+                        
                         <Route exact path="/" component={TagSearchPage} />
                         <Route exact path="/result" component={TagSearchResultPage} />
                         <Route exact path="/info" render={() => <ActivityInfoPage achievlist={achievlist} setAchievlist={setAchievlist} tags={tags} setTags={setTags} reviewlist={reviewlist} addReview={addReview} removeReview={removeReview} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing} complete={complete} setComplete={setComplete}/>}/>
-                        <Route exact path="/myprogress" render={() => <MyProgressPage achievlist={achievlist} setAchievlist={setAchievlist} tags={tags} setTags={setTags} reviewlist={reviewlist} addReview={addReview} removeReview={removeReview} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing} complete={complete} setComplete={setComplete}/>} />
+                        
                         <Route exact path="/category" component={CategoryPage} />
                         <Route exact path="/login" component={LoginPage} />
                         <Route exact path="/register" component={RegisterPage} />
-                        <Route exact path="/mypage" component={Mypage} />
                         <Route exact path="/hotactivity" component={HotActivityPage} />
                         <Route exact path="/namesearch" component={NameSearchPage} />
                     </Switch>
