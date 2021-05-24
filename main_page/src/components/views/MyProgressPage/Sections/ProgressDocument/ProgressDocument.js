@@ -21,7 +21,7 @@ const ProgressDocument = ({ c, t, reviewlist, addReview, removeReview, submit, s
     const total = t;
     const percent = (attained / total * 100).toFixed(2);
 
-    function changeReviewList(achievdiff) {
+    const changeReviewList = (achievdiff) => {
         if (submit) {
             removeReview();
         }
@@ -37,7 +37,7 @@ const ProgressDocument = ({ c, t, reviewlist, addReview, removeReview, submit, s
         });
     }
 
-    function clickLabel(event) {
+    const clickLabel = (event) => {
         event.currentTarget.className += " MMP-temp";
         if (!event.currentTarget.className.includes("MMP-success")) {
             setProve(true);
@@ -48,7 +48,7 @@ const ProgressDocument = ({ c, t, reviewlist, addReview, removeReview, submit, s
         }
     }
 
-    function clickPYes() {
+    const clickPYes = () => {
         console.log(typeof(file.files[0]))
         if (!(typeof(file.files[0]) == 'undefined')) {
             $(".MMP-temp").attr('class', "badge badge-secondary MMP-success");
@@ -61,42 +61,42 @@ const ProgressDocument = ({ c, t, reviewlist, addReview, removeReview, submit, s
         }
     }
 
-    function clickPNo() {
+    const clickPNo = () => {
         $(".MMP-temp").attr('class', "badge badge-secondary");
         setProve(false);
     }
 
-    function clickCYes() {
+    const clickCYes = () => {
         $(".MMP-temp").attr('class', "badge badge-secondary");
         setAttained(attained - 1);
         setCancel(false);
         changeReviewList(-1);
     }
 
-    function clickCNo() {
+    const clickCNo = () => {
         $(".MMP-temp").attr('class', "badge badge-secondary MMP-success");
         setCancel(false);
     }
 
-    function clickReview() {
+    const clickReview = () => {
         setReview(true);
     }
 
-    function clickRYes() {
+    const clickRYes = () => {
         setSubmit(true);
         setReview(false);
         changeReviewList(0);
     }
 
-    function clickRNo() {
+    const clickRNo = () => {
         setReview(false);
     }
 
-    function clickRemove() {
+    const clickRemove = () => {
         setRemove(true);
     }
 
-    function clickXYes() {
+    const clickXYes = () => {
         setText("");
         setRecommend(true);
         setRange([5, 5, 5, 5, 5]);
@@ -105,7 +105,7 @@ const ProgressDocument = ({ c, t, reviewlist, addReview, removeReview, submit, s
         removeReview();
     }
 
-    function clickXNo() {
+    const clickXNo = () => {
         setRemove(false);
     }
 

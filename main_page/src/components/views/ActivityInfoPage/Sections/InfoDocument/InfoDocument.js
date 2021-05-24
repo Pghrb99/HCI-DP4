@@ -18,7 +18,7 @@ const InfoDocument = ({ data, reviewlist, addReview, removeReview, submit, setSu
     const [remove, setRemove] = useState(false);
     const [more, setMore] = useState(false);
 
-    function changeReviewList(achievdiff) {
+    const changeReviewList = (achievdiff) => {
         if (submit) {
             removeReview();
         }
@@ -34,25 +34,25 @@ const InfoDocument = ({ data, reviewlist, addReview, removeReview, submit, setSu
         });
     }
 
-    function clickReview() {
+    const clickReview = () => {
         setReview(true);
     }
 
-    function clickRYes() {
+    const clickRYes = () => {
         setSubmit(true);
         setReview(false);
         changeReviewList(0);
     }
 
-    function clickRNo() {
+    const clickRNo = () =>{
         setReview(false);
     }
 
-    function clickRemove() {
+    const clickRemove = () => {
         setRemove(true);
     }
 
-    function clickXYes() {
+    const clickXYes = () => {
         setText("");
         setRecommend(true);
         setRange([5, 5, 5, 5, 5]);
@@ -61,7 +61,7 @@ const InfoDocument = ({ data, reviewlist, addReview, removeReview, submit, setSu
         removeReview();
     }
 
-    function clickXNo() {
+    const clickXNo = () => {
         setRemove(false);
     }
 

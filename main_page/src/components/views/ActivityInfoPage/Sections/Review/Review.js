@@ -11,7 +11,7 @@ const Review = ({isPositive, isMe, name, years, achiev, content, data, like, cli
     const [ilikeit, setIlikeit] = useState(like);
     const [thumbsup, setThumbsup] = useState(regularthumbsup);
     // 나중에는 like 상속받아야 함
-    function clickLike(event) {
+    const clickLike = (event) => {
         if (!event.currentTarget.className.includes("MMP-ilikeit")) {
             // Modal
             event.currentTarget.className += " MMP-ilikeit";

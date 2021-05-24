@@ -5,35 +5,35 @@ import './HorizontalBar.scss'
 
 const HorizontalBar = () => {
 
-    function clickI1() {
+    const clickI1 = () => {
         document.getElementById('AIP-numerics').scrollIntoView({behavior: "smooth"});
     }
 
-    function clickI2() {
+    const clickI2 = () => {
         document.getElementById('AIP-images').scrollIntoView({behavior: "smooth"});
     }
 
-    function clickI3() {
+    const clickI3 = () => {
         document.getElementById('AIP-videos').scrollIntoView({behavior: "smooth"});
     }
 
-    function clickI4() {
+    const clickI4 = () => {
         document.getElementById('AIP-description').scrollIntoView({behavior: "smooth"});
     }
 
-    function clickI5() {
+    const clickI5 = () => {
         document.getElementById('AIP-requirments').scrollIntoView({behavior: "smooth"});
     }
 
-    function clickI6() {
+    const clickI6 = () => {
         document.getElementById('AIP-achievements').scrollIntoView({behavior: "smooth"});
     }
 
-    function clickI7() {
+    const clickI7 = () => {
         document.getElementById('AIP-reviews').scrollIntoView({behavior: "smooth"});
     }
 
-    function clickI8() {
+    const clickI8 = () => {
         document.getElementById('AIP-communities').scrollIntoView({behavior: "smooth"});
     }
 
