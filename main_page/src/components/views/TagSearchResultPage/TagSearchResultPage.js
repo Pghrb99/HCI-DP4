@@ -40,7 +40,7 @@ const TagSearchResultPage = () => {
                 }
                 result.push( {
                     name: doc.get("name"),
-                    img: doc.get("coverImg"),
+                    img: doc.get("cardImg"),
                     tags: Object.keys(doc.get("tags")).map(x => ({name: x})),
                     chartData: doc.get("numerics"),
                     key: doc.id

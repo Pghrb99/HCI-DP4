@@ -25,7 +25,6 @@ const ActivityCard = ({img, title, tags, chartData}) => {
         <Card
         className="Card"
         hoverable
-        style={{ maxWidth: 270 }}
         cover={<img alt={img.alt} src={img.src} />}
         >
           <Meta title={<Title level={4}>{title}</Title>}/>
