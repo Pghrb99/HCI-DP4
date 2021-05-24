@@ -9,10 +9,11 @@ import {db} from 'firebase.js'
 
 
 const TagSearchResultPage = () => {
-    const {Title} = Typography;
     const location = useLocation();
+    const {Title} = Typography;
     const tags = location.state.tags;
     const category = location.state.category;
+    const name = location.state.option;
     const [cards, setCards] = useState([]);
     const [noResults, setNoResults] = useState(false);
 
@@ -44,39 +45,71 @@ const TagSearchResultPage = () => {
             }));
             return;
         }
-        if(typeof tags !== 'undefined') {
-        let activityRef = db.collection('Activities');
-        tags.forEach(tag => {
-            if (tag.isInclude) {
-                activityRef = activityRef.where(`tags.${tag.name}` , '==' , true);
-            }
-        });
 
-        const excludeNames = tags.filter(x => !x.isInclude).map(x => x.name);
-        let result = [];
-        activityRef.get().then((querySnapshot => {
-            docsfor: for (let i in querySnapshot.docs) {
-                const doc = querySnapshot.docs[i]
-                const tagObj = doc.get("tags");
-                for (let excludeName of excludeNames) {
-                    if(excludeName in tagObj) {
-                        continue docsfor;
+        if(typeof tags !== 'undefined') {
+            let activityRef = db.collection('Activities');
+            tags.forEach(tag => {
+                if (tag.isInclude) {
+                    activityRef = activityRef.where(`tags.${tag.name}` , '==' , true);
+                }
+            });
+            const excludeNames = tags.filter(x => !x.isInclude).map(x => x.name);
+            let result = [];
+            activityRef.get().then((querySnapshot => {
+                docsfor: for (let i in querySnapshot.docs) {
+                    const doc = querySnapshot.docs[i]
+                    const tagObj = doc.get("tags");
+                    for (let excludeName of excludeNames) {
+                        if(excludeName in tagObj) {
+                            continue docsfor;
+                        }
+                    }
+                    result.push( {
+                        name: doc.get("name"),
+                        img: doc.get("cardImg"),
+                        tags: Object.keys(doc.get("tags")).map(x => ({name: x})),
+                        chartData: doc.get("numerics"),
+                        key: doc.id
+                    });
+                }
+                result.sort((x,y) => (y.chartData[0]-x.chartData[0]))
+                setCards(result);
+                if(result.length==0) {
+                    setNoResults(true);
+                }
+            }));
+        }
+
+        if(typeof name !== 'undefined') {
+            let namearray=[];
+            let result = [];
+            let addcard;
+            console.log(name);
+
+            for (let i=0; i<name.length; i++) namearray.push(name[i].value);
+
+            let snapshot = db.collection('Activities');
+
+            snapshot.get().then((querySnapshot => {
+                for (let i in querySnapshot.docs) {
+                    const doc = querySnapshot.docs[i];
+                    if(namearray.indexOf(doc.data().name) != -1 ){
+                        result.push({ 
+                            name:doc.data().name, 
+                            tags : Object.keys(doc.get("tags")).map(x => ({name: x})),
+                            chartData: doc.data().numerics,
+                            img: doc.data().cardImg.src
+                        });
                     }
                 }
-                result.push( {
-                    name: doc.get("name"),
-                    img: doc.get("cardImg"),
-                    tags: Object.keys(doc.get("tags")).map(x => ({name: x})),
-                    chartData: doc.get("numerics"),
-                    key: doc.id
-                });
-            }
-            result.sort((x,y) => (y.chartData[0]-x.chartData[0]))
-            setCards(result);
-            if(result.length==0) {
-                setNoResults(true);
-            }
-            }));
+                console.log(result);
+                result.sort((x,y) => (y.chartData[0]-x.chartData[0]))
+                setCards(result);
+                // console.log(result);
+                if(result.length==0) {
+                    setNoResults(true);
+                }
+            }))
         }
     }, []);
 
@@ -85,7 +118,9 @@ const TagSearchResultPage = () => {
             <Sidemenu/>
             <TopBar tags={tags} category={category} isSignedIn={false} name={"Changhae"}/>
             <SearchOptions onPriorityChange={onPriorityChange}/>
-            {!noResults ? <CardContainer cards={cards}/>: <Title level={1}
+            {!noResults 
+            ? <CardContainer cards={cards}/>
+            : <Title level={1}
             style={{
                 textAlign: "center",
                 marginTop: 100,
