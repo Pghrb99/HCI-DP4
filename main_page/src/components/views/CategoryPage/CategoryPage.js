@@ -4,10 +4,21 @@ import CardContainer from './Sections/CardContainer/CardContainer'
 import Sidemenu from '../TagSearchPage/Sections/SideMenu/Sidemenu'
 import img1 from './Sections/imgs/ice_hockey.jpg'
 import {db} from 'firebase.js'
+import { useHistory } from 'react-router'
+
 
 const CategoryPage = () => {
     
     const [cards, setCards] = useState([]);
+    const history = useHistory();
+    const onClick = (category) => {
+      history.push({
+        pathname: '/result',
+        state: {
+          category: category
+        }
+      })
+    }
 
     useEffect(() => {
         db.collection("Categories").orderBy("name").get().then(querySnapshot => {
@@ -28,7 +39,7 @@ const CategoryPage = () => {
         <div>
             <Sidemenu/>
             <TopBar tags={[{name: "Hi", isInclude: true},{name: "Bye", isInclude: false}]} isSignedIn={false} name={"Changhae"}/>
-            <CardContainer cards={cards}/>
+            <CardContainer cards={cards} onClick={onClick}/>
         </div>
     )
 }

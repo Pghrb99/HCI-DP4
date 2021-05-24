@@ -1,6 +1,7 @@
 #TSRP-nav-container {
     display: flex;
     width: 100%;
+    min-height: 190px;
     flex-direction: column;
     background-color: rgb(135, 157, 185);
     box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.10);
