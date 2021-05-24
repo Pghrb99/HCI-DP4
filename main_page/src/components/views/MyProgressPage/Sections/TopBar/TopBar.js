@@ -7,9 +7,8 @@ import bg from '../imgs/hockey_world_1400.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 
-const TopBar = ({ tags, isSignedIn, name, removeReview, submit, setSubmit, ongoing, setOngoing }) => {
+const TopBar = ({ tags, setTags, isSignedIn, name, removeReview, submit, setSubmit, ongoing, setOngoing, complete, setComplete }) => {
     const [cancel, setCancel] = useState(false);
-    const [finish, setFinish] = useState(false);
 
     const clickCancel = () => setCancel(true);
     const clickCYes = () => {
@@ -22,7 +21,7 @@ const TopBar = ({ tags, isSignedIn, name, removeReview, submit, setSubmit, ongoi
     }
     const clickCNo = () => setCancel(false);
 
-    const clickFinish = () => setFinish(true);
+    const clickComplete = () => setComplete(true);
 
     return (
         <div id="MPP-nav-container" style={{ backgroundImage: `url(${bg})` }}>
@@ -53,13 +52,17 @@ const TopBar = ({ tags, isSignedIn, name, removeReview, submit, setSubmit, ongoi
             <div className="align-self-start" id="MPP-tags">
                 <div id="MPP-reltags">
                     <span >Related tags : </span>
-                    <Tags tags={tags} />
+                    {ongoing ?
+                        <Tags tags={tags} setTags={setTags} plusbutton={true}/>
+                        :
+                        <Tags tags={tags} setTags={setTags} plusbutton={false}/>
+                    }
                 </div>
-                {finish ?
+                {complete ?
                     <Button variant='success' id='MPP-topbar-complete' disabled style={{cursor:'default'}}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>
                     :
                     <div>
-                        <Button variant='success' id='MPP-topbar-complete' onClick={clickFinish}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>
+                        <Button variant='success' id='MPP-topbar-complete' onClick={clickComplete}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>
                         <Button variant='secondary' id='MPP-topbar-ongoing' onClick={clickCancel}>Ongoing<FontAwesomeIcon icon={faTimes} style={{marginLeft:'10px'}}/></Button>
                     </div>
                 }

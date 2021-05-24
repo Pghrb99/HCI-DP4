@@ -100,18 +100,13 @@
 }
 
 #AIP-achievements-more {
-    margin-top: 10px;
-    width: 250px;
+    margin: 10px auto 0 auto;
     padding-top: 3px;
     padding-bottom: 3px;
-    float: right;
-    background-color: #5C996B;  
+    background-color: transparent;  
+    color: black;
     border: none;
     font-size: 20px;
-}
-
-#AIP-achievements-more:hover {
-    background-color: #4c8059;
 }
 
 #AIP-achievements {

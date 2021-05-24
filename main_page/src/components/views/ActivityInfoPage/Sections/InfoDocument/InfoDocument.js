@@ -7,17 +7,18 @@ import img2 from '../imgs/ice_hockey2.png'
 import img3 from '../imgs/ice_hockey3.png'
 import Review from '../Review/Review'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisH, faPencilAlt } from "@fortawesome/free-solid-svg-icons"
+import { faChevronCircleDown, faChevronCircleUp, faPencilAlt } from "@fortawesome/free-solid-svg-icons"
 
 const InfoDocument = ({ data, reviewlist, addReview, removeReview, submit, setSubmit, ongoing, setOngoing }) => {
-    const completed=5;
+    const attained=5;
     const [review, setReview] = useState(false);
     const [text, setText] = useState(submit ? reviewlist[0]['content'] : "");
     const [recommend, setRecommend] = useState(submit ? reviewlist[0]['isPositive'] : true);
     const [range, setRange] = useState(submit ? reviewlist[0]['data'] : [5, 5, 5, 5, 5]);
     const [remove, setRemove] = useState(false);
+    const [more, setMore] = useState(false);
 
-    function changeReviewList(achievdiff) {
+    const changeReviewList = (achievdiff) => {
         if (submit) {
             removeReview();
         }
@@ -26,32 +27,32 @@ const InfoDocument = ({ data, reviewlist, addReview, removeReview, submit, setSu
             isMe: true,
             name: "Changhae Lee",
             years: 1,
-            achiev: completed+achievdiff,
+            achiev: attained+achievdiff,
             content: text,
             data: range,
             like: 0
         });
     }
 
-    function clickReview() {
+    const clickReview = () => {
         setReview(true);
     }
 
-    function clickRYes() {
+    const clickRYes = () => {
         setSubmit(true);
         setReview(false);
         changeReviewList(0);
     }
 
-    function clickRNo() {
+    const clickRNo = () =>{
         setReview(false);
     }
 
-    function clickRemove() {
+    const clickRemove = () => {
         setRemove(true);
     }
 
-    function clickXYes() {
+    const clickXYes = () => {
         setText("");
         setRecommend(true);
         setRange([5, 5, 5, 5, 5]);
@@ -60,8 +61,12 @@ const InfoDocument = ({ data, reviewlist, addReview, removeReview, submit, setSu
         removeReview();
     }
 
-    function clickXNo() {
+    const clickXNo = () => {
         setRemove(false);
+    }
+
+    const clickMore = () => {
+        setMore(!more);
     }
 
     return (
@@ -75,7 +80,7 @@ const InfoDocument = ({ data, reviewlist, addReview, removeReview, submit, setSu
                         <div class="AIP-numerics-radius"></div>
                     </ListGroup.Item>
                     <ListGroup.Item>
-                        <div class="AIP-numerics-subtitle">Cost of equipment</div>
+                        <div class="AIP-numerics-subtitle">Cost-effective</div>
                         <div class="AIP-numerics-numbers">{data[1]} / 10</div>
                         <div class="AIP-numerics-radius"></div>
                     </ListGroup.Item>
@@ -138,8 +143,28 @@ const InfoDocument = ({ data, reviewlist, addReview, removeReview, submit, setSu
                     <ListGroup.Item>
                         <Badge variant="secondary">Shooting accurately</Badge> Score a goal from one goal to the other.
                     </ListGroup.Item>
+                    {more &&
+                        <ListGroup.Item>
+                            <Badge variant="secondary">Skating for a long time</Badge> Skate more than 10 minutes.
+                        </ListGroup.Item>
+                    }
+                    {more &&
+                        <ListGroup.Item>
+                            <Badge variant="secondary">Wall-passing</Badge> Wall-pass 5 times from each side of the enemy.
+                        </ListGroup.Item>
+                    }
+                    {more &&
+                        <ListGroup.Item>
+                            <Badge variant="secondary">Dribbling calmly</Badge> Circle the link with the puck.
+                        </ListGroup.Item>
+                    }
                 </ListGroup>
-                <Button id="AIP-achievements-more" variant="success"><FontAwesomeIcon icon={faEllipsisH} style={{marginRight: "10px"}}/>See more</Button>
+                <div style={{textAlign:'center'}}>
+                    {more ?
+                        <Button id="AIP-achievements-more" variant="secondary" onClick={clickMore}><FontAwesomeIcon icon={faChevronCircleUp}/></Button>
+                        :
+                        <Button id="AIP-achievements-more" variant="secondary" onClick={clickMore}><FontAwesomeIcon icon={faChevronCircleDown}/></Button>
+                    }                </div>
             </div>
             <div id="AIP-reviews">
                 <div style={{width:'100%', display:'inline-block'}}>
@@ -182,7 +207,7 @@ const InfoDocument = ({ data, reviewlist, addReview, removeReview, submit, setSu
                             <Form.Group controlId="MMP-range">
                                 <Form.Label id="MMP-reviews-formlabel">Easy to start</Form.Label>
                                 <RangeSlider value={range[0]} max={10} step={1} variant='success' onChange={e => setRange([e.target.value, range[1], range[2], range[3], range[4]])}/>
-                                <Form.Label id="MMP-reviews-formlabel">Cost of equipment</Form.Label>
+                                <Form.Label id="MMP-reviews-formlabel">Cost-effective</Form.Label>
                                 <RangeSlider value={range[1]} max={10} step={1} variant='success' onChange={e => setRange([range[0], e.target.value, range[2], range[3], range[4]])}/>
                                 <Form.Label id="MMP-reviews-formlabel">Schedule-flexible</Form.Label>
                                 <RangeSlider value={range[2]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], e.target.value, range[3], range[4]])}/>

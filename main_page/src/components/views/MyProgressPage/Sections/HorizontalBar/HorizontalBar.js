@@ -5,15 +5,15 @@ import './HorizontalBar.scss'
 
 const HorizontalBar = () => {
 
-    function clickM1() {
+    const clickM1 = () => {
         document.getElementById('MMP-percentage').scrollIntoView({behavior: "smooth"});
     }
 
-    function clickM2() {
+    const clickM2 = () => {
         document.getElementById('MMP-selectedachiev').scrollIntoView({behavior: "smooth"});
     }
 
-    function clickM3() {
+    const clickM3 = () => {
         document.getElementById('MMP-reviews').scrollIntoView({behavior: "smooth"});
     }
 

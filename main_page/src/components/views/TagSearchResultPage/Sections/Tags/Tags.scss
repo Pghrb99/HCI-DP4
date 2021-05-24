@@ -1,3 +1,8 @@
+$addtag-color: #77be9b;
+$addtag-hover-color: #3aa770;
+$notaddtag-color: grey;
+$notaddtag-hover-color: rgb(87, 87, 87);
+
 .Applied-Tags {
     display: flex;
 	flex-wrap: wrap;
@@ -6,4 +11,48 @@
 	.Applied-Include, .Applied-Exclude {
 		margin: 0 8px 8px 0;
 	}
+
+	#tagplus {
+		height: 35px;
+		border: none;
+		cursor: pointer;
+		padding: 0 10px 0 10px;
+		font-size: 24px;
+	}
+
+}
+
+#newtag-tag {
+	margin: 20px 0 0 20px;
+    width: 150px;
+	height: 40px;
+	background-color: #5C996B;
+	border: none;
+	font-size: 20px;
+    font-weight: bold;
+	list-style: none;
+	cursor: pointer;
+}
+
+#newtag-input {
+	margin-top: 10px;
+	height: 40px;
+	border: none;
+	border-radius: 5px;
+}
+
+#newtag-add {
+	height: 40px;
+	margin: 10px 0 5px 20px;
+	background-color: #5C996B;
+	border: none;
+	border-radius: 5px;
+	font-size: 20px;
+}
+.notaddtag {
+	background-color: $notaddtag-color;
+}
+
+.notaddtag:hover {
+	background-color: $notaddtag-hover-color;
 }

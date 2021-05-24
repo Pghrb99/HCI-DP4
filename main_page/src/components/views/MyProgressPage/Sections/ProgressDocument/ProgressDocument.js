@@ -11,7 +11,7 @@ import { faPlusSquare, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 const ProgressDocument = ({ c, t, reviewlist, addReview, removeReview, submit, setSubmit }) => {
     const [prove, setProve] = useState(false);
     const [cancel, setCancel] = useState(false);
-    const [completed, setCompleted] = useState(c);
+    const [attained, setAttained] = useState(c);
     const [file, setFile] = useState(null);
     const [review, setReview] = useState(false);
     const [text, setText] = useState(submit ? reviewlist[0]['content'] : "");
@@ -19,9 +19,9 @@ const ProgressDocument = ({ c, t, reviewlist, addReview, removeReview, submit, s
     const [range, setRange] = useState(submit ? reviewlist[0]['data'] : [5, 5, 5, 5, 5]);
     const [remove, setRemove] = useState(false);
     const total = t;
-    const percent = (completed / total * 100).toFixed(2);
+    const percent = (attained / total * 100).toFixed(2);
 
-    function changeReviewList(achievdiff) {
+    const changeReviewList = (achievdiff) => {
         if (submit) {
             removeReview();
         }
@@ -30,14 +30,14 @@ const ProgressDocument = ({ c, t, reviewlist, addReview, removeReview, submit, s
             isMe: true,
             name: "Changhae Lee",
             years: 1,
-            achiev: completed+achievdiff,
+            achiev: attained+achievdiff,
             content: text,
             data: range,
             like: 0
         });
     }
 
-    function clickLabel(event) {
+    const clickLabel = (event) => {
         event.currentTarget.className += " MMP-temp";
         if (!event.currentTarget.className.includes("MMP-success")) {
             setProve(true);
@@ -48,11 +48,11 @@ const ProgressDocument = ({ c, t, reviewlist, addReview, removeReview, submit, s
         }
     }
 
-    function clickPYes() {
+    const clickPYes = () => {
         console.log(typeof(file.files[0]))
         if (!(typeof(file.files[0]) == 'undefined')) {
             $(".MMP-temp").attr('class', "badge badge-secondary MMP-success");
-            setCompleted(completed + 1);
+            setAttained(attained + 1);
             setProve(false);
             changeReviewList(1);
         }
@@ -61,42 +61,42 @@ const ProgressDocument = ({ c, t, reviewlist, addReview, removeReview, submit, s
         }
     }
 
-    function clickPNo() {
+    const clickPNo = () => {
         $(".MMP-temp").attr('class', "badge badge-secondary");
         setProve(false);
     }
 
-    function clickCYes() {
+    const clickCYes = () => {
         $(".MMP-temp").attr('class', "badge badge-secondary");
-        setCompleted(completed - 1);
+        setAttained(attained - 1);
         setCancel(false);
         changeReviewList(-1);
     }
 
-    function clickCNo() {
+    const clickCNo = () => {
         $(".MMP-temp").attr('class', "badge badge-secondary MMP-success");
         setCancel(false);
     }
 
-    function clickReview() {
+    const clickReview = () => {
         setReview(true);
     }
 
-    function clickRYes() {
+    const clickRYes = () => {
         setSubmit(true);
         setReview(false);
         changeReviewList(0);
     }
 
-    function clickRNo() {
+    const clickRNo = () => {
         setReview(false);
     }
 
-    function clickRemove() {
+    const clickRemove = () => {
         setRemove(true);
     }
 
-    function clickXYes() {
+    const clickXYes = () => {
         setText("");
         setRecommend(true);
         setRange([5, 5, 5, 5, 5]);
@@ -105,7 +105,7 @@ const ProgressDocument = ({ c, t, reviewlist, addReview, removeReview, submit, s
         removeReview();
     }
 
-    function clickXNo() {
+    const clickXNo = () => {
         setRemove(false);
     }
 
@@ -113,7 +113,7 @@ const ProgressDocument = ({ c, t, reviewlist, addReview, removeReview, submit, s
         <div id="progressdocument">
             <div id="MMP-percentage">
                 <h2>Progress Percentage</h2>
-                <ProgressBar id="MMP-percentage-bar" variant="success" now={percent} label={`${percent}% (${completed}/${total})`} />
+                <ProgressBar id="MMP-percentage-bar" variant="success" now={percent} label={`${percent}% (${attained}/${total})`} />
             </div>
             <div id="MMP-selectedachiev">
                 <h2>Selected Achievements</h2>
@@ -222,7 +222,7 @@ const ProgressDocument = ({ c, t, reviewlist, addReview, removeReview, submit, s
                             <Form.Group controlId="MMP-range">
                                 <Form.Label id="MMP-reviews-formlabel">Easy to start</Form.Label>
                                 <RangeSlider value={range[0]} max={10} step={1} variant='success' onChange={e => setRange([e.target.value, range[1], range[2], range[3], range[4]])}/>
-                                <Form.Label id="MMP-reviews-formlabel">Cost of equipment</Form.Label>
+                                <Form.Label id="MMP-reviews-formlabel">Cost-effective</Form.Label>
                                 <RangeSlider value={range[1]} max={10} step={1} variant='success' onChange={e => setRange([range[0], e.target.value, range[2], range[3], range[4]])}/>
                                 <Form.Label id="MMP-reviews-formlabel">Schedule-flexible</Form.Label>
                                 <RangeSlider value={range[2]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], e.target.value, range[3], range[4]])}/>
