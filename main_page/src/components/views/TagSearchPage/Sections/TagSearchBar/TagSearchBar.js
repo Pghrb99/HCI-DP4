@@ -9,11 +9,10 @@ import '../TagSearchBar/TagSearchBar.scss'
 import {db} from 'firebase.js'
 
 
-const TagSearchBar = () => {
+const TagSearchBar = ({tags, setTags, onClick}) => {
     
 
     const [mode, setMode] = useState(true);
-    const [tags, setTags] = useState([]);
     const [text, setText] = useState("");
     const [options, setOptions] = useState([]);
 
@@ -99,8 +98,7 @@ const TagSearchBar = () => {
                 </ AutoComplete>
             </div>
             <div>
-                {/*<FontAwesomeIcon icon={faSearch}/>*/}
-                <SearchButton />
+                <SearchButton onClick={onClick}/>
             </div>
         </div>
         

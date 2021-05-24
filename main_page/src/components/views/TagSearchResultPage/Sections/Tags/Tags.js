@@ -7,6 +7,7 @@ const Tags = ({tags}) => {
         <ul className='Applied-Tags'>
             {tags.map((tag) => (
                 <Tag 
+                    key={tag.name}
                     name={tag.name} 
                     isInclude={tag.isInclude}
                 />

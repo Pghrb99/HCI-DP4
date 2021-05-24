@@ -6,11 +6,11 @@ import './CardContainer.scss'
 const CardContainer = ({cards}) => {
     return (
         <div className="CardContainer">
-            {cards.map((card, index) => (
-                <Col lg={6} md={6} sm={8} xs={12} className="card-column">
+            {cards.map((card) => (
+                <Col lg={6} md={6} sm={8} xs={12} className="card-column" key={card.key}>
                 
                 <ActivityCard 
-                    key={index}
+                    key={card.key}
                     title={card.name} 
                     img={card.img}
                     tags={card.tags}

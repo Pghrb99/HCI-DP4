@@ -6,7 +6,9 @@ const ActivityTags = ({tags}) => {
     return (
         <ul className='ActivityTags'>
             {tags.map((tag) => (
-                <ActivityTag name={tag.name}/>
+                <ActivityTag 
+                key={tag.name}
+                name={tag.name}/>
             ))}
         </ul>
     )

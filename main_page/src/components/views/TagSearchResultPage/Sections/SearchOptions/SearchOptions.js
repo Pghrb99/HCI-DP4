@@ -3,10 +3,10 @@ import {Col} from 'react-bootstrap'
 import InputSlider from '../InputSlider/InputSlider'
 import './SearchOptions.scss'
 import PrioritySelect from '../PrioritySelect/PrioritySelect'
-const SearchOptions = () => {
+const SearchOptions = ({onPriorityChange}) => {
     return (
         <div className="SerachOptions">
-            <PrioritySelect/>
+            <PrioritySelect onPriorityChange={onPriorityChange}/>
         </div>
     )
 }

@@ -4,11 +4,10 @@ import {Nav, Navbar, Form, FormControl, Button} from 'react-bootstrap'
 import logo from '../imgs/logo.svg'
 import Tags from '../Tags/Tags'
 import './TopBar.scss'
-import { Link } from "react-router-dom";
 
 const TopBar = ({tags, isSignedIn, name}) => {
     return (
-        <div id="nav-container">
+        <div id="TSRP-nav-container">
             <div className="align-self-end">
                 {isSignedIn ?
                 <Nav className="mt-3">
@@ -17,12 +16,12 @@ const TopBar = ({tags, isSignedIn, name}) => {
                 </Nav>
                 :
                 <Nav className="mt-3">
-                    <Nav.Link  className="mr-4"><Link to={"/login"}><span className="nav-text"id="nav-signIn" >Sign In</span></Link></Nav.Link>
-                    <Link to={"/register"}><Button 
+                    <Nav.Link  className="mr-4"><span className="nav-text"id="nav-signIn" >Sign In</span></Nav.Link>
+                    <Button 
                         variant="outline-dark"
                         className="mr-5"
                     > <span className="nav-text" id="nav-signUp">Sign Up</span>
-                    </Button></Link>
+                    </Button>
                 </Nav>
                 }
             </div>

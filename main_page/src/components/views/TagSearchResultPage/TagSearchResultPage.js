@@ -1,119 +1,70 @@
-import React from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
+import React, {useState, useEffect} from 'react'
 import TopBar from './Sections/TopBar/TopBar'
 import CardContainer from './Sections/CardContainer/CardContainer'
-import img1 from './Sections/imgs/ice_hockey.jpg'
 import SearchOptions from './Sections/SearchOptions/SearchOptions'
 import Sidemenu from '../TagSearchPage/Sections/SideMenu/Sidemenu'
+import {Typography} from 'antd'
+import { useLocation } from 'react-router'
+import {db} from 'firebase.js'
 
 
-const TagSearchResultPage = (props) => {
-    const cards = [
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
+const TagSearchResultPage = () => {
+    const {Title} = Typography;
+    const location = useLocation();
+    const tags = location.state.tags;
+    const [cards, setCards] = useState([]);
+    const [noResults, setNoResults] = useState(false);
 
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[5,7,5.6,9,10]
+    const onPriorityChange = (value) => {
+        setCards(prev => [...prev].sort((x,y) => (y.chartData[value]-x.chartData[value])));
+    }
 
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1.2,9,3,4.6,10]
+    useEffect(() => {
+        let activityRef = db.collection('Activities');
+        tags.forEach(tag => {
+            if (tag.isInclude) {
+                activityRef = activityRef.where(`tags.${tag.name}` , '==' , true);
+            }
+        });
 
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[10,2.5,6,8,10]
+        const excludeNames = tags.filter(x => !x.isInclude).map(x => x.name);
+        let result = [];
+        activityRef.get().then((querySnapshot => {
+            docsfor: for (let i in querySnapshot.docs) {
+                const doc = querySnapshot.docs[i]
+                const tagObj = doc.get("tags");
+                for (let excludeName of excludeNames) {
+                    if(excludeName in tagObj) {
+                        continue docsfor;
+                    }
+                }
+                result.push( {
+                    name: doc.get("name"),
+                    img: doc.get("coverImg"),
+                    tags: Object.keys(doc.get("tags")).map(x => ({name: x})),
+                    chartData: doc.get("numerics"),
+                    key: doc.id
+                });
+            }
+            result.sort((x,y) => (y.chartData[0]-x.chartData[0]))
+            setCards(result);
+            if(result.length==0) {
+                setNoResults(true);
+            }
+        }))
+    }, []);
 
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[7,5,5,6,]
-
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
-
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
-
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
-
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
-
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
-
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
-
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
-
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
-
-    },
-    {
-        name: "Ice Hockey",
-        img: {alt: "Ice Hockey", src: img1},
-        tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        chartData:[1,2,3,4,5]
-
-    },
-    ]
     return (
         <div>
             <Sidemenu/>
-            <TopBar tags={[{name: "Hi", isInclude: true},{name: "Bye", isInclude: false}]} isSignedIn={false} name={"Changhae"}/>
-            <SearchOptions />
-            <CardContainer cards={cards}/>            
+            <TopBar tags={tags} isSignedIn={false} name={"Changhae"}/>
+            <SearchOptions onPriorityChange={onPriorityChange}/>
+            {!noResults ? <CardContainer cards={cards}/>: <Title level={1}
+            style={{
+                textAlign: "center",
+                marginTop: 100,
+                color: "grey"
+                }}>No Results Found</Title>}            
         </div>
     )
 }

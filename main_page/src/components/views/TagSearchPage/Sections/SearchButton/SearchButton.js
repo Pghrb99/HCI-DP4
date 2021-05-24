@@ -3,10 +3,10 @@ import { BsSearch } from "react-icons/bs";
 import './SearchButton.scss'
 import { Link } from "react-router-dom";
 
-const SearchButton = () => {
+const SearchButton = ({onClick}) => {
     return (
-        <div className="SearchButton">
-            <Link to={"/result"}><BsSearch className="search-icon" /></Link>
+        <div className="SearchButton" onClick={onClick}>
+            <BsSearch className="search-icon" />
         </div>
     )
 }
