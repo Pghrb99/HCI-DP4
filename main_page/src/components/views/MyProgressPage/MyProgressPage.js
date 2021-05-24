@@ -6,7 +6,7 @@ import ProgressDocument from './Sections/ProgressDocument/ProgressDocument'
 import HorizontalBar from './Sections/HorizontalBar/HorizontalBar';
 import GoTop from '../GoTop/GoTop';
 
-const MyProgressPage = ({tags, setTags, reviewlist, addReview, removeReview, submit, setSubmit, ongoing, setOngoing, complete, setComplete}) => {
+const MyProgressPage = ({achievlist, setAchievlist, tags, setTags, reviewlist, addReview, removeReview, submit, setSubmit, ongoing, setOngoing, complete, setComplete}) => {
     
     return (
         <div id="MyProgressPage">
@@ -14,7 +14,7 @@ const MyProgressPage = ({tags, setTags, reviewlist, addReview, removeReview, sub
             <TopBar tags={tags} setTags={setTags} isSignedIn={false} name={"Changhae"} removeReview={removeReview} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing} complete={complete} setComplete={setComplete}/>
             <div id="AIP-hori-div">
                 <HorizontalBar/>
-                <ProgressDocument c={0} t={7} reviewlist={reviewlist} addReview={addReview} removeReview={removeReview} submit={submit} setSubmit={setSubmit} complete={complete} setComplete={setComplete}/>
+                <ProgressDocument achievlist={achievlist} setAchievlist={setAchievlist} reviewlist={reviewlist} addReview={addReview} removeReview={removeReview} submit={submit} setSubmit={setSubmit} complete={complete} setComplete={setComplete}/>
             </div>
             <GoTop/>
         </div>

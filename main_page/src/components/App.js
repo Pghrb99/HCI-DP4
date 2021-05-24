@@ -69,6 +69,51 @@ function App() {
         setReviewList(temp);
     }
 
+    const [achievlist, setAchievlist] = useState([
+        {
+            name: "Getting into ice",
+            explain: "Keep skating for 10 minutes.",
+            isSelected: false,
+            isCompleted: false
+        },
+        {
+            name: "Skating faster",
+            explain: "Skate 400m in 1 minutes.",
+            isSelected: false,
+            isCompleted: false
+        },
+        {
+            name: "Skating for a long time",
+            explain: "Skate more than 10 minutes.",
+            isSelected: false,
+            isCompleted: false
+        },
+        {
+            name: "Getting into shot",
+            explain: "Score more than 5 out of 10 penalty shots.",
+            isSelected: false,
+            isCompleted: false
+        },
+        {
+            name: "Shooting precisely",
+            explain: "Score a goal from one goal to the other.",
+            isSelected: false,
+            isCompleted: false
+        },
+        {
+            name: "Dribbling calmly",
+            explain: "Circle the link with the puck.",
+            isSelected: false,
+            isCompleted: false
+        },
+        {
+            name: "Wall-passing",
+            explain: "Wall-pass 5 times from each side of the enemy.",
+            isSelected: false,
+            isCompleted: false
+        }
+    ]);
+
     return (
         <AuthProvider>
             <Router>
@@ -84,8 +129,8 @@ function App() {
                     <Switch>
                         <Route exact path="/" component={TagSearchPage} />
                         <Route exact path="/result" component={TagSearchResultPage} />
-                        <Route exact path="/info" render={() => <ActivityInfoPage tags={tags} setTags={setTags} reviewlist={reviewlist} addReview={addReview} removeReview={removeReview} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing} complete={complete} setComplete={setComplete}/>}/>
-                        <Route exact path="/myprogress" render={() => <MyProgressPage tags={tags} setTags={setTags} reviewlist={reviewlist} addReview={addReview} removeReview={removeReview} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing} complete={complete} setComplete={setComplete}/>} />
+                        <Route exact path="/info" render={() => <ActivityInfoPage achievlist={achievlist} setAchievlist={setAchievlist} tags={tags} setTags={setTags} reviewlist={reviewlist} addReview={addReview} removeReview={removeReview} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing} complete={complete} setComplete={setComplete}/>}/>
+                        <Route exact path="/myprogress" render={() => <MyProgressPage achievlist={achievlist} setAchievlist={setAchievlist} tags={tags} setTags={setTags} reviewlist={reviewlist} addReview={addReview} removeReview={removeReview} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing} complete={complete} setComplete={setComplete}/>} />
                         <Route exact path="/category" component={CategoryPage} />
                         <Route exact path="/login" component={LoginPage} />
                         <Route exact path="/register" component={RegisterPage} />

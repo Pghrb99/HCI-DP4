@@ -14,9 +14,19 @@ const Tags = ({ tags, setTags, plusbutton }) => {
     const [isSelected, setIsSelected] = useState(new Array(candidates.length).fill(false));
     const [tagtext, setTagtext] = useState("");
 
+    const clickTagplus = () => {
+        const tagname = tags.map(tag => {return tag['name']});
+        const temp = candidates.map(candidate => {
+            return (tagname.includes(candidate));
+        })
+        setIsSelected(temp);
+        setTagPlus(true);
+    }
+
     const clickTPYes = () => {
+        const tagname = tags.map(tag => {return tag['name']});
         candidates.forEach((candidate, i) => {
-            if (isSelected[i]) {
+            if (isSelected[i] && !tagname.includes(candidate)) {
                 console.log(candidate);
                 const temp = tags;
                 temp.push({name: candidate, isInclude: true});
@@ -69,7 +79,7 @@ const Tags = ({ tags, setTags, plusbutton }) => {
                 />
             ))}
             
-            {plusbutton && <Button variant='success' id='tagplus' onClick={() => setTagPlus(true)}><FontAwesomeIcon icon={faPlus} /></Button>}
+            {plusbutton && <Button variant='success' id='tagplus' onClick={clickTagplus}><FontAwesomeIcon icon={faPlus} /></Button>}
             <Modal size='lg' show={tagplus} onHide={clickTPNo}>
                 <Modal.Header closeButton style={{ backgroundColor: '#BBEDCA', color: '#356864', border: 'none', paddingTop:'10px', paddingBottom:'5px'}}>
                     <Modal.Title>Add Tags</Modal.Title>
