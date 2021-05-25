@@ -11,6 +11,7 @@ const CardContainer = ({cards}) => {
                     {cards.map((card, index) => (
                             (index%4==0 &&
                             <ActivityCard 
+                            docId={card.docId}
                             key={card.key}
                             title={card.name} 
                             img={card.img}
@@ -25,6 +26,7 @@ const CardContainer = ({cards}) => {
                     {cards.map((card, index) => (
                             (index%4==1 &&
                             <ActivityCard 
+                            docId={card.docId}
                             key={card.key}
                             title={card.name} 
                             img={card.img}
@@ -39,6 +41,7 @@ const CardContainer = ({cards}) => {
                     {cards.map((card, index) => (
                             (index%4==2 &&
                             <ActivityCard 
+                            docId={card.docId}
                             key={card.key}
                             title={card.name} 
                             img={card.img}
@@ -53,6 +56,7 @@ const CardContainer = ({cards}) => {
                     {cards.map((card, index) => (
                             (index%4==3 &&
                             <ActivityCard 
+                            docId={card.docId}
                             key={card.key}
                             title={card.name} 
                             img={card.img}

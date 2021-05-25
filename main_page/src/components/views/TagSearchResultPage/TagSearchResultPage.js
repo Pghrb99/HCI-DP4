@@ -36,7 +36,8 @@ const TagSearchResultPage = () => {
                         img: doc.get("cardImg"),
                         tags: Object.keys(doc.get("tags")).map(x => ({name: x})),
                         chartData: doc.get("numerics"),
-                        key: doc.id
+                        key: doc.id,
+                        docId :doc.id
                     });
                 }
                 result.sort((x,y) => (y.chartData[0]-x.chartData[0]))
@@ -71,7 +72,8 @@ const TagSearchResultPage = () => {
                         img: doc.get("cardImg"),
                         tags: Object.keys(doc.get("tags")).map(x => ({name: x})),
                         chartData: doc.get("numerics"),
-                        key: doc.id
+                        key: doc.id,
+                        docId :doc.id
                     });
                 }
                 result.sort((x,y) => (y.chartData[0]-x.chartData[0]))
@@ -101,7 +103,8 @@ const TagSearchResultPage = () => {
                             tags : Object.keys(doc.get("tags")).map(x => ({name: x})),
                             chartData: doc.get("numerics"),
                             img: doc.get("cardImg"),
-                            key: doc.id
+                            key: doc.id,
+                            docId :doc.id
                         });
                     }
                 }

@@ -4,14 +4,25 @@ import RadarChart from '../RadarChart/RadarChart'
 import ActivityTags from '../ActivityTags/ActivityTags'
 import './ActivityCard.scss'
 import { Link } from "react-router-dom";
+import {useHistory} from "react-router";
 
-const ActivityCard = ({img, title, tags, chartData}) => {
+
+const ActivityCard = ({docId, key, img, title, tags, chartData}) => {
+  const history = useHistory();
+
   const { Meta } = Card;
   const { Title } = Typography;
 
   const radarChart = (
     <RadarChart name={title} chartData={chartData} />
   );
+
+  const onTextPressEnter = () => {
+    (() => {history.push({
+        pathname: "/info",
+        state: {docId:docId, name:title,tags:tags,chartData:chartData }
+      })})();
+};
 
   return (
     <Popover
@@ -21,16 +32,15 @@ const ActivityCard = ({img, title, tags, chartData}) => {
     placement="rightTop"
     >
 
-      {/* <Link to={"/info"}> */}
         <Card
         className="Card"
         hoverable
         cover={<img alt={img.alt} src={img.src} />}
+        onClick={onTextPressEnter}
         >
           <Meta title={<Title level={4} ellipsis={true}>{title}</Title>}/>
           <ActivityTags tags={tags}/>
         </Card>
-      {/* </Link> */}
     </Popover>
   );
 }

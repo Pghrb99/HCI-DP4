@@ -8,9 +8,11 @@ import img3 from '../imgs/ice_hockey3.png'
 import Review from '../Review/Review'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faPlus, faChevronCircleDown, faChevronCircleUp, faPencilAlt } from "@fortawesome/free-solid-svg-icons"
+import {db} from '../../../../../firebase'
 
-const InfoDocument = ({ achievlist, setAchievlist, data, reviewlist, addReview, removeReview, submit, setSubmit, ongoing, setOngoing }) => {
+const InfoDocument = ({ docId, activityname, achievlist, setAchievlist, data, reviewlist, addReview, removeReview, submit, setSubmit, ongoing, setOngoing }) => {
     
+    const [resultdata, setresult] = useState([]);
     const [review, setReview] = useState(false);
     const [text, setText] = useState(submit ? reviewlist[0]['content'] : "");
     const [recommend, setRecommend] = useState(submit ? reviewlist[0]['isPositive'] : true);
@@ -105,6 +107,35 @@ const InfoDocument = ({ achievlist, setAchievlist, data, reviewlist, addReview, 
         setMore(!more);
     }
 
+    let result=[];
+    console.log(activityname);
+    console.log(docId);
+
+
+    useEffect(() => {
+
+    let snapshot = db.collection('Activities').doc(docId);
+    snapshot.get().then((doc => {
+            if(activityname == doc.data().name){
+                result.push({ 
+                    description : doc.get("description"),
+                    Communities : doc.get("Communities"),
+                    imgs : doc.get("imgs"),
+                    requirements : doc.get("requirements"),
+                    videos : doc.get("videos")
+                });
+            }
+            console.log(result[0])
+            setresult(result);
+            
+            
+        }))
+    }, []);
+
+
+
+
+    if(resultdata[0] != undefined){
     return (
         <div id="infodocument">
             <div id="AIP-numerics">
@@ -140,15 +171,15 @@ const InfoDocument = ({ achievlist, setAchievlist, data, reviewlist, addReview, 
             <div id="AIP-images" style={{ marginTop: '30px' }}>
                 <h2>Images</h2>
                 <ListGroup id="AIP-images-list" horizontal>
-                    <ListGroup.Item><img src={img1} class="AIP-images-img"></img></ListGroup.Item>
-                    <ListGroup.Item><img src={img2} class="AIP-images-img"></img></ListGroup.Item>
-                    <ListGroup.Item><img src={img3} class="AIP-images-img"></img></ListGroup.Item>
+                <ListGroup.Item><img src={ resultdata[0].imgs[0].src} class="AIP-images-img"></img></ListGroup.Item>
+                    <ListGroup.Item><img src={ resultdata[0].imgs[1].src} class="AIP-images-img"></img></ListGroup.Item>
+                    <ListGroup.Item><img src={ resultdata[0].imgs[2].src} class="AIP-images-img"></img></ListGroup.Item>
                 </ListGroup>
             </div>
             <div id="AIP-videos" style={{ marginTop: '30px' }}>
                 <h2>Videos</h2>
                 <div id="AIP-videos-youtube">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/HSUdZ9sOQRU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe width="560" height="315" src={resultdata[0].videos[0].src} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
             <div id="AIP-description" style={{ marginTop: '30px' }}>
@@ -157,18 +188,18 @@ const InfoDocument = ({ achievlist, setAchievlist, data, reviewlist, addReview, 
                     <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing}><FontAwesomeIcon icon={faEdit} style={{marginRight: "10px"}}/>Edit Description</Button>
                 </div>
                 <div class="AIP-article">
-                    Ice hockey is a contact team sport played on ice, usually in an indoor or outdoor rink, in which two teams of skaters use their sticks to shoot a vulcanized rubber puck into their opponent's net to score goals. The sport is known to be fast-paced and physical, with teams usually fielding six players at a time: one goaltender to stop the puck from going into their own net, two defensemen, and three forwards who skate the span of the ice trying to control the puck and score goals against the opposing team.
+                {resultdata[0].description.text}
                 </div>
-                <a target="_blank" href="https://en.wikipedia.org/wiki/Ice_hockey" class="AIP-article">Wikipedia</a>
-                <a target="_blank" href="https://namu.wiki/w/%EC%95%84%EC%9D%B4%EC%8A%A4%ED%95%98%ED%82%A4" class="AIP-article">나무위키</a>
+                <a target="_blank" href={resultdata[0].description.links[0].src} class="AIP-article">{resultdata[0].description.links[0].title}</a>
+                <a target="_blank" href={resultdata[0].description.links[1].src} class="AIP-article">{resultdata[0].description.links[1].title}</a>
             </div>
             <div id="AIP-requirments" style={{ marginTop: '30px' }}>
                 <div style={{width:'100%', display:'inline-block'}}>
                     <h2 style={{float:'left'}}>Requirments</h2>
                     <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing}><FontAwesomeIcon icon={faEdit} style={{marginRight: "10px"}}/>Edit Requirments</Button>
                 </div>
-                <div class="AIP-article">Supplies: Helmet, guards, skates, sticks, gloves</div>
-                <div class="AIP-article">Number of people: 12 (each team consists of 6 players)</div>
+                <div class="AIP-article">{resultdata[0].requirements[0]}</div>
+                <div class="AIP-article">{resultdata[0].requirements[1]}</div>
             </div>
             <div id="AIP-achievements" style={{ marginTop: '30px' }}>
                 <div style={{width:'100%', display:'inline-block'}}>
@@ -285,7 +316,6 @@ const InfoDocument = ({ achievlist, setAchievlist, data, reviewlist, addReview, 
                 </div>
                 <h3>Negative Opinions</h3>
                 <div id="MMP-reviews-negative">
-                    {console.log(reviewlist)}
                     {/*issignedin => like button*/}
                     {reviewlist.map(review => {
                         if (!review['isPositive']) {
@@ -304,8 +334,8 @@ const InfoDocument = ({ achievlist, setAchievlist, data, reviewlist, addReview, 
                     <h2 style={{float:'left'}}>Communities</h2>
                     <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing}><FontAwesomeIcon icon={faEdit} style={{marginRight: "10px"}}/>Edit Requirments</Button>
                 </div>
-                <a target="_blank" href="https://gall.dcinside.com/icehockey" class="AIP-article">dcinside.com</a>
-                <a target="_blank" href="https://about.hockeycommunity.com/en-CA/" class="AIP-article">Hockey Community</a>
+                <a target="_blank" href={resultdata[0].Communities.link[0].src} class="AIP-article">{resultdata[0].Communities.link[0].title}</a>
+                <a target="_blank" href={resultdata[0].Communities.link[1].src} class="AIP-article">{resultdata[0].Communities.link[1].title}</a>
                 <Table bordered hover id="AIP-communities-table">
                     <thead>
                         <tr>
@@ -318,26 +348,31 @@ const InfoDocument = ({ achievlist, setAchievlist, data, reviewlist, addReview, 
                     <tbody>
                         <tr>
                             <td>1</td>
-                            <td>Hanwha Eagles</td>
-                            <td>Daejeon, Korea</td>
-                            <td>042-111-1111</td>
+                            <td>{resultdata[0].Communities.table[0].ClubName}</td>
+                            <td>{resultdata[0].Communities.table[0].Region}</td>
+                            <td>{resultdata[0].Communities.table[0].Contact}</td>
                         </tr>
                         <tr>
                             <td>2</td>
-                            <td>Lotte Giants</td>
-                            <td>Busan, Korea</td>
-                            <td>051-222-2222</td>
+                            <td>{resultdata[0].Communities.table[1].ClubName}</td>
+                            <td>{resultdata[0].Communities.table[1].Region}</td>
+                            <td>{resultdata[0].Communities.table[1].Contact}</td>
                         </tr>
                         <tr>
                             <td>3</td>
-                            <td>Samsung Lions</td>
-                            <td>Daegu, Korea</td>
-                            <td>053-333-3333</td>
+                            <td>{resultdata[0].Communities.table[2].ClubName}</td>
+                            <td>{resultdata[0].Communities.table[2].Region}</td>
+                            <td>{resultdata[0].Communities.table[2].Contact}</td>
                         </tr>
                     </tbody>
                 </Table>
             </div>
         </div>
+    )
+}
+else return (<div>
+    Can't find page
+    </div>
     )
 }
 

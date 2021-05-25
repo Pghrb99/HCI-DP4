@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { Nav, Modal, Button, Pagination } from 'react-bootstrap';
 import { Link, useLoca } from "react-router-dom";
-import Tags from '../../../TagSearchResultPage/Sections/Tags/Tags'
+import ActivityTags from '../../../TagSearchResultPage/Sections/ActivityTags/ActivityTags'
 import './TopBar.scss'
 import bg from '../imgs/hockey_world_1400.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 
-const TopBar = ({ tags, setTags, isSignedIn, name, removeReview, submit, setSubmit, ongoing, setOngoing, complete, setComplete }) => {
+const TopBar = ({ activityname, tags, isSignedIn, name, removeReview, submit, setSubmit, ongoing, setOngoing, complete, setComplete }) => {
     const [start, setStart] = useState(false);
     const [cancel, setCancel] = useState(false);
     
@@ -56,15 +56,15 @@ const TopBar = ({ tags, setTags, isSignedIn, name, removeReview, submit, setSubm
                 }
             </div>
             <div className="align-self-center" id="AIP-activity-name">
-                Ice Hockey
+            {activityname}
             </div>
             <div className="align-self-start" id="AIP-tags">
                 <div id="AIP-reltags" style={{width:'50%'}}>
                     <span >Related tags : </span>
                     {ongoing ?
-                        <Tags tags={tags} setTags={setTags} plusbutton={true}/>
+                        <ActivityTags tags={tags}/>
                         :
-                        <Tags tags={tags} setTags={setTags} plusbutton={false}/>
+                        <ActivityTags tags={tags}/>
                     }
                 </div>
                 { !ongoing && <Button id="AIP-topbar-start" onClick={clickStart}>Start!</Button> }
