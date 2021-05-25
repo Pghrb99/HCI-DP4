@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Nav, Modal, Button, Pagination } from 'react-bootstrap';
 import { Link } from "react-router-dom";
-import Tags from '../../../TagSearchResultPage/Sections/Tags/Tags'
+import ActivityTags from '../../../TagSearchResultPage/Sections/ActivityTags/ActivityTags'
 import './TopBar.scss'
 import bg from '../imgs/hockey_world_1400.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -53,9 +53,9 @@ const TopBar = ({ tags, setTags, isSignedIn, name, removeReview, submit, setSubm
                 <div id="MPP-reltags">
                     <span >Related tags : </span>
                     {ongoing ?
-                        <Tags tags={tags} setTags={setTags} plusbutton={true}/>
+                        <ActivityTags tags={tags} setTags={setTags} plusbutton={true}/>
                         :
-                        <Tags tags={tags} setTags={setTags} plusbutton={false}/>
+                        <ActivityTags tags={tags} setTAgs={setTags} plusbutton={false}/>
                     }
                 </div>
                 {complete ?

@@ -74,9 +74,9 @@ const TopBar = ({docId, isSignedIn, userName, removeReview, submit, setSubmit, o
                 <div id="AIP-reltags" style={{width:'50%'}}>
                     <span >Related tags : </span>
                     {ongoing ?
-                        currentDoc && <ActivityTags tags={currentDoc.tags}/>
+                        currentDoc && <ActivityTags tags={currentDoc.tags} plusbutton={true}/>
                         :
-                        currentDoc && <ActivityTags tags={currentDoc.tags}/>
+                        currentDoc && <ActivityTags tags={currentDoc.tags} plusbutton={false}/>
                     }
                 </div>
                 { !ongoing && <Button id="AIP-topbar-start" onClick={clickStart}>Start!</Button> }

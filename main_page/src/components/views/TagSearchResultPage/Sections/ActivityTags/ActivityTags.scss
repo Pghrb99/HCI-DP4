@@ -7,3 +7,23 @@
 		margin: 8px 8px 0 0;
 	}
 }
+
+#tagplus {
+	box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034);
+    width: auto;
+	height: 30px;
+	align-items: center;
+	justify-content: center;
+	background-color: #77be9b;
+	color: white;
+	margin-top: 8px;
+	padding: 0 8px;
+	font-size: 15px;
+    font-weight: bold;
+	border: none;
+	border-radius: 6px;
+}
+
+#tagplus:hover {
+	background-color: #3aa770;
+}
