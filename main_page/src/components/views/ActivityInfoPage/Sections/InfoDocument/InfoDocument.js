@@ -40,7 +40,8 @@ const InfoDocument = ({ achievlist, setAchievlist, data, reviewlist, addReview, 
                 achiev: ach,
                 content: text,
                 data: range,
-                like: 0
+                like: 0,
+                photourl: imgs()
             });
         }
         else {
@@ -52,9 +53,21 @@ const InfoDocument = ({ achievlist, setAchievlist, data, reviewlist, addReview, 
                 achiev: calculateCompleted(),
                 content: text,
                 data: range,
-                like: 0
+                like: 0,
+                photourl: imgs()
             });
         }
+    }
+    
+    const imgs = () => {
+        const res = [];
+        for (let j = 0; j < achievlist.length; j++) {
+            if (achievlist[j]['isCompleted']) {
+                res.push(achievlist[j]['photourl']);
+            }
+        }
+        console.log(res);
+        return res;
     }
 
     const clickReview = () => {
@@ -262,10 +275,10 @@ const InfoDocument = ({ achievlist, setAchievlist, data, reviewlist, addReview, 
                     {reviewlist.map(review => {
                         if (review['isPositive']) {
                             if (review['isMe']){
-                                return <Review isPositive={true} isMe={true} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']} clickReview={clickReview} clickRemove={clickRemove}/>
+                                return <Review isPositive={true} isMe={true} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove}/>
                             }
                             else {
-                                return <Review isPositive={true} isMe={false} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']}/>
+                                return <Review isPositive={true} isMe={false} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']} photourl={review['photourl']}/>
                             }
                         }  
                     })}
@@ -277,10 +290,10 @@ const InfoDocument = ({ achievlist, setAchievlist, data, reviewlist, addReview, 
                     {reviewlist.map(review => {
                         if (!review['isPositive']) {
                             if (review['isMe']){
-                                return <Review isPositive={false} isMe={true} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']} clickReview={clickReview} clickRemove={clickRemove}/>
+                                return <Review isPositive={false} isMe={true} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove}/>
                             }
                             else {
-                                return <Review isPositive={false} isMe={false} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']}/>
+                                return <Review isPositive={false} isMe={false} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']} photourl={review['photourl']}/>
                             }
                         }
                     })}

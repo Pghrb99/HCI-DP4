@@ -35,7 +35,8 @@ function App() {
             achiev: 20,
             content: "You'll find it super fun. I promise.",
             data: [2, 4, 6, 8, 10],
-            like: 31
+            like: 31,
+            photourl: []
         },
         {
             isPositive: false,
@@ -45,7 +46,8 @@ function App() {
             achiev: 2,
             content: "It's soooo dangerous. I've broken my leg :(",
             data: [3, 2, 4, 1, 2],
-            like: 17
+            like: 17,
+            photourl: []
         },
         {
             isPositive: true,
@@ -55,7 +57,8 @@ function App() {
             achiev: 6,
             content: "The best sport in the world!",
             data: [7, 3, 6, 2, 9],
-            like: 20
+            like: 20,
+            photourl: []
         },
     ]);
 

@@ -16,7 +16,6 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
     const [cancel, setCancel] = useState(false);
     const [attained, setAttained] = useState("");
     const [tempurl, setTempurl]= useState('');
-    const [tempfile, setTempfile] = useState(new Array(achievlist.length).fill(''));
     const [review, setReview] = useState(false);
     const [text, setText] = useState(submit ? reviewlist[0]['content'] : "");
     const [recommend, setRecommend] = useState(submit ? reviewlist[0]['isPositive'] : true);
@@ -110,7 +109,8 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
                 achiev: ach,
                 content: text,
                 data: range,
-                like: 0
+                like: 0,
+                photourl: imgs()
             });
         }
         else {
@@ -122,7 +122,8 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
                 achiev: calculateCompleted(),
                 content: text,
                 data: range,
-                like: 0
+                like: 0,
+                photourl: imgs()
             });
         }
     }
@@ -135,6 +136,19 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
             setTempurl(reader.result);
         }
         reader.readAsDataURL(f);
+        // window.scrollTo({top:, behavior: 'smooth'});
+        // document.getElementById('MMP-prove-yes').scrollIntoView();
+    }
+
+    const imgs = () => {
+        const res = [];
+        for (let j = 0; j < achievlist.length; j++) {
+            if (achievlist[j]['isCompleted']) {
+                res.push(achievlist[j]['photourl']);
+            }
+        }
+        console.log(res);
+        return res;
     }
 
     const clickLabel = (event) => {
@@ -323,9 +337,9 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
                         })}
                     </ListGroup>
                 }
-                <Modal show={prove} onHide={clickPNo}>
+                <Modal show={prove} onHide={clickPNo} scrollable={true}>
                     <Modal.Header closeButton>
-                        <Modal.Title id="AIP-modal-title">Accomplish Activity</Modal.Title>
+                        <Modal.Title>Accomplish Activity</Modal.Title>
                     </Modal.Header>
                     <Modal.Body style={{ fontSize: "18px" }}>
                         <p style={{ fontFamily: 'arial', color: 'black', fontSize: '18px', marginLeft: "0" }}>Are you sure you attained the activity? If it is true, please upload a proof photo.</p>
@@ -347,9 +361,9 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
                         </Button>
                     </Modal.Footer>
                 </Modal>
-                <Modal show={cancel} onHide={clickCNo}>
+                <Modal show={cancel} onHide={clickCNo} scrollable={true}>
                     <Modal.Header closeButton>
-                        <Modal.Title id="AIP-modal-title">Accomplish Activity</Modal.Title>
+                        <Modal.Title>Cancel Activity</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <p style={{ fontFamily: 'arial', color: 'black', fontSize: '18px', marginLeft: "0" }}>Are you sure you cancel the activity?</p>
@@ -386,7 +400,6 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
                         }
                     </Modal.Header>
                     <Modal.Body>
-
                         <Form>
                             <Form.Group controlId="MMP-text">
                                 <Form.Label id="MMP-reviews-formlabel">Text</Form.Label>
@@ -428,7 +441,7 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
                 </Modal>
                 <Modal show={remove} onHide={clickXNo}>
                     <Modal.Header closeButton>
-                        <Modal.Title id="AIP-modal-title">Remove your Review</Modal.Title>
+                        <Modal.Title>Remove your Review</Modal.Title>
                     </Modal.Header>
                     <Modal.Body style={{ fontSize: "18px" }}>
                         <p style={{ fontFamily: 'arial', color: 'black', fontSize: '18px', marginLeft: "0" }}>Are you sure you remove your review?</p>
@@ -447,10 +460,10 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
                     {reviewlist.map(review => {
                         if (review['isPositive']) {
                             if (review['isMe']) {
-                                return <Review isPositive={true} isMe={true} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']} clickReview={clickReview} clickRemove={clickRemove} />
+                                return <Review isPositive={true} isMe={true} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                             }
                             else {
-                                return <Review isPositive={true} isMe={false} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']} />
+                                return <Review isPositive={true} isMe={false} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']} photourl={review['photourl']}/>
                             }
                         }
                     })}
@@ -460,10 +473,10 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
                     {reviewlist.map(review => {
                         if (!review['isPositive']) {
                             if (review['isMe']) {
-                                return <Review isPositive={false} isMe={true} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']} clickReview={clickReview} clickRemove={clickRemove} />
+                                return <Review isPositive={false} isMe={true} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                             }
                             else {
-                                return <Review isPositive={false} isMe={false} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']} />
+                                return <Review isPositive={false} isMe={false} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']} photourl={review['photourl']}/>
                             }
                         }
                     })}
