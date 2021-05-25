@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ProgressBar, ListGroup, Badge, Modal, Button, ButtonGroup, ToggleButton, Form } from 'react-bootstrap'
 import RangeSlider from 'react-bootstrap-range-slider';
 import './ProgressDocument.scss';
 import $ from 'jquery';
 import Review from '../../../ActivityInfoPage/Sections/Review/Review';
-// import bsCustomFileInput from 'bs-custom-file-input'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import { db } from '../../../../../firebase'
 
-const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, removeReview, submit, setSubmit }) => {
-    
+const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, submit, setSubmit }) => {
+    const username = "Changhae Lee"
+    const [resultdata, setresult] = useState([]);
+    const [reviewlist, setReviewlist] = useState([]);
     const [tempselect, setTempselect] = useState(new Array(achievlist.length).fill(false));
     const [modify, setModify] = useState(false);
     const [prove, setProve] = useState(false);
@@ -97,35 +99,96 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
         }
     }
 
-    const changeReviewList = () => {
-        if (submit) {
-            const ach = reviewlist[0]['achiev'];
-            removeReview();
-            addReview({
-                isPositive: recommend,
-                isMe: true,
-                name: "Changhae Lee",
-                years: 1,
-                achiev: ach,
-                content: text,
-                data: range,
-                like: 0,
-                photourl: imgs()
-            });
-        }
-        else {
-            addReview({
-                isPositive: recommend,
-                isMe: true,
-                name: "Changhae Lee",
-                years: 1,
-                achiev: calculateCompleted(),
-                content: text,
-                data: range,
-                like: 0,
-                photourl: imgs()
-            });
-        }
+    const addReview = () => {
+        const rev = {
+            isPositive: recommend,
+            name: username,
+            years: 1,
+            achiev: calculateCompleted(),
+            content: text,
+            data: range,
+            like: 0,
+            photourl: imgs()
+        };
+        db.collection('Activities').doc(docId).collection('Reviews').doc().set(rev);
+
+        let tempreviews = [];
+        db.collection('Activities').doc(docId).collection('Reviews').get().then((querySnapshot) => {
+            querySnapshot.forEach(doc => {
+                tempreviews.push({
+                    isPositive: doc.get('isPositive'),
+                    name: doc.get('name'),
+                    years: doc.get('years'),
+                    achiev: doc.get('achiev'),
+                    content: doc.get('content'),
+                    data: doc.get('data'),
+                    like: doc.get('like'),
+                    photourl: doc.get('photourl')
+                })
+            })
+            setReviewlist(tempreviews);
+
+        });
+    }
+
+    const removeReview = () => {
+        let tempreviews = [];
+        db.collection('Activities').doc(docId).collection('Reviews').get().then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                if (doc.get('name') == username) {
+                    db.collection('Activities').doc(docId).collection('Reviews').doc(doc.id).delete();
+                }
+                else {
+                    tempreviews.push({
+                        isPositive: doc.get('isPositive'),
+                        name: doc.get('name'),
+                        years: doc.get('years'),
+                        achiev: doc.get('achiev'),
+                        content: doc.get('content'),
+                        data: doc.get('data'),
+                        like: doc.get('like'),
+                        photourl: doc.get('photourl')
+                    })
+                }
+            })
+            setReviewlist(tempreviews);
+        })
+    }
+
+    const updateReview = () => {
+        let tempreviews = [];
+        let tempachiev = 0;
+        db.collection('Activities').doc(docId).collection('Reviews').get().then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                if (doc.get('name') == username) {
+                    tempachiev = doc.get('achiev');
+                    db.collection('Activities').doc(docId).collection('Reviews').doc(doc.id).delete();
+                    tempreviews.push({
+                        isPositive: recommend,
+                        name: username,
+                        years: 1,
+                        achiev: tempachiev,
+                        content: text,
+                        data: range,
+                        like: 0,
+                        photourl: imgs()
+                    })
+                }
+                else {
+                    tempreviews.push({
+                        isPositive: doc.get('isPositive'),
+                        name: doc.get('name'),
+                        years: doc.get('years'),
+                        achiev: doc.get('achiev'),
+                        content: doc.get('content'),
+                        data: doc.get('data'),
+                        like: doc.get('like'),
+                        photourl: doc.get('photourl')
+                    })
+                }
+            })
+            setReviewlist(tempreviews);
+        })
     }
 
     const selectImg = (event) => {
@@ -234,7 +297,12 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
     const clickRYes = () => {
         setSubmit(true);
         setReview(false);
-        changeReviewList();
+        if (submit) {
+            updateReview();
+        }
+        else {
+            addReview();
+        }
     }
 
     const clickRNo = () => {
@@ -264,6 +332,53 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
             return element === arr[index];
         }));
     }
+
+    let result = [];
+    let tempreviews = [];
+    console.log(activityname);
+    console.log(docId);
+
+    useEffect(() => {
+
+        let snapshot = db.collection('Activities').doc(docId);
+        console.log(snapshot.collection('Reviews'));
+
+        snapshot.get().then((doc => {
+            if (activityname == doc.data().name) {
+                result.push({
+                    description: doc.get("description"),
+                    communities: doc.get("communities"),
+                    imgs: doc.get("imgs"),
+                    requirements: doc.get("requirements"),
+                    videos: doc.get("videos"),
+                    numerics: doc.get("numerics"),
+                });
+            }
+            setresult(result);
+        }))
+
+        snapshot.collection('Reviews').get().then((querySnapshot) => {
+            querySnapshot.forEach(doc => {
+                tempreviews.push({
+                    isPositive: doc.get('isPositive'),
+                    name: doc.get('name'),
+                    years: doc.get('years'),
+                    achiev: doc.get('achiev'),
+                    content: doc.get('content'),
+                    data: doc.get('data'),
+                    like: doc.get('like'),
+                    photourl: doc.get('photourl')
+                })
+                if (doc.get('name') == username) {
+                    setText(doc.get('content'));
+                    setRecommend(doc.get('isPositive'));
+                    setRange(doc.get('data'));
+                }
+            })
+            setReviewlist(tempreviews);
+        })
+
+    }, []);
 
     return (
         <div id="progressdocument">
@@ -417,16 +532,16 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
                                 </ButtonGroup>
                             </Form.Group>
                             <Form.Group controlId="MMP-range">
-                                <Form.Label id="MMP-reviews-formlabel">Easy to start</Form.Label>
-                                <RangeSlider value={range[0]} max={10} step={1} variant='success' onChange={e => setRange([e.target.value, range[1], range[2], range[3], range[4]])} />
-                                <Form.Label id="MMP-reviews-formlabel">Cost-effective</Form.Label>
-                                <RangeSlider value={range[1]} max={10} step={1} variant='success' onChange={e => setRange([range[0], e.target.value, range[2], range[3], range[4]])} />
-                                <Form.Label id="MMP-reviews-formlabel">Schedule-flexible</Form.Label>
-                                <RangeSlider value={range[2]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], e.target.value, range[3], range[4]])} />
-                                <Form.Label id="MMP-reviews-formlabel">Safe</Form.Label>
-                                <RangeSlider value={range[3]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], range[2], e.target.value, range[4]])} />
-                                <Form.Label id="MMP-reviews-formlabel">Good for health</Form.Label>
-                                <RangeSlider value={range[4]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], range[2], range[3], e.target.value])} />
+                            <Form.Label id="MMP-reviews-formlabel">Easy to start</Form.Label>
+                                    <RangeSlider value={range[0]} max={10} step={1} variant='success' onChange={e => setRange([parseInt(e.target.value), range[1], range[2], range[3], range[4]])} />
+                                    <Form.Label id="MMP-reviews-formlabel">Cost-effective</Form.Label>
+                                    <RangeSlider value={range[1]} max={10} step={1} variant='success' onChange={e => setRange([range[0], parseInt(e.target.value), range[2], range[3], range[4]])} />
+                                    <Form.Label id="MMP-reviews-formlabel">Schedule-flexible</Form.Label>
+                                    <RangeSlider value={range[2]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], parseInt(e.target.value), range[3], range[4]])} />
+                                    <Form.Label id="MMP-reviews-formlabel">Safe</Form.Label>
+                                    <RangeSlider value={range[3]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], range[2], parseInt(e.target.value), range[4]])} />
+                                    <Form.Label id="MMP-reviews-formlabel">Good for health</Form.Label>
+                                    <RangeSlider value={range[4]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], range[2], range[3], parseInt(e.target.value)])} />
                             </Form.Group>
                         </Form>
                     </Modal.Body>
@@ -457,29 +572,29 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
                 </Modal>
                 <h3>Positive Opinions</h3>
                 <div id="MMP-reviews-positive">
-                    {reviewlist.map(review => {
-                        if (review['isPositive']) {
-                            if (review['isMe']) {
-                                return <Review isPositive={true} isMe={true} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
+                    {reviewlist.map(rev => {
+                            if (rev['isPositive']) {
+                                if (rev['name'] == username) {
+                                    return <Review isPositive={true} isMe={true} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
+                                }
+                                else {
+                                    return <Review isPositive={true} isMe={false} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
+                                }
                             }
-                            else {
-                                return <Review isPositive={true} isMe={false} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']} photourl={review['photourl']}/>
-                            }
-                        }
-                    })}
+                        })}
                 </div>
                 <h3>Negative Opinions</h3>
                 <div id="MMP-reviews-negative">
-                    {reviewlist.map(review => {
-                        if (!review['isPositive']) {
-                            if (review['isMe']) {
-                                return <Review isPositive={false} isMe={true} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
+                    {reviewlist.map(rev => {
+                            if (!rev['isPositive']) {
+                                if (rev['name'] == username) {
+                                    return <Review isPositive={false} isMe={true} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
+                                }
+                                else {
+                                    return <Review isPositive={false} isMe={false} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
+                                }
                             }
-                            else {
-                                return <Review isPositive={false} isMe={false} name={review['name']} years={review['years']} achiev={review['achiev']} content={review['content']} data={review['data']} like={review['like']} photourl={review['photourl']}/>
-                            }
-                        }
-                    })}
+                        })}
                 </div>
             </div>
         </div>

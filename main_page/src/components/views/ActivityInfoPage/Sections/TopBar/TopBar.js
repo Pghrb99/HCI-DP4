@@ -10,6 +10,7 @@ import {db} from 'firebase.js';
 
 const TopBar = ({docId, isSignedIn, userName, removeReview, submit, setSubmit, ongoing, setOngoing, complete, setComplete}) => {
     const [currentDoc, setCurrentDoc] = useState();
+
     const [start, setStart] = useState(false);
     const [cancel, setCancel] = useState(false);
     
@@ -43,11 +44,12 @@ const TopBar = ({docId, isSignedIn, userName, removeReview, submit, setSubmit, o
         })
     }, []);
 
+
     return (
         <div id="AIP-nav-container" style={currentDoc && {backgroundImage: `url(${currentDoc.coverImg.src})`}}>
             <Pagination variant="success" id="AIP-label">
                 <Pagination.Item id="AIP-info-label" variant="success" active={true}>Activity Information</Pagination.Item>
-                <Pagination.Item id="AIP-prog-label" variant="success" active={false} disabled={!ongoing}><Link to={"/myprogress"} style={{color: "rgb(77, 163, 77)"}}>My Progress</Link></Pagination.Item>
+                <Pagination.Item id="AIP-prog-label" variant="success" active={false} disabled={!ongoing}><Link to={"/myprogress"} style={{color: "rgb(77, 163, 77)"}}><div>My Progress</div></Link></Pagination.Item>
                 {/*isSignedIn && 추가 필요*/}
             </Pagination>
             <div className="align-self-end">
@@ -68,7 +70,7 @@ const TopBar = ({docId, isSignedIn, userName, removeReview, submit, setSubmit, o
                 }
             </div>
             <div className="align-self-center" id="AIP-activity-name">
-            {currentDoc && currentDoc.name}
+                {currentDoc && currentDoc.name}
             </div>
             <div className="align-self-start" id="AIP-tags">
                 <div id="AIP-reltags" style={{width:'50%'}}>

@@ -14,6 +14,7 @@ const ActivityInfoPage = ({achievlist, setAchievlist, reviewlist, addReview, rem
     const docId = location.state.docId;
     const {currentUser} = useAuth();
 
+
     return (
         <div id="ActivityInfoPage">
             <Sidemenu />
@@ -44,6 +45,7 @@ const ActivityInfoPage = ({achievlist, setAchievlist, reviewlist, addReview, rem
                 setOngoing={setOngoing} 
                 complete={complete} 
                 setComplete={setComplete}/>
+
             </div>
             <GoTop/>
         </div>
