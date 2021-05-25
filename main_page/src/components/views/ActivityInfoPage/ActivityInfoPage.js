@@ -11,7 +11,7 @@ import { useLocation } from 'react-router'
 const ActivityInfoPage = ({achievlist, setAchievlist, setTags, reviewlist, addReview, removeReview, submit, setSubmit, ongoing, setOngoing, complete, setComplete}) => {
     const location = useLocation();
     const name1 = location.state;
-    const data = location.state.chartData;
+    const data = location.state.numerics;
     const name = location.state.name;
     const docId = location.state.docId;
     const tags = [];

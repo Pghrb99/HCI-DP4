@@ -2,9 +2,6 @@ import React, {useState, useEffect} from 'react';
 import { ListGroup, Badge, Button, ButtonGroup, ToggleButton, Table, Modal, Form } from 'react-bootstrap';
 import RangeSlider from 'react-bootstrap-range-slider';
 import './InfoDocument.scss';
-import img1 from '../imgs/ice_hockey.jpg'
-import img2 from '../imgs/ice_hockey2.png'
-import img3 from '../imgs/ice_hockey3.png'
 import Review from '../Review/Review'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faPlus, faChevronCircleDown, faChevronCircleUp, faPencilAlt } from "@fortawesome/free-solid-svg-icons"
@@ -119,10 +116,11 @@ const InfoDocument = ({ docId, activityname, achievlist, setAchievlist, data, re
             if(activityname == doc.data().name){
                 result.push({ 
                     description : doc.get("description"),
-                    Communities : doc.get("Communities"),
+                    communities : doc.get("communities"),
                     imgs : doc.get("imgs"),
                     requirements : doc.get("requirements"),
-                    videos : doc.get("videos")
+                    videos : doc.get("videos"),
+                    numerics: doc.get("numerics")
                 });
             }
             console.log(result[0])
@@ -143,27 +141,27 @@ const InfoDocument = ({ docId, activityname, achievlist, setAchievlist, data, re
                 <ListGroup id="AIP-numerics-list" horizontal>
                     <ListGroup.Item>
                         <div class="AIP-numerics-subtitle">Easy to start</div>
-                        <div class="AIP-numerics-numbers">{data[0]} / 10</div>
+                        <div class="AIP-numerics-numbers">{resultdata[0].numerics[0]} / 10</div>
                         <div class="AIP-numerics-radius"></div>
                     </ListGroup.Item>
                     <ListGroup.Item>
                         <div class="AIP-numerics-subtitle">Cost-effective</div>
-                        <div class="AIP-numerics-numbers">{data[1]} / 10</div>
+                        <div class="AIP-numerics-numbers">{resultdata[0].numerics[1]} / 10</div>
                         <div class="AIP-numerics-radius"></div>
                     </ListGroup.Item>
                     <ListGroup.Item>
                         <div class="AIP-numerics-subtitle">Schedule-flexible</div>
-                        <div class="AIP-numerics-numbers">{data[2]} / 10</div>
+                        <div class="AIP-numerics-numbers">{resultdata[0].numerics[2]} / 10</div>
                         <div class="AIP-numerics-radius"></div>
                     </ListGroup.Item>
                     <ListGroup.Item>
                         <div class="AIP-numerics-subtitle">Safe</div>
-                        <div class="AIP-numerics-numbers">{data[3]} / 10</div>
+                        <div class="AIP-numerics-numbers">{resultdata[0].numerics[3]} / 10</div>
                         <div class="AIP-numerics-radius"></div>
                     </ListGroup.Item>
                     <ListGroup.Item>
                         <div class="AIP-numerics-subtitle">Good for health</div>
-                        <div class="AIP-numerics-numbers">{data[4]} / 10</div>
+                        <div class="AIP-numerics-numbers">{resultdata[0].numerics[4]} / 10</div>
                         <div class="AIP-numerics-radius"></div>
                     </ListGroup.Item>
                 </ListGroup>
@@ -334,8 +332,8 @@ const InfoDocument = ({ docId, activityname, achievlist, setAchievlist, data, re
                     <h2 style={{float:'left'}}>Communities</h2>
                     <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing}><FontAwesomeIcon icon={faEdit} style={{marginRight: "10px"}}/>Edit Requirments</Button>
                 </div>
-                <a target="_blank" href={resultdata[0].Communities.link[0].src} class="AIP-article">{resultdata[0].Communities.link[0].title}</a>
-                <a target="_blank" href={resultdata[0].Communities.link[1].src} class="AIP-article">{resultdata[0].Communities.link[1].title}</a>
+                <a target="_blank" href={resultdata[0].communities.links[0].src} class="AIP-article">{resultdata[0].communities.links[0].title}</a>
+                <a target="_blank" href={resultdata[0].communities.links[1].src} class="AIP-article">{resultdata[0].communities.links[1].title}</a>
                 <Table bordered hover id="AIP-communities-table">
                     <thead>
                         <tr>
@@ -348,21 +346,21 @@ const InfoDocument = ({ docId, activityname, achievlist, setAchievlist, data, re
                     <tbody>
                         <tr>
                             <td>1</td>
-                            <td>{resultdata[0].Communities.table[0].ClubName}</td>
-                            <td>{resultdata[0].Communities.table[0].Region}</td>
-                            <td>{resultdata[0].Communities.table[0].Contact}</td>
+                            <td>{resultdata[0].communities.table[0].clubName}</td>
+                            <td>{resultdata[0].communities.table[0].region}</td>
+                            <td>{resultdata[0].communities.table[0].contact}</td>
                         </tr>
                         <tr>
                             <td>2</td>
-                            <td>{resultdata[0].Communities.table[1].ClubName}</td>
-                            <td>{resultdata[0].Communities.table[1].Region}</td>
-                            <td>{resultdata[0].Communities.table[1].Contact}</td>
+                            <td>{resultdata[0].communities.table[1].clubName}</td>
+                            <td>{resultdata[0].communities.table[1].region}</td>
+                            <td>{resultdata[0].communities.table[1].contact}</td>
                         </tr>
                         <tr>
                             <td>3</td>
-                            <td>{resultdata[0].Communities.table[2].ClubName}</td>
-                            <td>{resultdata[0].Communities.table[2].Region}</td>
-                            <td>{resultdata[0].Communities.table[2].Contact}</td>
+                            <td>{resultdata[0].communities.table[2].clubName}</td>
+                            <td>{resultdata[0].communities.table[2].region}</td>
+                            <td>{resultdata[0].communities.table[2].contact}</td>
                         </tr>
                     </tbody>
                 </Table>

@@ -7,7 +7,7 @@ import bg from '../imgs/hockey_world_1400.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 
-const TopBar = ({ activityname, tags, isSignedIn, name, removeReview, submit, setSubmit, ongoing, setOngoing, complete, setComplete }) => {
+const TopBar = ({ activityname, tags, setTags, isSignedIn, name, removeReview, submit, setSubmit, ongoing, setOngoing, complete, setComplete }) => {
     const [start, setStart] = useState(false);
     const [cancel, setCancel] = useState(false);
     
@@ -62,9 +62,9 @@ const TopBar = ({ activityname, tags, isSignedIn, name, removeReview, submit, se
                 <div id="AIP-reltags" style={{width:'50%'}}>
                     <span >Related tags : </span>
                     {ongoing ?
-                        <ActivityTags tags={tags}/>
+                        <ActivityTags tags={tags} setTags={setTags} plusbutton={true}/>
                         :
-                        <ActivityTags tags={tags}/>
+                        <ActivityTags tags={tags} setTAgs={setTags} plusbutton={false}/>
                     }
                 </div>
                 { !ongoing && <Button id="AIP-topbar-start" onClick={clickStart}>Start!</Button> }
