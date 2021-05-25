@@ -8,7 +8,7 @@ import { faEdit, faPlus, faChevronCircleDown, faChevronCircleUp, faPencilAlt } f
 import { db } from 'firebase.js'
 
 const InfoDocument = ({ docId, achievlist, setAchievlist, submit, setSubmit, ongoing, setOngoing }) => {
-    const username = "Changhae Lee"
+    const username = "Changhae Lee";
     const [currentDoc, setCurrentDoc] = useState();
     const [resultdata, setresult] = useState([]);
     const [review, setReview] = useState(false);
@@ -53,7 +53,6 @@ const InfoDocument = ({ docId, achievlist, setAchievlist, submit, setSubmit, ong
             setReviewlist(tempreviews);
         })
     }, []);
-
 
     const calculateCompleted = () => {
         var cnt = 0;
@@ -129,7 +128,7 @@ const InfoDocument = ({ docId, achievlist, setAchievlist, submit, setSubmit, ong
                 if (doc.get('name') == username) {
                     tempachiev = doc.get('achiev');
                     db.collection('Activities').doc(docId).collection('Reviews').doc(doc.id).delete();
-                    tempreviews.push({
+                    const rev = {
                         isPositive: recommend,
                         name: username,
                         years: 1,
@@ -138,7 +137,9 @@ const InfoDocument = ({ docId, achievlist, setAchievlist, submit, setSubmit, ong
                         data: range,
                         like: 0,
                         photourl: imgs()
-                    })
+                    };
+                    tempreviews.push(rev)
+                    db.collection('Activities').doc(docId).collection('Reviews').doc().set(rev);
                 }
                 else {
                     tempreviews.push({

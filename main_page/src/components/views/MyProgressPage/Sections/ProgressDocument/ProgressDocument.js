@@ -9,7 +9,8 @@ import { faPlus, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { db } from '../../../../../firebase'
 
 const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, submit, setSubmit }) => {
-    const username = "Changhae Lee"
+    const username = "Changhae Lee";
+    const [currentDoc, setCurrentDoc] = useState();
     const [resultdata, setresult] = useState([]);
     const [reviewlist, setReviewlist] = useState([]);
     const [tempselect, setTempselect] = useState(new Array(achievlist.length).fill(false));
@@ -19,10 +20,45 @@ const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, subm
     const [attained, setAttained] = useState("");
     const [tempurl, setTempurl]= useState('');
     const [review, setReview] = useState(false);
-    const [text, setText] = useState(submit ? reviewlist[0]['content'] : "");
-    const [recommend, setRecommend] = useState(submit ? reviewlist[0]['isPositive'] : true);
-    const [range, setRange] = useState(submit ? reviewlist[0]['data'] : [5, 5, 5, 5, 5]);
+    const [text, setText] = useState(""); // useState(submit ? reviewlist[0]['content'] : "");
+    const [recommend, setRecommend] = useState(true); // useState(submit ? reviewlist[0]['isPositive'] : true);
+    const [range, setRange] = useState([5, 5, 5, 5, 5]); // useState(submit ? reviewlist[0]['data'] : [5, 5, 5, 5, 5]);
     const [remove, setRemove] = useState(false);
+
+    useEffect(() => {
+        db.collection("Activities").doc(docId).get().then((doc) => {
+            setCurrentDoc({
+                imgs: doc.get("imgs"),
+                videos: doc.get("videos"),
+                description: doc.get("description"),
+                requirements: doc.get("requirements"),
+                numerics: doc.get("numerics"),
+                communities: doc.get("communities"),
+            });
+        })
+
+        let tempreviews = [];
+        db.collection('Activities').doc(docId).collection('Reviews').get().then((querySnapshot) => {
+            querySnapshot.forEach(doc => {
+                tempreviews.push({
+                    isPositive: doc.get('isPositive'),
+                    name: doc.get('name'),
+                    years: doc.get('years'),
+                    achiev: doc.get('achiev'),
+                    content: doc.get('content'),
+                    data: doc.get('data'),
+                    like: doc.get('like'),
+                    photourl: doc.get('photourl')
+                })
+                if (doc.get('name') == username) {
+                    setText(doc.get('content'));
+                    setRecommend(doc.get('isPositive'));
+                    setRange(doc.get('data'));
+                }
+            })
+            setReviewlist(tempreviews);
+        })
+    }, []);
 
     const calculateTotal = () => {
         var cnt = 0;
@@ -163,7 +199,7 @@ const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, subm
                 if (doc.get('name') == username) {
                     tempachiev = doc.get('achiev');
                     db.collection('Activities').doc(docId).collection('Reviews').doc(doc.id).delete();
-                    tempreviews.push({
+                    const rev = {
                         isPositive: recommend,
                         name: username,
                         years: 1,
@@ -172,7 +208,9 @@ const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, subm
                         data: range,
                         like: 0,
                         photourl: imgs()
-                    })
+                    };
+                    tempreviews.push(rev)
+                    db.collection('Activities').doc(docId).collection('Reviews').doc().set(rev);
                 }
                 else {
                     tempreviews.push({
@@ -199,8 +237,6 @@ const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, subm
             setTempurl(reader.result);
         }
         reader.readAsDataURL(f);
-        // window.scrollTo({top:, behavior: 'smooth'});
-        // document.getElementById('MMP-prove-yes').scrollIntoView();
     }
 
     const imgs = () => {
