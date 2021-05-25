@@ -85,7 +85,7 @@ const TagSearchBar = ({tags, setTags, onClick}) => {
                 options={options}
                 onSearch={onSearch}
                 onSelect={onTextSelect}
-                open={text.length >= 2}
+                open={text.length >= 1}
                 defaultActiveFirstOption={true}
                 >
                     <Input

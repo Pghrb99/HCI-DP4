@@ -11,8 +11,8 @@ export default function PrioritySelect({onPriorityChange}) {
       <Option value={0}>Easy to start</Option>
       <Option value={1}>Cost-effective</Option>
       <Option value={2}>Schedule-flexible</Option>
-      <Option value={3}>Good for health</Option>
-      <Option value={4}>Safe</Option>
+      <Option value={3}>Safe</Option>
+      <Option value={4}>Good for health</Option>
     </Select>
     </div>
   );

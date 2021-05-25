@@ -75,9 +75,9 @@ const HotActivityPage = () => {
                 </TabPane>
                 <TabPane tab="Schedule-flexible" key={2} className="TabPane">
                 </TabPane>
-                <TabPane tab="Good for health" key={3} className="TabPane">
+                <TabPane tab="Safe" key={3} className="TabPane">
                 </TabPane>
-                <TabPane tab="Safe" key={4} className="TabPane">
+                <TabPane tab="Good for health" key={4} className="TabPane">
                 </TabPane>
             </Tabs>
             <CardContainer cards={cards}/>

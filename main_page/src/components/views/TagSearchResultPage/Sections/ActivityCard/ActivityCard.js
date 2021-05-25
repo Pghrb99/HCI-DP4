@@ -21,7 +21,7 @@ const ActivityCard = ({img, title, tags, chartData}) => {
     placement="rightTop"
     >
 
-      <Link to={"/info"}>
+      {/* <Link to={"/info"}> */}
         <Card
         className="Card"
         hoverable
@@ -30,7 +30,7 @@ const ActivityCard = ({img, title, tags, chartData}) => {
           <Meta title={<Title level={4} ellipsis={true}>{title}</Title>}/>
           <ActivityTags tags={tags}/>
         </Card>
-      </Link>
+      {/* </Link> */}
     </Popover>
   );
 }
