@@ -284,9 +284,12 @@ const InfoDocument = ({ docId, achievlist, setAchievlist, submit, setSubmit, ong
                         <h2 style={{ float: 'left' }}>Requirments</h2>
                         <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Edit Requirments</Button>
                     </div>
+                    <ul>
                     {currentDoc.requirements.map((content, index) => (
-                        <div class="AIP-article">{content}</div>
+                        <li class="AIP-article">{content}</li>
                     ))}
+                    </ul>
+                    
                 </div>
 
                     <div id="AIP-achievements" style={{ marginTop: '30px' }}>
