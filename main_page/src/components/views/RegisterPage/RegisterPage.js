@@ -80,103 +80,105 @@ function RegisterPage(props) {
   const [autoCompleteResult, setAutoCompleteResult] = useState([]);
 
   return (
-    <Layout style={{backgroundColor: "rgb(247, 247, 247)"}}>
-      <Header style={{height: "80px", backgroundColor: "rgb(247, 247, 247)"}}>
-        <Sidemenu />
-        
-      </Header>
-
-      <Content className="container">
-          <Row>
-            <Col xs={{span: 16, offset: 4}}  sm={{span: 8, offset: 8}}>
-              <Link to={"/"} className="logo"> <img src={logo}/> </Link>
-            </Col>
-          </Row>
+    <>
+      <Sidemenu />
+      <Layout style={{backgroundColor: "rgb(247, 247, 247)"}}>
+        <Header style={{height: "80px", backgroundColor: "rgb(247, 247, 247)"}}>
           
-          <Form
-          {...formItemLayout}
-          form={form}
-          name="register"
-          onFinish={onFinish}
-          initialValues={{
-          }}
-          scrollToFirstError
-          >
-          <Form.Item
-            name="email"
-            label="E-mail"
-            rules={[
-              {
-                type: 'email',
-                message: 'The input is not valid E-mail!',
-              },
-              {
-                required: true,
-                message: 'Please input your E-mail!',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
+        </Header>
 
-          <Form.Item
-            name="password"
-            label="Password"
-            validateFirst="parallel"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your password!',
-              },
-              {              
-                min: 6,
-                message: 'Use 6 characters or more for your password',
-              },
-            ]}
-            hasFeedback
-          >
-            <Input.Password />
-          </Form.Item>
-
-          <Form.Item
-            name="confirm"
-            label="Confirm Password"
-            dependencies={['password']}
-            hasFeedback
-            rules={[
-              {
-                required: true,
-                message: 'Please confirm your password!',
-              },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (!value || getFieldValue('password') === value) {
-                    return Promise.resolve();
-                  }
-
-                  return Promise.reject(new Error('The two passwords that you entered do not match!'));
+        <Content className="container">
+            <Row>
+              <Col xs={{span: 16, offset: 4}}  sm={{span: 8, offset: 8}}>
+                <Link to={"/"} className="logo"> <img src={logo}/> </Link>
+              </Col>
+            </Row>
+            
+            <Form
+            {...formItemLayout}
+            form={form}
+            name="register"
+            onFinish={onFinish}
+            initialValues={{
+            }}
+            scrollToFirstError
+            >
+            <Form.Item
+              name="email"
+              label="E-mail"
+              rules={[
+                {
+                  type: 'email',
+                  message: 'The input is not valid E-mail!',
                 },
-              }),
-            ]}
-          >
-            <Input.Password />
-          </Form.Item>
+                {
+                  required: true,
+                  message: 'Please input your E-mail!',
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
 
-          <Form.Item {...tailFormItemLayout}>
-            <Space>
-              <Button disabled={loading} type="primary" htmlType="submit">
-                Register
-              </Button>
-              Or <Link to={"/login"}>log in now!</Link>
-            </Space>
+            <Form.Item
+              name="password"
+              label="Password"
+              validateFirst="parallel"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your password!',
+                },
+                {              
+                  min: 6,
+                  message: 'Use 6 characters or more for your password',
+                },
+              ]}
+              hasFeedback
+            >
+              <Input.Password />
+            </Form.Item>
 
-          </Form.Item>
-        </Form>
-      </Content>
-      <Footer style={{height: "80px", backgroundColor: "rgb(247, 247, 247)"}}>
-        {error && <Alert message={error} showIcon type="error" closable onClose={onClose}/>}
-      </Footer>
-    </Layout>
+            <Form.Item
+              name="confirm"
+              label="Confirm Password"
+              dependencies={['password']}
+              hasFeedback
+              rules={[
+                {
+                  required: true,
+                  message: 'Please confirm your password!',
+                },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue('password') === value) {
+                      return Promise.resolve();
+                    }
+
+                    return Promise.reject(new Error('The two passwords that you entered do not match!'));
+                  },
+                }),
+              ]}
+            >
+              <Input.Password />
+            </Form.Item>
+
+            <Form.Item {...tailFormItemLayout}>
+              <Space>
+                <Button disabled={loading} type="primary" htmlType="submit">
+                  Register
+                </Button>
+                Or <Link to={"/login"}>log in now!</Link>
+              </Space>
+
+            </Form.Item>
+          </Form>
+        </Content>
+        <Footer style={{height: "80px", backgroundColor: "rgb(247, 247, 247)"}}>
+          {error && <Alert message={error} showIcon type="error" closable onClose={onClose}/>}
+        </Footer>
+      </Layout>
+    </>
 
   );
 }
