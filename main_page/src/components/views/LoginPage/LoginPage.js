@@ -5,7 +5,7 @@ import { useAuth } from '../../../contexts/AuthContext'
 import './LoginPage.scss';
 import Sidemenu from '../SideMenu/Sidemenu'
 import {  Form, Input, Button, Checkbox, Space, Card, Layout, Alert, Row, Col  } from 'antd';
-import {  UserOutlined, LockOutlined  } from '@ant-design/icons';
+import {  MailOutlined, LockOutlined  } from '@ant-design/icons';
 import logo from './Sections/imgs/logo.svg'
 import { useCookies } from 'react-cookie';
 
@@ -59,9 +59,9 @@ function LoginPage(props) {
     try {
       setError('')
       setLoading(true)
-      await signIn(values.username, values.password);
+      await signIn(values.email, values.password);
       if(values.remember){
-          setCookie('rememberEmail', values.username, {maxAge: 2000});
+          setCookie('rememberEmail', values.email, {maxAge: 2000});
       } else {
         removeCookie('rememberEmail');
       }
@@ -82,8 +82,8 @@ function LoginPage(props) {
         
         <Content className="container">
           <Row>
-            <Col xs={{span: 16, offset: 4}}  sm={{span: 8, offset: 8}}>
-              <Link to={"/"} className="logo"> <img src={logo}/> </Link>
+            <Col xs={{span: 12, offset: 6}}  sm={{span: 8, offset: 8}}>
+              <Link to={"/"}> <img className="logo" src={logo}/> </Link>
             </Col>
           </Row>
           <Form
@@ -92,15 +92,15 @@ function LoginPage(props) {
             className="login-form"
             initialValues={{ 
               remember: true,
-              username: cookies.rememberEmail,
+              email: cookies.rememberEmail,
             }}
             onFinish={onFinish}
           >
             <Form.Item
-              name="username"
-              rules={[{ required: true, message: 'Please input your Username!' }]}
+              name="email"
+              rules={[{ required: true, message: 'Please input your E-mail!' }]}
             >
-              <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+              <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="E-mail" />
             </Form.Item>
             <Form.Item
               name="password"

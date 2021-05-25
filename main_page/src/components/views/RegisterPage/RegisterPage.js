@@ -8,7 +8,8 @@ import Sidemenu from '../SideMenu/Sidemenu'
 import {  EyeInvisibleOutlined, EyeTwoTone, UserOutlined  } from '@ant-design/icons';
 import logo from './Sections/imgs/logo.svg'
 
-import {   
+import {
+  DatePicker,   
   Alert,
   Layout, 
   Space,
@@ -27,6 +28,7 @@ import {
 
 const { Header, Footer, Sider, Content } = Layout;
 const { Option } = Select;
+const { TextArea } = Input;
 const formItemLayout = {
   labelCol: {
     xs: { span: 24,
@@ -53,6 +55,9 @@ const tailFormItemLayout = {
     },
   },
 };
+const config = {
+  rules: [{ type: 'object', required: true, message: 'Please select time!' }],
+};
 
 function RegisterPage(props) {
   const [form] = Form.useForm();
@@ -63,7 +68,11 @@ function RegisterPage(props) {
   const onClose = () => {
       setError('')
   }
-  const onFinish = async (values) => {
+  const onFinish = async (fieldsValue) => {
+    const values = {
+      ...fieldsValue,
+      'birthday': fieldsValue['birthday'].format('YYYY-MM-DD'), // values['birthday']
+    }
     try {
       setError('')
       setLoading(true)
@@ -75,7 +84,14 @@ function RegisterPage(props) {
     setLoading(false)
     console.log('Received values of form: ', values);
   };
-
+  const prefixSelector = (
+    <Form.Item name="prefix" noStyle>
+      <Select style={{ width: 70 }}>
+        <Option value="81">+81</Option>
+        <Option value="82">+82</Option>
+      </Select>
+    </Form.Item>
+  );
 
   const [autoCompleteResult, setAutoCompleteResult] = useState([]);
 
@@ -89,8 +105,8 @@ function RegisterPage(props) {
 
         <Content className="container">
             <Row>
-              <Col xs={{span: 16, offset: 4}}  sm={{span: 8, offset: 8}}>
-                <Link to={"/"} className="logo"> <img src={logo}/> </Link>
+              <Col xs={{span: 12, offset: 6}}  sm={{span: 8, offset: 8}}>
+                <Link to={"/"}> <img className="logo" src={logo}/> </Link>
               </Col>
             </Row>
             
@@ -100,6 +116,7 @@ function RegisterPage(props) {
             name="register"
             onFinish={onFinish}
             initialValues={{
+              prefix: '82'
             }}
             scrollToFirstError
             >
@@ -161,6 +178,43 @@ function RegisterPage(props) {
               ]}
             >
               <Input.Password />
+            </Form.Item>
+
+
+            <Form.Item
+              name="name"
+              label="name"
+              rules={[{ required: true, message: 'Please input your nickname!', whitespace: true }]}
+            >
+              <Input />
+            </Form.Item>
+            
+            <Form.Item name="birthday" label="Birthday" {...config}>
+              <DatePicker />
+            </Form.Item>
+
+            <Form.Item
+              name="gender"
+              label="Gender"
+              rules={[{ required: true, message: 'Please select gender!' }]}
+            >
+              <Select placeholder="select your gender">
+                <Option value="male">Male</Option>
+                <Option value="female">Female</Option>
+                <Option value="other">Other</Option>
+              </Select>
+            </Form.Item>
+
+            <Form.Item
+              name="phone"
+              label="Phone Number"
+              rules={[{ required: true, message: 'Please input your phone number!' }]}
+            >
+              <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
+            </Form.Item>
+
+            <Form.Item name="aboutme" label="About me">
+              <TextArea rows={3}/>
             </Form.Item>
 
             <Form.Item {...tailFormItemLayout}>
