@@ -335,7 +335,7 @@ const InfoDocument = ({ docId, achievlist, setAchievlist, reviewlist, addReview,
                     <h2 style={{float:'left'}}>Communities</h2>
                     <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing}><FontAwesomeIcon icon={faEdit} style={{marginRight: "10px"}}/>Edit Requirments</Button>
                 </div>
-                {currentDoc.communities.links.map((link, index) => {
+                {currentDoc.communities.links.map((link, index) => (
                     <a 
                     key={index}
                     target="_blank"
@@ -343,7 +343,7 @@ const InfoDocument = ({ docId, achievlist, setAchievlist, reviewlist, addReview,
                     class="AIP-article">
                         {link.title}
                     </a>
-                })}
+                ))}
                 <Table bordered hover id="AIP-communities-table">
                     <thead>
                         <tr>
