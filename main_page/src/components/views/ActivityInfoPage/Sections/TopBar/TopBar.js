@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Nav, Modal, Button, Pagination } from 'react-bootstrap';
-import { Link, useLoca } from "react-router-dom";
+import { Link} from "react-router-dom";
 import ActivityTags from '../../../TagSearchResultPage/Sections/ActivityTags/ActivityTags'
 import './TopBar.scss'
 import bg from '../imgs/hockey_world_1400.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
+import {db} from 'firebase.js';
 
-const TopBar = ({ activityname, tags, isSignedIn, name, removeReview, submit, setSubmit, ongoing, setOngoing, complete, setComplete }) => {
+const TopBar = ({docId, isSignedIn, userName, removeReview, submit, setSubmit, ongoing, setOngoing, complete, setComplete}) => {
+    const [currentDoc, setCurrentDoc] = useState();
     const [start, setStart] = useState(false);
     const [cancel, setCancel] = useState(false);
     
@@ -31,8 +33,18 @@ const TopBar = ({ activityname, tags, isSignedIn, name, removeReview, submit, se
 
     const clickComplete = () => setComplete(true);
 
+    useEffect(() => {
+        db.collection("Activities").doc(docId).get().then((doc) => {
+            setCurrentDoc({
+                name: doc.get("name"),
+                tags: Object.keys(doc.get("tags")).map(x => ({name: x})),
+                coverImg: doc.get("coverImg")
+            })
+        })
+    }, []);
+
     return (
-        <div id="AIP-nav-container" style={{backgroundImage: `url(${bg})`}}>
+        <div id="AIP-nav-container" style={currentDoc && {backgroundImage: `url(${currentDoc.coverImg.src})`}}>
             <Pagination variant="success" id="AIP-label">
                 <Pagination.Item id="AIP-info-label" variant="success" active={true}>Activity Information</Pagination.Item>
                 <Pagination.Item id="AIP-prog-label" variant="success" active={false} disabled={!ongoing}><Link to={"/myprogress"} style={{color: "rgb(77, 163, 77)"}}>My Progress</Link></Pagination.Item>
@@ -41,7 +53,7 @@ const TopBar = ({ activityname, tags, isSignedIn, name, removeReview, submit, se
             <div className="align-self-end">
                 {isSignedIn ?
                     <Nav className="mt-3">
-                        <Nav.Link className="mr-4"><span className="nav-text" id="nav-userName">{name}</span></Nav.Link>
+                        <Nav.Link className="mr-4"><span className="nav-text" id="nav-userName">{userName}</span></Nav.Link>
                         <Nav.Link className="mr-5"><span className="nav-text" id="nav-signOut">Sign Out</span></Nav.Link>
                     </Nav>
                     :
@@ -56,15 +68,15 @@ const TopBar = ({ activityname, tags, isSignedIn, name, removeReview, submit, se
                 }
             </div>
             <div className="align-self-center" id="AIP-activity-name">
-            {activityname}
+            {currentDoc && currentDoc.name}
             </div>
             <div className="align-self-start" id="AIP-tags">
                 <div id="AIP-reltags" style={{width:'50%'}}>
                     <span >Related tags : </span>
                     {ongoing ?
-                        <ActivityTags tags={tags}/>
+                        currentDoc && <ActivityTags tags={currentDoc.tags}/>
                         :
-                        <ActivityTags tags={tags}/>
+                        currentDoc && <ActivityTags tags={currentDoc.tags}/>
                     }
                 </div>
                 { !ongoing && <Button id="AIP-topbar-start" onClick={clickStart}>Start!</Button> }

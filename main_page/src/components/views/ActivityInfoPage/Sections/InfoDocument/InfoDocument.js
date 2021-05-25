@@ -2,16 +2,14 @@ import React, {useState, useEffect} from 'react';
 import { ListGroup, Badge, Button, ButtonGroup, ToggleButton, Table, Modal, Form } from 'react-bootstrap';
 import RangeSlider from 'react-bootstrap-range-slider';
 import './InfoDocument.scss';
-import img1 from '../imgs/ice_hockey.jpg'
-import img2 from '../imgs/ice_hockey2.png'
-import img3 from '../imgs/ice_hockey3.png'
 import Review from '../Review/Review'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faPlus, faChevronCircleDown, faChevronCircleUp, faPencilAlt } from "@fortawesome/free-solid-svg-icons"
-import {db} from '../../../../../firebase'
+import {db} from 'firebase.js'
 
-const InfoDocument = ({ docId, activityname, achievlist, setAchievlist, data, reviewlist, addReview, removeReview, submit, setSubmit, ongoing, setOngoing }) => {
+const InfoDocument = ({ docId, achievlist, setAchievlist, reviewlist, addReview, removeReview, submit, setSubmit, ongoing, setOngoing}) => {
     
+    const [currentDoc, setCurrentDoc] = useState();
     const [resultdata, setresult] = useState([]);
     const [review, setReview] = useState(false);
     const [text, setText] = useState(submit ? reviewlist[0]['content'] : "");
@@ -19,6 +17,20 @@ const InfoDocument = ({ docId, activityname, achievlist, setAchievlist, data, re
     const [range, setRange] = useState(submit ? reviewlist[0]['data'] : [5, 5, 5, 5, 5]);
     const [remove, setRemove] = useState(false);
     const [more, setMore] = useState(false);
+
+    useEffect(() => {
+        db.collection("Activities").doc(docId).get().then((doc) => {
+            setCurrentDoc({
+                imgs: doc.get("imgs"),
+                videos: doc.get("videos"),
+                description: doc.get("description"),
+                requirements: doc.get("requirements"),
+                numerics: doc.get("numerics"),
+                communities: doc.get("communities"),
+            });
+        })
+    }, []);
+
 
     const calculateCompleted = () => {
         var cnt = 0;
@@ -68,7 +80,6 @@ const InfoDocument = ({ docId, activityname, achievlist, setAchievlist, data, re
                 res.push(achievlist[j]['photourl']);
             }
         }
-        console.log(res);
         return res;
     }
 
@@ -107,35 +118,7 @@ const InfoDocument = ({ docId, activityname, achievlist, setAchievlist, data, re
         setMore(!more);
     }
 
-    let result=[];
-    console.log(activityname);
-    console.log(docId);
-
-
-    useEffect(() => {
-
-    let snapshot = db.collection('Activities').doc(docId);
-    snapshot.get().then((doc => {
-            if(activityname == doc.data().name){
-                result.push({ 
-                    description : doc.get("description"),
-                    Communities : doc.get("Communities"),
-                    imgs : doc.get("imgs"),
-                    requirements : doc.get("requirements"),
-                    videos : doc.get("videos")
-                });
-            }
-            console.log(result[0])
-            setresult(result);
-            
-            
-        }))
-    }, []);
-
-
-
-
-    if(resultdata[0] != undefined){
+    if(typeof currentDoc != 'undefined'){
     return (
         <div id="infodocument">
             <div id="AIP-numerics">
@@ -143,27 +126,27 @@ const InfoDocument = ({ docId, activityname, achievlist, setAchievlist, data, re
                 <ListGroup id="AIP-numerics-list" horizontal>
                     <ListGroup.Item>
                         <div class="AIP-numerics-subtitle">Easy to start</div>
-                        <div class="AIP-numerics-numbers">{data[0]} / 10</div>
+                        <div class="AIP-numerics-numbers">{currentDoc.numerics[0]} / 10</div>
                         <div class="AIP-numerics-radius"></div>
                     </ListGroup.Item>
                     <ListGroup.Item>
                         <div class="AIP-numerics-subtitle">Cost-effective</div>
-                        <div class="AIP-numerics-numbers">{data[1]} / 10</div>
+                        <div class="AIP-numerics-numbers">{currentDoc.numerics[1]} / 10</div>
                         <div class="AIP-numerics-radius"></div>
                     </ListGroup.Item>
                     <ListGroup.Item>
                         <div class="AIP-numerics-subtitle">Schedule-flexible</div>
-                        <div class="AIP-numerics-numbers">{data[2]} / 10</div>
+                        <div class="AIP-numerics-numbers">{currentDoc.numerics[2]} / 10</div>
                         <div class="AIP-numerics-radius"></div>
                     </ListGroup.Item>
                     <ListGroup.Item>
                         <div class="AIP-numerics-subtitle">Safe</div>
-                        <div class="AIP-numerics-numbers">{data[3]} / 10</div>
+                        <div class="AIP-numerics-numbers">{currentDoc.numerics[3]} / 10</div>
                         <div class="AIP-numerics-radius"></div>
                     </ListGroup.Item>
                     <ListGroup.Item>
                         <div class="AIP-numerics-subtitle">Good for health</div>
-                        <div class="AIP-numerics-numbers">{data[4]} / 10</div>
+                        <div class="AIP-numerics-numbers">{currentDoc.numerics[4]} / 10</div>
                         <div class="AIP-numerics-radius"></div>
                     </ListGroup.Item>
                 </ListGroup>
@@ -171,15 +154,23 @@ const InfoDocument = ({ docId, activityname, achievlist, setAchievlist, data, re
             <div id="AIP-images" style={{ marginTop: '30px' }}>
                 <h2>Images</h2>
                 <ListGroup id="AIP-images-list" horizontal>
-                <ListGroup.Item><img src={ resultdata[0].imgs[0].src} class="AIP-images-img"></img></ListGroup.Item>
-                    <ListGroup.Item><img src={ resultdata[0].imgs[1].src} class="AIP-images-img"></img></ListGroup.Item>
-                    <ListGroup.Item><img src={ resultdata[0].imgs[2].src} class="AIP-images-img"></img></ListGroup.Item>
+                    {currentDoc.imgs.map((img, index) => 
+                        <ListGroup.Item key={index}>
+                            <img src={img.src} alt={img.alt} class="AIP-images-img" />
+                        </ListGroup.Item>
+                    )}
                 </ListGroup>
             </div>
             <div id="AIP-videos" style={{ marginTop: '30px' }}>
                 <h2>Videos</h2>
                 <div id="AIP-videos-youtube">
-                <iframe width="560" height="315" src={resultdata[0].videos[0].src} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe width="560" height="315"
+                    src={currentDoc.videos[0].src}
+                    alt={currentDoc.videos[0].alt}
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen>
+                </iframe>
                 </div>
             </div>
             <div id="AIP-description" style={{ marginTop: '30px' }}>
@@ -188,18 +179,28 @@ const InfoDocument = ({ docId, activityname, achievlist, setAchievlist, data, re
                     <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing}><FontAwesomeIcon icon={faEdit} style={{marginRight: "10px"}}/>Edit Description</Button>
                 </div>
                 <div class="AIP-article">
-                {resultdata[0].description.text}
+                    {currentDoc.description.text}
                 </div>
-                <a target="_blank" href={resultdata[0].description.links[0].src} class="AIP-article">{resultdata[0].description.links[0].title}</a>
-                <a target="_blank" href={resultdata[0].description.links[1].src} class="AIP-article">{resultdata[0].description.links[1].title}</a>
+                {currentDoc.description.links.map((link, index) => {
+                    return(
+                    <a 
+                    key={index}
+                    target="_blank"
+                    href={link.src}
+                    class="AIP-article">
+                        {link.title}
+                    </a>
+                    )
+                })}
             </div>
             <div id="AIP-requirments" style={{ marginTop: '30px' }}>
                 <div style={{width:'100%', display:'inline-block'}}>
                     <h2 style={{float:'left'}}>Requirments</h2>
                     <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing}><FontAwesomeIcon icon={faEdit} style={{marginRight: "10px"}}/>Edit Requirments</Button>
                 </div>
-                <div class="AIP-article">{resultdata[0].requirements[0]}</div>
-                <div class="AIP-article">{resultdata[0].requirements[1]}</div>
+                {currentDoc.requirements.map((content, index) => (
+                    <div class="AIP-article">{content}</div>
+                ))}
             </div>
             <div id="AIP-achievements" style={{ marginTop: '30px' }}>
                 <div style={{width:'100%', display:'inline-block'}}>
@@ -334,8 +335,15 @@ const InfoDocument = ({ docId, activityname, achievlist, setAchievlist, data, re
                     <h2 style={{float:'left'}}>Communities</h2>
                     <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing}><FontAwesomeIcon icon={faEdit} style={{marginRight: "10px"}}/>Edit Requirments</Button>
                 </div>
-                <a target="_blank" href={resultdata[0].Communities.link[0].src} class="AIP-article">{resultdata[0].Communities.link[0].title}</a>
-                <a target="_blank" href={resultdata[0].Communities.link[1].src} class="AIP-article">{resultdata[0].Communities.link[1].title}</a>
+                {currentDoc.communities.links.map((link, index) => {
+                    <a 
+                    key={index}
+                    target="_blank"
+                    href={link.src}
+                    class="AIP-article">
+                        {link.title}
+                    </a>
+                })}
                 <Table bordered hover id="AIP-communities-table">
                     <thead>
                         <tr>
@@ -346,24 +354,16 @@ const InfoDocument = ({ docId, activityname, achievlist, setAchievlist, data, re
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>{resultdata[0].Communities.table[0].ClubName}</td>
-                            <td>{resultdata[0].Communities.table[0].Region}</td>
-                            <td>{resultdata[0].Communities.table[0].Contact}</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>{resultdata[0].Communities.table[1].ClubName}</td>
-                            <td>{resultdata[0].Communities.table[1].Region}</td>
-                            <td>{resultdata[0].Communities.table[1].Contact}</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>{resultdata[0].Communities.table[2].ClubName}</td>
-                            <td>{resultdata[0].Communities.table[2].Region}</td>
-                            <td>{resultdata[0].Communities.table[2].Contact}</td>
-                        </tr>
+                        {currentDoc.communities.table.map(({clubName, region, contact}, index) => {
+                            return(
+                            <tr>
+                                <td>{index+1}</td>
+                                <td>{clubName}</td>
+                                <td>{region}</td>
+                                <td>{contact}</td>
+                            </tr>
+                            )
+                        })}
                     </tbody>
                 </Table>
             </div>

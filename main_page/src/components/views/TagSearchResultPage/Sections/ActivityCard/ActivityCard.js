@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import {useHistory} from "react-router";
 
 
-const ActivityCard = ({docId, key, img, title, tags, chartData}) => {
+const ActivityCard = ({docId, img, title, tags, chartData}) => {
   const history = useHistory();
 
   const { Meta } = Card;
@@ -17,12 +17,14 @@ const ActivityCard = ({docId, key, img, title, tags, chartData}) => {
     <RadarChart name={title} chartData={chartData} />
   );
 
-  const onTextPressEnter = () => {
-    (() => {history.push({
-        pathname: "/info",
-        state: {docId:docId, name:title,tags:tags,chartData:chartData }
-      })})();
-};
+  const onClick = () => {
+    history.push({
+      pathname: '/info',
+      state: {
+        docId: docId
+      }
+    });
+  }
 
   return (
     <Popover
@@ -36,7 +38,7 @@ const ActivityCard = ({docId, key, img, title, tags, chartData}) => {
         className="Card"
         hoverable
         cover={<img alt={img.alt} src={img.src} />}
-        onClick={onTextPressEnter}
+        onClick={onClick}
         >
           <Meta title={<Title level={4} ellipsis={true}>{title}</Title>}/>
           <ActivityTags tags={tags}/>
