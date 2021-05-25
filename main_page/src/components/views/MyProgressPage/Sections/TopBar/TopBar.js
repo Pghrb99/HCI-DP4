@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Nav, Modal, Button, Pagination } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import ActivityTags from '../../../TagSearchResultPage/Sections/ActivityTags/ActivityTags'
@@ -6,9 +6,14 @@ import './TopBar.scss'
 import bg from '../imgs/hockey_world_1400.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
+import {db} from 'firebase.js';
+import { useHistory } from 'react-router';
 
-const TopBar = ({ tags, setTags, isSignedIn, name, removeReview, submit, setSubmit, ongoing, setOngoing, complete, setComplete }) => {
-    const [cancel, setCancel] = useState(false);
+const TopBar = ({ userName, isSignedIn, docId, removeReview, submit, setSubmit, ongoing, setOngoing, complete, setComplete }) => {
+    const history = useHistory();
+    const [currentDoc, setCurrentDoc] = useState();
+    
+    const [cancel, setCancel] = useState(false)
 
     const clickCancel = () => setCancel(true);
     const clickCYes = () => {
@@ -23,16 +28,35 @@ const TopBar = ({ tags, setTags, isSignedIn, name, removeReview, submit, setSubm
 
     const clickComplete = () => setComplete(true);
 
+    useEffect(() => {
+        db.collection("Activities").doc(docId).get().then((doc) => {
+            setCurrentDoc({
+                name: doc.get("name"),
+                tags: Object.keys(doc.get("tags")).map(x => ({name: x})),
+                coverImg: doc.get("coverImg")
+            })
+        })
+    }, []);
+
+    const sendHistory = () => {
+        history.push({
+          pathname: '/info',
+          state: {
+            docId: docId
+          }
+        });
+    }
+
     return (
         <div id="MPP-nav-container" style={{ backgroundImage: `url(${bg})` }}>
             <Pagination variant="success" id="MPP-label">
-                <Pagination.Item id="MMP-info-label" variant="success" active={false}><Link to={"/info"} style={{color: "rgb(77, 163, 77)"}}>Activity Information</Link></Pagination.Item>
+                <Pagination.Item id="MMP-info-label" variant="success" active={false}><div onClick={sendHistory} style={{color: "rgb(77, 163, 77)"}}>Activity Information</div></Pagination.Item>
                 <Pagination.Item id="MMP-prog-label" variant="success" active={true}>My Progress</Pagination.Item>
             </Pagination>
             <div className="align-self-end">
                 {isSignedIn ?
                     <Nav className="mt-3">
-                        <Nav.Link className="mr-4"><span className="nav-text" id="nav-userName">{name}</span></Nav.Link>
+                        <Nav.Link className="mr-4"><span className="nav-text" id="nav-userName">{userName}</span></Nav.Link>
                         <Nav.Link className="mr-5"><span className="nav-text" id="nav-signOut">Sign Out</span></Nav.Link>
                     </Nav>
                     :
@@ -47,15 +71,15 @@ const TopBar = ({ tags, setTags, isSignedIn, name, removeReview, submit, setSubm
                 }
             </div>
             <div className="align-self-center" id="MPP-activity-name">
-                Ice Hockey
+                {currentDoc && currentDoc.name}
             </div>
             <div className="align-self-start" id="MPP-tags">
                 <div id="MPP-reltags">
                     <span >Related tags : </span>
                     {ongoing ?
-                        <ActivityTags tags={tags} setTags={setTags} plusbutton={true}/>
+                        currentDoc && <ActivityTags tags={currentDoc.tags} plusbutton={true}/>
                         :
-                        <ActivityTags tags={tags} setTAgs={setTags} plusbutton={false}/>
+                        currentDoc && <ActivityTags tags={currentDoc.tags} plusbutton={false}/>
                     }
                 </div>
                 {complete ?

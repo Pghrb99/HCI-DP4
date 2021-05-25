@@ -6,22 +6,21 @@ import ProgressDocument from './Sections/ProgressDocument/ProgressDocument'
 import HorizontalBar from './Sections/HorizontalBar/HorizontalBar';
 import GoTop from '../GoTop/GoTop';
 import { useLocation } from 'react-router';
+import { useAuth } from 'contexts/AuthContext';
 
-const MyProgressPage = ({achievlist, setAchievlist, setTags, reviewlist, addReview, removeReview, submit, setSubmit, ongoing, setOngoing, complete, setComplete}) => {
+const MyProgressPage = ({achievlist, setAchievlist, setTags, removeReview, submit, setSubmit, ongoing, setOngoing, complete, setComplete}) => {
     const location = useLocation();
-    const name1 = location.state;
-    const name = location.state.name;
     const docId = location.state.docId;
-    const tags = [];
-    for(let i=0; i<location.state.tags.length; i++) tags.push(location.state.tags[i]);
+    const {currentUser} = useAuth();
 
     return (
         <div id="MyProgressPage">
             <Sidemenu/>
-            <TopBar activityname={name} tags={tags} setTags={setTags} isSignedIn={false} name={"Changhae"} removeReview={removeReview} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing} complete={complete} setComplete={setComplete}/>
+            <TopBar userName={currentUser && currentUser.email}
+            isSignedIn={currentUser} docId={docId} removeReview={removeReview} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing} complete={complete} setComplete={setComplete}/>
             <div id="AIP-hori-div">
                 <HorizontalBar/>
-                <ProgressDocument docId={docId} activityname={name} achievlist={achievlist} setAchievlist={setAchievlist} submit={submit} setSubmit={setSubmit} complete={complete} setComplete={setComplete}/>
+                <ProgressDocument docId={docId} achievlist={achievlist} setAchievlist={setAchievlist} submit={submit} setSubmit={setSubmit} complete={complete} setComplete={setComplete}/>
             </div>
             <GoTop/>
         </div>

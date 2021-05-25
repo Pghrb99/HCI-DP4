@@ -7,8 +7,10 @@ import bg from '../imgs/hockey_world_1400.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 import {db} from 'firebase.js';
+import { useHistory } from 'react-router';
 
 const TopBar = ({docId, isSignedIn, userName, removeReview, submit, setSubmit, ongoing, setOngoing, complete, setComplete}) => {
+    const history = useHistory();
     const [currentDoc, setCurrentDoc] = useState();
 
     const [start, setStart] = useState(false);
@@ -44,12 +46,20 @@ const TopBar = ({docId, isSignedIn, userName, removeReview, submit, setSubmit, o
         })
     }, []);
 
+    const sendHistory = () => {
+        history.push({
+          pathname: '/myprogress',
+          state: {
+            docId: docId
+          }
+        });
+    }
 
     return (
         <div id="AIP-nav-container" style={currentDoc && {backgroundImage: `url(${currentDoc.coverImg.src})`}}>
             <Pagination variant="success" id="AIP-label">
                 <Pagination.Item id="AIP-info-label" variant="success" active={true}>Activity Information</Pagination.Item>
-                <Pagination.Item id="AIP-prog-label" variant="success" active={false} disabled={!ongoing}><Link to={"/myprogress"} style={{color: "rgb(77, 163, 77)"}}><div>My Progress</div></Link></Pagination.Item>
+                <Pagination.Item id="AIP-prog-label" variant="success" active={false} disabled={!ongoing}><div onClick={sendHistory} style={{color: "rgb(77, 163, 77)"}}>My Progress</div></Pagination.Item>
                 {/*isSignedIn && 추가 필요*/}
             </Pagination>
             <div className="align-self-end">

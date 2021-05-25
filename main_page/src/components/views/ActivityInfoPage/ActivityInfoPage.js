@@ -8,12 +8,10 @@ import GoTop from '../GoTop/GoTop';
 import { useLocation } from 'react-router'
 import { useAuth } from 'contexts/AuthContext'
 
-
 const ActivityInfoPage = ({achievlist, setAchievlist, reviewlist, addReview, removeReview, submit, setSubmit, ongoing, setOngoing, complete, setComplete}) => {
     const location = useLocation();
     const docId = location.state.docId;
     const {currentUser} = useAuth();
-
 
     return (
         <div id="ActivityInfoPage">
