@@ -48,7 +48,7 @@ const TopBar = ({ userName, isSignedIn, docId, removeReview, submit, setSubmit, 
     }
 
     return (
-        <div id="MPP-nav-container" style={{ backgroundImage: `url(${bg})` }}>
+        <div id="MPP-nav-container" style={currentDoc && {backgroundImage: `url(${currentDoc.coverImg.src})`}}>
             <Pagination variant="success" id="MPP-label">
                 <Pagination.Item id="MMP-info-label" variant="success" active={false}><div onClick={sendHistory} style={{color: "rgb(77, 163, 77)"}}>Activity Information</div></Pagination.Item>
                 <Pagination.Item id="MMP-prog-label" variant="success" active={true}>My Progress</Pagination.Item>

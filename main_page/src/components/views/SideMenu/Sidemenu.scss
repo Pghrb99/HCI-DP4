@@ -1,4 +1,10 @@
 .wrapper {
+    $sidemenu-background: hsl(0, 0%, 89%);
+
+    $sidemenu-button: rgb(22, 56, 95); 
+
+    $sidemenu-text: #2c584e;
+    // #07887f #315a5a #356864
     display: block;
     text-align: center;
 
@@ -28,8 +34,8 @@
         /* top layer */
         z-index: 9999;
         /* don't forget to add all the previously mentioned styles here too */
-        background: #C7FFD8;
-        color: #356864;
+        background: $sidemenu-background;
+        color: $sidemenu-text;
         transition: all 0.3s;
         margin-left: -250px;
     }
@@ -42,7 +48,7 @@
     
     #sidebar .sidebar-header {
         padding: 20px;
-        background: #C7FFD8;
+        background: $sidemenu-background;
     }
     
     #sidebar ul.components {
@@ -51,7 +57,7 @@
     }
     
     #sidebar ul p {
-        color: #356864;
+        color: $sidemenu-background;
         padding: 10px;
         font-weight: 500;
     }
@@ -74,8 +80,8 @@
     }
     
     #sidebar ul li.active > a, a[aria-expanded="true"] {
-        color: #356864;
-        background:#E3FFEB;
+        color: $sidemenu-text;
+        background: $sidemenu-background;
         font-weight: 500;
         font-size: 20px;
         font-weight: 600;
@@ -128,14 +134,15 @@
         right: 10px;
         cursor: pointer;
         font-size: 30px;
+        
     }
     
     #sidebarCollapse {
         background-color: transparent;
-        position: fixed;
+        position: absolute;
         top: 0px;
         left: 10px;
-        color: #356864;
+        color: $sidemenu-button;
         border: 0;
         cursor: pointer;
         font-size: 40px;

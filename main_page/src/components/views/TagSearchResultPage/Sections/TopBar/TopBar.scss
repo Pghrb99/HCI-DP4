@@ -3,7 +3,7 @@
     width: 100%;
     min-height: 190px;
     flex-direction: column;
-    background-color: rgb(100, 130, 170);
+    background-color: rgb(86, 131, 182);
     box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.10);
     padding: 0;
     .align-self-start {
@@ -16,8 +16,8 @@
         align-self: flex-end;
     }
     #search-result {
-        font-size: 40px;
-        font-weight: bold;
+        font-size: 50px;
+        // font-weight: bold;
         color: white;
     }
     #tags {

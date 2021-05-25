@@ -3,7 +3,7 @@ import './Sidemenu.scss';
 import $ from 'jquery';
 import logo from './logo.svg'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faBars, faHome, faTags, faList, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faBars, faHome, faTags, faList, faUser, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { faHotjar } from '@fortawesome/free-brands-svg-icons';
 import { Link } from "react-router-dom";
 
@@ -39,10 +39,10 @@ const Sidemenu = () => {
                 <ul className="list-unstyled components">
                     {/*<p>Dummy Heading</p>*/}
                     <li className="active">
-                        <Link to={"/namesearch"}><FontAwesomeIcon icon={faHome} style={{marginRight: "10px"}}/>Name Search</Link>
+                    <Link to={"/"}><FontAwesomeIcon icon={faTags} style={{marginRight: "10px"}}/>Tag Search</Link>
                     </li>
                     <li className="active">
-                    <Link to={"/"}><FontAwesomeIcon icon={faTags} style={{marginRight: "10px"}}/>Tag Search</Link>
+                        <Link to={"/namesearch"}><FontAwesomeIcon icon={faSearch} style={{marginRight: "10px"}}/>Name Search</Link>
                     </li>
                     <li className="active">
                     <Link to={"/category"}><FontAwesomeIcon icon={faList} style={{marginRight: "10px"}}/>Categories</Link>
