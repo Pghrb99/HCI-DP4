@@ -261,15 +261,10 @@ const InfoDocument = ({ docId, achievlist, setAchievlist, submit, setSubmit, ong
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen>
                         </iframe>
                     </div>
-                    <div id="AIP-images" style={{ marginTop: '30px' }}>
-                        <h2>Images</h2>
-                        <ListGroup id="AIP-images-list" horizontal>
-                            <ListGroup.Item><img src={currentDoc.imgs[0].src} class="AIP-images-img"></img></ListGroup.Item>
-                            <ListGroup.Item><img src={currentDoc.imgs[1].src} class="AIP-images-img"></img></ListGroup.Item>
-                            <ListGroup.Item><img src={currentDoc.imgs[2].src} class="AIP-images-img"></img></ListGroup.Item>
-                        </ListGroup>
-                    </div>
-                    <div class="AIP-article">
+                </div>
+                <div id="AIP-description" style={{ marginTop: '30px' }}>
+                    <h2>Description</h2>
+                    <div className="AIP-article">
                         {currentDoc.description.text}
                     </div>
                     {currentDoc.description.links.map((link, index) => {
@@ -293,11 +288,7 @@ const InfoDocument = ({ docId, achievlist, setAchievlist, submit, setSubmit, ong
                         <div class="AIP-article">{content}</div>
                     ))}
                 </div>
-                <div id="AIP-achievements" style={{ marginTop: '30px' }}>
-                    <div style={{ width: '100%', display: 'inline-block' }}>
-                        <h2 style={{ float: 'left' }}>Achievements</h2>
-                        <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Edit Achievements</Button>
-                    </div>
+
                     <div id="AIP-achievements" style={{ marginTop: '30px' }}>
                         <div style={{ width: '100%', display: 'inline-block' }}>
                             <h2 style={{ float: 'left' }}>Achievements</h2>
@@ -464,7 +455,6 @@ const InfoDocument = ({ docId, achievlist, setAchievlist, submit, setSubmit, ong
                         </Table>
                     </div>
                 </div>
-            </div>
         )
     }
     else return (<div>
