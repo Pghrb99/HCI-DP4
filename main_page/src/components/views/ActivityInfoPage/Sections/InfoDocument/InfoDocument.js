@@ -7,7 +7,7 @@ import img2 from '../imgs/ice_hockey2.png'
 import img3 from '../imgs/ice_hockey3.png'
 import Review from '../Review/Review'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronCircleDown, faChevronCircleUp, faPencilAlt } from "@fortawesome/free-solid-svg-icons"
+import { faEdit, faPlus, faChevronCircleDown, faChevronCircleUp, faPencilAlt } from "@fortawesome/free-solid-svg-icons"
 
 const InfoDocument = ({ achievlist, setAchievlist, data, reviewlist, addReview, removeReview, submit, setSubmit, ongoing, setOngoing }) => {
     
@@ -139,7 +139,10 @@ const InfoDocument = ({ achievlist, setAchievlist, data, reviewlist, addReview, 
                 </div>
             </div>
             <div id="AIP-description" style={{ marginTop: '30px' }}>
-                <h2>Description</h2>
+                <div style={{width:'100%', display:'inline-block'}}>
+                    <h2 style={{float:'left'}}>Description</h2>
+                    <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing}><FontAwesomeIcon icon={faEdit} style={{marginRight: "10px"}}/>Edit Description</Button>
+                </div>
                 <div class="AIP-article">
                     Ice hockey is a contact team sport played on ice, usually in an indoor or outdoor rink, in which two teams of skaters use their sticks to shoot a vulcanized rubber puck into their opponent's net to score goals. The sport is known to be fast-paced and physical, with teams usually fielding six players at a time: one goaltender to stop the puck from going into their own net, two defensemen, and three forwards who skate the span of the ice trying to control the puck and score goals against the opposing team.
                 </div>
@@ -147,47 +150,34 @@ const InfoDocument = ({ achievlist, setAchievlist, data, reviewlist, addReview, 
                 <a target="_blank" href="https://namu.wiki/w/%EC%95%84%EC%9D%B4%EC%8A%A4%ED%95%98%ED%82%A4" class="AIP-article">나무위키</a>
             </div>
             <div id="AIP-requirments" style={{ marginTop: '30px' }}>
-                <h2>Requirments</h2>
+                <div style={{width:'100%', display:'inline-block'}}>
+                    <h2 style={{float:'left'}}>Requirments</h2>
+                    <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing}><FontAwesomeIcon icon={faEdit} style={{marginRight: "10px"}}/>Edit Requirments</Button>
+                </div>
                 <div class="AIP-article">Supplies: Helmet, guards, skates, sticks, gloves</div>
                 <div class="AIP-article">Number of people: 12 (each team consists of 6 players)</div>
             </div>
             <div id="AIP-achievements" style={{ marginTop: '30px' }}>
-                <h2>Achievements</h2>
+                <div style={{width:'100%', display:'inline-block'}}>
+                    <h2 style={{float:'left'}}>Achievements</h2>
+                    <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing}><FontAwesomeIcon icon={faEdit} style={{marginRight: "10px"}}/>Edit Achievements</Button>
+                </div>
                 <ListGroup id="AIP-achievements-list">
-                    <ListGroup.Item>
-                        <Badge variant="secondary">Getting into ice</Badge> Keep skating for 10 minutes.
-                    </ListGroup.Item>
-                    <ListGroup.Item>
-                        <Badge variant="secondary">Skating faster</Badge> Skate 400m in 1 minutes.
-                    </ListGroup.Item>
-                    <ListGroup.Item>
-                        <Badge variant="secondary">Getting into shot</Badge> Score more than 5 out of 10 penalty shots.
-                    </ListGroup.Item>
-                    <ListGroup.Item>
-                        <Badge variant="secondary">Shooting accurately</Badge> Score a goal from one goal to the other.
-                    </ListGroup.Item>
-                    {more &&
-                        <ListGroup.Item>
-                            <Badge variant="secondary">Skating for a long time</Badge> Skate more than 10 minutes.
-                        </ListGroup.Item>
-                    }
-                    {more &&
-                        <ListGroup.Item>
-                            <Badge variant="secondary">Wall-passing</Badge> Wall-pass 5 times from each side of the enemy.
-                        </ListGroup.Item>
-                    }
-                    {more &&
-                        <ListGroup.Item>
-                            <Badge variant="secondary">Dribbling calmly</Badge> Circle the link with the puck.
-                        </ListGroup.Item>
-                    }
+                    {achievlist.map((achiev, i) => {
+                        if (i < 4 || more) {
+                            return (
+                                <ListGroup.Item>
+                                    <Badge variant="secondary">{achiev['name']}</Badge> {achiev['explain']}
+                                </ListGroup.Item>
+                            );
+                        }
+                        else {
+                            return null;
+                        }
+                    })}
                 </ListGroup>
                 <div style={{textAlign:'center'}}>
-                    {more ?
-                        <Button id="AIP-achievements-more" variant="secondary" onClick={clickMore}><FontAwesomeIcon icon={faChevronCircleUp}/></Button>
-                        :
-                        <Button id="AIP-achievements-more" variant="secondary" onClick={clickMore}><FontAwesomeIcon icon={faChevronCircleDown}/></Button>
-                    }
+                    <Button id="AIP-achievements-more" variant="secondary" onClick={clickMore}><FontAwesomeIcon icon={more ? faChevronCircleUp : faChevronCircleDown}/></Button>
                 </div>
             </div>
             <div id="AIP-reviews" style={{ marginTop: '30px' }}>
@@ -195,11 +185,11 @@ const InfoDocument = ({ achievlist, setAchievlist, data, reviewlist, addReview, 
                     <h2 style={{float:'left'}}>Reviews</h2>
                     {submit ?
                         <div>
-                            <Button id="MMP-reviews-remove" variant="danger" onClick={clickRemove}><FontAwesomeIcon icon={faPencilAlt} style={{marginRight: "10px"}}/>Remove your Review</Button>
-                            <Button id="MMP-reviews-write" variant="success" onClick={clickReview}><FontAwesomeIcon icon={faPencilAlt} style={{marginRight: "10px"}}/>Modify your Review</Button>
+                            <Button id="AIP-reviews-remove" variant="danger" onClick={clickRemove}><FontAwesomeIcon icon={faPencilAlt} style={{marginRight: "10px"}}/>Remove your Review</Button>
+                            <Button id="AIP-reviews-write" variant="success" onClick={clickReview}><FontAwesomeIcon icon={faPencilAlt} style={{marginRight: "10px"}}/>Modify your Review</Button>
                         </div>
                         :
-                        <Button id="MMP-reviews-write" variant="success" onClick={clickReview} disabled={!ongoing}><FontAwesomeIcon icon={faPencilAlt} style={{marginRight: "10px"}}/>Write a Review</Button>
+                        <Button id="AIP-reviews-write" variant="success" onClick={clickReview} disabled={!ongoing}><FontAwesomeIcon icon={faPencilAlt} style={{marginRight: "10px"}}/>Write a Review</Button>
                     }
                     {/*ongoing disabled*/}
                 </div>
@@ -283,6 +273,7 @@ const InfoDocument = ({ achievlist, setAchievlist, data, reviewlist, addReview, 
                 <h3>Negative Opinions</h3>
                 <div id="MMP-reviews-negative">
                     {console.log(reviewlist)}
+                    {/*issignedin => like button*/}
                     {reviewlist.map(review => {
                         if (!review['isPositive']) {
                             if (review['isMe']){
@@ -296,7 +287,10 @@ const InfoDocument = ({ achievlist, setAchievlist, data, reviewlist, addReview, 
                 </div>
             </div>
             <div id="AIP-communities" style={{ marginTop: '30px' }}>
-                <h2>Communities</h2>
+                <div style={{width:'100%', display:'inline-block'}}>
+                    <h2 style={{float:'left'}}>Communities</h2>
+                    <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing}><FontAwesomeIcon icon={faEdit} style={{marginRight: "10px"}}/>Edit Requirments</Button>
+                </div>
                 <a target="_blank" href="https://gall.dcinside.com/icehockey" class="AIP-article">dcinside.com</a>
                 <a target="_blank" href="https://about.hockeycommunity.com/en-CA/" class="AIP-article">Hockey Community</a>
                 <Table bordered hover id="AIP-communities-table">

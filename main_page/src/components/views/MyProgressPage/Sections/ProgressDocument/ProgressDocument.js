@@ -15,7 +15,8 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
     const [prove, setProve] = useState(false);
     const [cancel, setCancel] = useState(false);
     const [attained, setAttained] = useState("");
-    const [file, setFile] = useState(null);
+    const [tempurl, setTempurl]= useState('');
+    const [tempfile, setTempfile] = useState(new Array(achievlist.length).fill(''));
     const [review, setReview] = useState(false);
     const [text, setText] = useState(submit ? reviewlist[0]['content'] : "");
     const [recommend, setRecommend] = useState(submit ? reviewlist[0]['isPositive'] : true);
@@ -62,7 +63,8 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
                 name: achiev['name'],
                 explain: achiev['explain'],
                 isSelected: tempselect[i],
-                isCompleted: achiev['isCompleted']
+                isCompleted: achiev['isCompleted'],
+                photourl: achiev['photourl']
             })
         })
         setAchievlist(temp);
@@ -78,7 +80,6 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
     const clickModifyLabel = (event) => {
         const s = event.currentTarget.className;
         const i = parseInt(event.currentTarget.className.split('|')[1]);
-        console.log(i + s);
         const temp = [];
         for (let j = 0; j < achievlist.length; j++) {
             if (j == i) {
@@ -95,7 +96,6 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
         else {
             event.currentTarget.className = "|" + i + "| badge badge-secondary";
         }
-        console.log(event.currentTarget.className);
     }
 
     const changeReviewList = () => {
@@ -127,22 +127,34 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
         }
     }
 
+    const selectImg = (event) => {
+        event.preventDefault();
+        let reader = new FileReader();
+        let f = event.target.files[0];
+        reader.onloadend = () => {
+            setTempurl(reader.result);
+        }
+        reader.readAsDataURL(f);
+    }
+
     const clickLabel = (event) => {
+        const i = parseInt(event.currentTarget.className.split('|')[1]);
         setAttained(event.currentTarget.className);
         event.currentTarget.className += " MMP-temp";
         if (!event.currentTarget.className.includes("MMP-success")) {
             setProve(true);
         }
         else {
+            setTempurl(achievlist[i]['photourl']);
             event.currentTarget.className += " MMP-temp";
             setCancel(true);
         }
     }
 
     const clickPYes = () => {
+        console.log(tempurl);
         const i = parseInt(attained.split('|')[1]);
-        console.log(typeof (file.files[0]))
-        if (!(typeof (file.files[0]) == 'undefined')) {
+        if (tempurl !== '') {
             $(".MMP-temp").attr('class', "MMP-success " + attained);
             const temp = achievlist.map((achiev, j) => {
                 if (j == i) {
@@ -150,18 +162,15 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
                         name: achiev['name'],
                         explain: achiev['explain'],
                         isSelected: achiev['isSelected'],
-                        isCompleted: true
-                    })
+                        isCompleted: true,
+                        photourl: tempurl
+                    });
                 }
                 else {
-                    return ({
-                        name: achiev['name'],
-                        explain: achiev['explain'],
-                        isSelected: achiev['isSelected'],
-                        isCompleted: achiev['isCompleted']
-                    })
+                    return achiev;
                 }
             })
+            setTempurl('');
             setAchievlist(temp);
             setProve(false);
         }
@@ -172,6 +181,7 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
 
     const clickPNo = () => {
         $(".MMP-temp").attr('class', attained);
+        setTempurl('');
         setProve(false);
     }
 
@@ -184,24 +194,22 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
                     name: achiev['name'],
                     explain: achiev['explain'],
                     isSelected: achiev['isSelected'],
-                    isCompleted: false
+                    isCompleted: false,
+                    photourl: ''
                 })
             }
             else {
-                return ({
-                    name: achiev['name'],
-                    explain: achiev['explain'],
-                    isSelected: achiev['isSelected'],
-                    isCompleted: achiev['isCompleted']
-                })
+                return achiev;
             }
         })
+        setTempurl('');
         setAchievlist(temp);
         setCancel(false);
     }
 
     const clickCNo = () => {
         $(".MMP-temp").attr('class', attained);
+        setTempurl('');
         setCancel(false);
     }
 
@@ -324,9 +332,11 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
                         {/*<input type="file" name="file" id="file" class="inputfile" accept=".jpg, .jpeg, .png"/>*/}
                         <Form>
                             <Form.Group>
-                                <Form.File accept=".jpg, .jpeg, .png" id="exampleFormControlFile1" ref={(ref) => setFile(ref)} />
+                                {/*<Form.File accept=".jpg, .jpeg, .png" id="exampleFormControlFile1" ref={(ref) => setFile(ref)} />*/}
+                                <Form.File accept=".jpg, .jpeg, .png" id="exampleFormControlFile1" onChange={selectImg} />
                             </Form.Group>
                         </Form>
+                        {(tempurl !== '') && <img id='MMP-photo' src={tempurl}></img>}
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" onClick={clickPYes}>
@@ -343,7 +353,7 @@ const ProgressDocument = ({ achievlist, setAchievlist, reviewlist, addReview, re
                     </Modal.Header>
                     <Modal.Body>
                         <p style={{ fontFamily: 'arial', color: 'black', fontSize: '18px', marginLeft: "0" }}>Are you sure you cancel the activity?</p>
-                        {/*img tag 추가*/}
+                        {(tempurl !== '') && <img id='MMP-photo' src={tempurl}></img>}
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" onClick={clickCYes}>

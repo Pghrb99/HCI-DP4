@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
-import { Button, Modal, InputGroup, FormControl, ToggleButton } from 'react-bootstrap';
+import { Button, Modal, InputGroup, FormControl } from 'react-bootstrap';
 import Tag from '../Tag/Tag'
-import NewTag from '../NewTag/NewTag';
 import './Tags.scss'
-import $ from 'jquery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTag } from "@fortawesome/free-solid-svg-icons";
 
@@ -84,7 +82,7 @@ const Tags = ({ tags, setTags, plusbutton }) => {
                 <Modal.Header closeButton style={{ backgroundColor: '#BBEDCA', color: '#356864', border: 'none', paddingTop:'10px', paddingBottom:'5px'}}>
                     <Modal.Title>Add Tags</Modal.Title>
                 </Modal.Header>
-                <Modal.Body style={{ backgroundColor: '#BBEDCA', color: '#356864', textAlign: 'center', paddingTop: '5px', paddingBottom: '0'}}>
+                <Modal.Body style={{ backgroundColor: '#BBEDCA', color: '#356864', border: 'none', textAlign: 'center', paddingTop: '5px', paddingBottom: '0'}}>
                     <table style={{ width: '90%' }}>
                         <thead>
                             <tr>
@@ -131,7 +129,7 @@ const Tags = ({ tags, setTags, plusbutton }) => {
                         </InputGroup>
                     </div>
                 </Modal.Body>
-                <Modal.Footer style={{ backgroundColor: '#BBEDCA', color: '#356864', paddingTop: '0', paddingBottom: '10px'}}>
+                <Modal.Footer style={{ backgroundColor: '#BBEDCA', color: '#356864', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
                     <Button variant="primary" onClick={clickTPYes}>
                         Submit
                             </Button>
