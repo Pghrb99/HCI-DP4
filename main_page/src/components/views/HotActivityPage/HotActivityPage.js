@@ -13,13 +13,7 @@ const HotActivityPage = () => {
     const { TabPane } = Tabs;
     const {currentUser} = useAuth();
     const [priority, setPriority] = useState(0);
-    const [cards, setCards] = useState({
-        0: [],
-        1: [],
-        2: [],
-        3: [],
-        4: [],
-    });
+    const [cards, setCards] = useState([]);
     const [popularCards, setPopularCards] = useState([]);
     const [allCards, setAllCards] = useState([]);
    
@@ -40,13 +34,7 @@ const HotActivityPage = () => {
                 });
             }
             setAllCards(result);
-            setCards({
-                0: topFourNumericCards(allCards, 0),
-                1: topFourNumericCards(allCards, 1),
-                2: topFourNumericCards(allCards, 2),
-                3: topFourNumericCards(allCards, 3),
-                4: topFourNumericCards(allCards, 4)
-            })
+            setCards(topFourNumericCards(result, 0));
             setPopularCards(topFourPopularCards(result));
         });
         
@@ -66,7 +54,7 @@ const HotActivityPage = () => {
     }
 
     const onChange = (value) => {
-        setPriority(value);
+        setCards(topFourNumericCards(allCards, value));
     }
 
 
@@ -92,7 +80,7 @@ const HotActivityPage = () => {
                 <TabPane tab="Safe" key={4} className="TabPane">
                 </TabPane>
             </Tabs>
-            <CardContainer cards={cards[priority]}/>
+            <CardContainer cards={cards}/>
             <Divider />
             <Title className="section-title" level={2}>Popular</Title>
             <CardContainer cards={popularCards}/>
