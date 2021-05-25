@@ -76,43 +76,50 @@ function App() {
             name: "Getting into ice",
             explain: "Keep skating for 10 minutes.",
             isSelected: false,
-            isCompleted: false
+            isCompleted: false,
+            photourl: ''
         },
         {
             name: "Skating faster",
             explain: "Skate 400m in 1 minutes.",
             isSelected: false,
-            isCompleted: false
+            isCompleted: false,
+            photourl: ''
         },
         {
             name: "Skating for a long time",
             explain: "Skate more than 10 minutes.",
             isSelected: false,
-            isCompleted: false
+            isCompleted: false,
+            photourl: ''
         },
         {
             name: "Getting into shot",
             explain: "Score more than 5 out of 10 penalty shots.",
             isSelected: false,
-            isCompleted: false
+            isCompleted: false,
+            photourl: ''
         },
         {
             name: "Shooting precisely",
             explain: "Score a goal from one goal to the other.",
             isSelected: false,
-            isCompleted: false
+            isCompleted: false,
+            photourl: ''
         },
         {
             name: "Dribbling calmly",
             explain: "Circle the link with the puck.",
             isSelected: false,
-            isCompleted: false
+            isCompleted: false,
+            photourl: ''
         },
         {
             name: "Wall-passing",
             explain: "Wall-pass 5 times from each side of the enemy.",
             isSelected: false,
-            isCompleted: false
+            isCompleted: false,
+            photourl: ''
         }
     ]);
 
