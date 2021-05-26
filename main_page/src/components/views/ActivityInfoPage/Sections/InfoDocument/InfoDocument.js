@@ -289,7 +289,6 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
                 <div id="AIP-requirments" style={{ marginTop: '30px' }}>
                     <div style={{ width: '100%', display: 'inline-block' }}>
                         <h2 style={{ float: 'left' }}>Requirments</h2>
-                        <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing && !isSignedIn}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Edit Requirments</Button>
                     </div>
                     <ul>
                     {currentDoc.requirements.map((content, index) => (
@@ -430,7 +429,6 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
                     <div id="AIP-communities" style={{ marginTop: '30px' }}>
                         <div style={{ width: '100%', display: 'inline-block' }}>
                             <h2 style={{ float: 'left' }}>Communities</h2>
-                            <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing && !isSignedIn}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Edit Requirments</Button>
                         </div>
                         {currentDoc.communities.links.map((link, index) => (
                             <a
