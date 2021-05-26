@@ -1,41 +1,29 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import './NameSearchBar.scss'
 import SearchButton from '../../../TagSearchPage/Sections/SearchButton/SearchButton'
 import { AutoComplete, Input} from 'antd';
-import {db,storage} from '../../../../../firebase'
+import {db} from '../../../../../firebase'
 import { Link } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import {useHistory} from "react-router";
 
 const NameSearchBar = () => {
 
-    let options = []
-    let snapshot;
-    const history = useHistory();
-
-    (async () => {
-        snapshot = await db.collection('Activities').get();
-        snapshot.forEach(doc => {
-        options.push(doc.data().name);
-                });
-        })();
-
-    const mockVal = (str) => {
-        let temparray =[];
-        let tempname;
-        str = str.toLowerCase();
-        for(let i=0; i<options.length;i++){
-            tempname = options[i].toLowerCase();
-            if(tempname.includes(str))
-            temparray.push({value: options[i]})
-        };
-        return temparray
-        
-      };
-
-    
     const [text, setText] = useState("");
-    const [option, setOptions] = useState([]);
+    const [allOptions, setAllOptions] = useState([]);
+    const [options, setOptions] = useState([]);
+    const history = useHistory();
+    
+    
+    useEffect(() => {
+        const tempOptionList = [];
+        db.collection('Activities').orderBy('name').get().then((querySnapshot => {
+            querySnapshot.forEach((doc) => {
+                tempOptionList.push(doc.get('name'))
+            })
+            setAllOptions(tempOptionList);
+        }))
+    }, []);
 
     const onTextChange = (e) => {
         setText(e.target.value);
@@ -47,25 +35,34 @@ const NameSearchBar = () => {
     };
 
     const onSearch = (searchText) => {
-        setOptions(
-          !searchText ? [] : mockVal(searchText),
-        );
+        if (searchText.length==0 ) {
+            setOptions([]);
+        }
+        const lowerText = searchText.toLowerCase();
+        let result = [];
+        result = allOptions.filter((x) => (x.toLowerCase().includes(lowerText)));
+        result = result.slice(0, 5)
+        result = result.map(x => ({value: x}))
+        setOptions(result);
     };
 
 
     const onTextPressEnter = () => {
-        (() => {history.push({
+        history.push({
             pathname: "/result",
-            state: {searchText:text}
-          })})();
+            state: {
+                searchText: text
+            }
+        });
     };
 
     return (
         <div className="NameSearchBar">
             <AutoComplete
-                options={option}
+                options={options}
                 onSelect={onTextSelect}
                 onSearch={onSearch}
+                open={text.length>=1}
             >
                 <Input
                     placeholder="Search"
