@@ -74,15 +74,20 @@ function RegisterPage(props) {
       ...fieldsValue,
       'birthday': fieldsValue['birthday'].format('YYYY-MM-DD'), // values['birthday']
     }
+    //console.log(Math.abs(ageDate.getUTCFullYear() - 1970));
     try {
       setError('')
       setLoading(true)
       await signUp(values.email, values.password);
       //console.log(auth.currentUser)
+      const date1 = new Date(values.birthday)
+      const diff = Date.now() - date1.getTime();
+      const ageDate = new Date(diff); // miliseconds from epoch
       auth.onAuthStateChanged(user => {
         db.collection("UserInfo").doc(user.email).set({
             aboutme: values.aboutme,
             birthday: values.birthday, //Age calc later
+            age: Math.abs(ageDate.getUTCFullYear() - 1970),
             email: values.email,
             gender: values.gender,
             name: values.name,
@@ -136,6 +141,7 @@ function RegisterPage(props) {
             name="register"
             onFinish={onFinish}
             initialValues={{
+              aboutme: '',
               prefix: '82'
             }}
             scrollToFirstError
