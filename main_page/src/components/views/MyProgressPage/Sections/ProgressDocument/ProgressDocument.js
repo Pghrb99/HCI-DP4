@@ -241,7 +241,7 @@ const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchiev
         db.collection('Activities').doc(docId).collection('Reviews').get().then(querySnapshot => {
             querySnapshot.forEach(doc => {
                 if (doc.get('name') == username) {
-                    tempachiev = doc.get('achiev');
+                    tempachiev = calculateCompleted();
                     db.collection('Activities').doc(docId).collection('Reviews').doc(doc.id).delete();
                     const rev = {
                         isPositive: recommend,
