@@ -86,11 +86,11 @@ const TagSearchResultPage = () => {
 
         if(typeof searchText !== 'undefined') {
             let result = [];
-
+            
             db.collection('Activities').get().then((querySnapshot => {
                 for (let i in querySnapshot.docs) {
                     const doc = querySnapshot.docs[i];
-                    if(doc.get("name_lower").indexOf(searchText) != -1 ){
+                    if(doc.get("name_lower").indexOf(searchText.toLowerCase()) != -1 ){
                         result.push({ 
                             name:doc.get("name"),
                             tags : Object.keys(doc.get("tags")).map(x => ({name: x})),
