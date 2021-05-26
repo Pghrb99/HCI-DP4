@@ -14,12 +14,12 @@ const StyledPopover = styled(Popover)`
       margin: 0px;
       opacity: 0.98;
 `
-const ActivityCard = ({imgSrc, title, tags, text, chartData}) => {
+const ActivityCard = ({docId, userEmail, imgSrc, title, tags, text, chartData}) => {
     const popover = (
         <StyledPopover className="popover-container">
           <StyledPopover.Title as="h3">Activity Info</StyledPopover.Title>
           <StyledPopover.Content>
-            <Mypagehover  />
+            <Mypagehover  userEmail= {userEmail} hoverdocId= {docId} />
           </StyledPopover.Content>
         </StyledPopover>
       );
