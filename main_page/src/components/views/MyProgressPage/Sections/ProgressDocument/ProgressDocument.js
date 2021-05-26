@@ -8,8 +8,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { db } from '../../../../../firebase'
 
-const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, submit, setSubmit, setComplete }) => {
-    const username = "Changhae Lee";
+const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchievlist, submit, setSubmit, setComplete }) => {
+    const username = userName;
     const [currentDoc, setCurrentDoc] = useState();
     const [resultdata, setresult] = useState([]);
     const [reviewlist, setReviewlist] = useState([]);

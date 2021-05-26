@@ -1,8 +1,9 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {
     BrowserRouter as Router,
     Switch,
     Route,
+    Redirect,
 } from "react-router-dom";
 
 import TagSearchPage from './views/TagSearchPage/TagSearchPage';
@@ -18,6 +19,8 @@ import NameSearchPage from './views/NameSearchPage/NameSearchPage'
 import { AuthProvider } from '../contexts/AuthContext'
 import PrivateRoute from "./PrivateRoute"
 import NonuserRoute from "./NonuserRoute"
+
+import {auth} from '../firebase'
 
 import './App.css';
 
@@ -126,6 +129,18 @@ function App() {
         }
     ]);
 
+
+    const [currentUser, setCurrentUser] = useState();
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            setCurrentUser(user);
+            setLoading(false);
+        })
+
+        return unsubscribe
+    }, []);
+
     return (
         <AuthProvider>
             <Router>
@@ -141,7 +156,7 @@ function App() {
                     <Switch>
                     
                         <PrivateRoute exact path="/mypage" component={Mypage} />
-                        <Route exact path="/myprogress" render={() => <MyProgressPage achievlist={achievlist} setAchievlist={setAchievlist} tags={tags} setTags={setTags} reviewlist={reviewlist} addReview={addReview} removeReview={removeReview} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing} complete={complete} setComplete={setComplete}/>} />
+                        <Route exact path="/myprogress" render={() => { return currentUser ? <MyProgressPage achievlist={achievlist} setAchievlist={setAchievlist} tags={tags} setTags={setTags} reviewlist={reviewlist} addReview={addReview} removeReview={removeReview} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing} complete={complete} setComplete={setComplete}/> : <Redirect to="/login"/>}} />
                         
                         <Route exact path="/" component={TagSearchPage} />
                         <Route exact path="/result" component={TagSearchResultPage} />
