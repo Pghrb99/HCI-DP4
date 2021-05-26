@@ -39,7 +39,7 @@ const Sidemenu = () => {
                 <ul className="list-unstyled components">
                     {/*<p>Dummy Heading</p>*/}
                     <li className="active">
-                    <Link to={"/"}><FontAwesomeIcon icon={faTags} style={{marginRight: "10px"}}/>Tag Search</Link>
+                    <Link to={"/"}><FontAwesomeIcon icon={faTags} style={{marginRight: "10px"}}/>Tag Search(<FontAwesomeIcon icon={faHome}/>)</Link>
                     </li>
                     <li className="active">
                         <Link to={"/namesearch"}><FontAwesomeIcon icon={faSearch} style={{marginRight: "10px"}}/>Name Search</Link>

@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { db } from '../../../../../firebase'
 
-const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, submit, setSubmit }) => {
+const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, submit, setSubmit, setComplete }) => {
     const username = "Changhae Lee";
     const [currentDoc, setCurrentDoc] = useState();
     const [resultdata, setresult] = useState([]);
@@ -51,6 +51,7 @@ const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, subm
                     photourl: doc.get('photourl')
                 })
                 if (doc.get('name') == username) {
+                    setSubmit(true);
                     setText(doc.get('content'));
                     setRecommend(doc.get('isPositive'));
                     setRange(doc.get('data'));
@@ -100,12 +101,21 @@ const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, subm
                 name: achiev['name'],
                 explain: achiev['explain'],
                 isSelected: tempselect[i],
-                isCompleted: achiev['isCompleted'],
+                isCompleted: tempselect[i] ? achiev['isCompleted'] : false,
                 photourl: achiev['photourl']
             })
         })
         setAchievlist(temp);
         setTempselect(new Array(achievlist.length).fill(false));
+        for (let j = 0; j < temp.length; j++) {
+            if (temp[j]['isSelected'] && !temp[j]['isCompleted']) {
+                setComplete(false);
+                break;
+            }
+            if (j == temp.length-1) {
+                setComplete(true);
+            }
+        }
         setModify(false);
     }
 
@@ -285,6 +295,15 @@ const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, subm
             })
             setTempurl('');
             setAchievlist(temp);
+            for (let j = 0; j < temp.length; j++) {
+                if (temp[j]['isSelected'] && !temp[j]['isCompleted']) {
+                    setComplete(false);
+                    break;
+                }
+                if (j == temp.length-1) {
+                    setComplete(true);
+                }
+            }
             setProve(false);
         }
         else {
@@ -317,6 +336,7 @@ const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, subm
         })
         setTempurl('');
         setAchievlist(temp);
+        setComplete(false);
         setCancel(false);
     }
 
@@ -428,10 +448,10 @@ const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, subm
                     <Button id="MPP-achievements-modify" variant="success" onClick={clickModify}><FontAwesomeIcon icon={faPlus} style={{ marginRight: "10px" }} />Modify Achievements</Button>
                 </div>
                 <Modal size='lg' show={modify} onHide={clickMNo}>
-                    <Modal.Header closeButton>
+                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
                         <Modal.Title>Modify Selected Achievements</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>
+                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
                         <ListGroup id="MMP-achievements-modallist">
                             {achievlist.map((achiev, i) => {
                                 if (achiev['isSelected']) {
@@ -451,7 +471,7 @@ const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, subm
                             })}
                         </ListGroup>
                     </Modal.Body>
-                    <Modal.Footer>
+                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
                         <Button variant="primary" onClick={clickMYes}>
                             Submit
                         </Button>
@@ -489,21 +509,21 @@ const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, subm
                     </ListGroup>
                 }
                 <Modal show={prove} onHide={clickPNo} scrollable={true}>
-                    <Modal.Header closeButton>
+                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
                         <Modal.Title>Accomplish Activity</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body style={{ fontSize: "18px" }}>
-                        <p style={{ fontFamily: 'arial', color: 'black', fontSize: '18px', marginLeft: "0" }}>Are you sure you attained the activity? If it is true, please upload a proof photo.</p>
+                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
+                        <p style={{fontFamily:'arial', color: 'black', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>Are you sure you attained the activity? If it is true, please upload a proof photo.</p>
                         {/*<input type="file" name="file" id="file" class="inputfile" accept=".jpg, .jpeg, .png"/>*/}
                         <Form>
                             <Form.Group>
                                 {/*<Form.File accept=".jpg, .jpeg, .png" id="exampleFormControlFile1" ref={(ref) => setFile(ref)} />*/}
-                                <Form.File accept=".jpg, .jpeg, .png" id="exampleFormControlFile1" onChange={selectImg} />
+                                <Form.File accept=".jpg, .jpeg, .png" id="exampleFormControlFile1" onChange={selectImg} style={{fontFamily:'arial', color: 'black', fontSize:'16px', marginLeft:'20px', marginRight:'20px'}}/>
                             </Form.Group>
                         </Form>
                         {(tempurl !== '') && <img id='MMP-photo' src={tempurl}></img>}
                     </Modal.Body>
-                    <Modal.Footer>
+                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
                         <Button variant="primary" onClick={clickPYes}>
                             Yes
                         </Button>
@@ -513,14 +533,14 @@ const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, subm
                     </Modal.Footer>
                 </Modal>
                 <Modal show={cancel} onHide={clickCNo} scrollable={true}>
-                    <Modal.Header closeButton>
+                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
                         <Modal.Title>Cancel Activity</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>
-                        <p style={{ fontFamily: 'arial', color: 'black', fontSize: '18px', marginLeft: "0" }}>Are you sure you cancel the activity?</p>
+                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
+                        <p style={{fontFamily:'arial', color: 'black', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>Are you sure you cancel the activity?</p>
                         {(tempurl !== '') && <img id='MMP-photo' src={tempurl}></img>}
                     </Modal.Body>
-                    <Modal.Footer>
+                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
                         <Button variant="primary" onClick={clickCYes}>
                             Yes
                         </Button>
@@ -543,15 +563,15 @@ const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, subm
                     }
                 </div>
                 <Modal show={review} onHide={clickRNo}>
-                    <Modal.Header closeButton>
+                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
                         {submit ?
                             <Modal.Title>Modify your Review</Modal.Title>
                             :
                             <Modal.Title>Write a Review</Modal.Title>
                         }
                     </Modal.Header>
-                    <Modal.Body>
-                        <Form>
+                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
+                        <Form style={{marginLeft: '20px', marginRight: '20px'}}>
                             <Form.Group controlId="MMP-text">
                                 <Form.Label id="MMP-reviews-formlabel">Text</Form.Label>
                                 <Form.Control as="textarea" rows={3} value={text} onChange={e => { setText(e.target.value) }} />
@@ -581,7 +601,7 @@ const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, subm
                             </Form.Group>
                         </Form>
                     </Modal.Body>
-                    <Modal.Footer>
+                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
                         <Button variant="primary" onClick={clickRYes}>
                             Submit
                         </Button>
@@ -591,13 +611,13 @@ const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, subm
                     </Modal.Footer>
                 </Modal>
                 <Modal show={remove} onHide={clickXNo}>
-                    <Modal.Header closeButton>
+                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
                         <Modal.Title>Remove your Review</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body style={{ fontSize: "18px" }}>
-                        <p style={{ fontFamily: 'arial', color: 'black', fontSize: '18px', marginLeft: "0" }}>Are you sure you remove your review?</p>
+                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
+                        <p style={{fontFamily:'arial', color: 'black', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>Are you sure you remove your review?</p>
                     </Modal.Body>
-                    <Modal.Footer>
+                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
                         <Button variant="danger" onClick={clickXYes}>
                             Remove
                         </Button>

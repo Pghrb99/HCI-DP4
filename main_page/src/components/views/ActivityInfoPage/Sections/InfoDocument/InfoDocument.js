@@ -7,10 +7,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faPlus, faChevronCircleDown, faChevronCircleUp, faPencilAlt } from "@fortawesome/free-solid-svg-icons"
 import { db } from 'firebase.js'
 
-const InfoDocument = ({ docId, achievlist, setAchievlist, submit, setSubmit, ongoing, setOngoing }) => {
+const InfoDocument = ({ docId, achievlist, submit, setSubmit, ongoing }) => {
     const username = "Changhae Lee";
     const [currentDoc, setCurrentDoc] = useState();
-    const [resultdata, setresult] = useState([]);
     const [review, setReview] = useState(false);
     const [reviewlist, setReviewlist] = useState([]);
     const [text, setText] = useState(""); // useState(submit ? reviewlist[0]['content'] : "");
@@ -45,6 +44,7 @@ const InfoDocument = ({ docId, achievlist, setAchievlist, submit, setSubmit, ong
                     photourl: doc.get('photourl')
                 })
                 if (doc.get('name') == username) {
+                    setSubmit(true);
                     setText(doc.get('content'));
                     setRecommend(doc.get('isPositive'));
                     setRange(doc.get('data'));
@@ -330,15 +330,15 @@ const InfoDocument = ({ docId, achievlist, setAchievlist, submit, setSubmit, ong
                             {/*ongoing disabled*/}
                         </div>
                         <Modal show={review} onHide={clickRNo}>
-                            <Modal.Header closeButton>
+                            <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
                                 {submit ?
                                     <Modal.Title>Modify your Review</Modal.Title>
                                     :
                                     <Modal.Title>Write a Review</Modal.Title>
                                 }
                             </Modal.Header>
-                            <Modal.Body>
-                                <Form>
+                            <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
+                                <Form style={{marginLeft: '20px', marginRight: '20px'}}>
                                     <Form.Group controlId="MMP-text">
                                         <Form.Label id="MMP-reviews-formlabel">Text</Form.Label>
                                         <Form.Control as="textarea" rows={3} value={text} onChange={e => { setText(e.target.value) }} />
@@ -368,7 +368,7 @@ const InfoDocument = ({ docId, achievlist, setAchievlist, submit, setSubmit, ong
                                     </Form.Group>
                                 </Form>
                             </Modal.Body>
-                            <Modal.Footer>
+                            <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
                                 <Button variant="primary" onClick={clickRYes}>
                                     Submit
                         </Button>
@@ -378,19 +378,19 @@ const InfoDocument = ({ docId, achievlist, setAchievlist, submit, setSubmit, ong
                             </Modal.Footer>
                         </Modal>
                         <Modal show={remove} onHide={clickXNo}>
-                            <Modal.Header closeButton>
+                            <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
                                 <Modal.Title>Remove your Review</Modal.Title>
                             </Modal.Header>
-                            <Modal.Body style={{ fontSize: "18px" }}>
-                                <p style={{ fontFamily: 'arial', color: 'black', fontSize: '18px', marginLeft: "0" }}>Are you sure you remove your review?</p>
+                            <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
+                                <p style={{fontFamily:'arial', color: 'black', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>Are you sure you remove your review?</p>
                             </Modal.Body>
-                            <Modal.Footer>
+                            <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
                                 <Button variant="danger" onClick={clickXYes}>
                                     Remove
-                        </Button>
+                                </Button>
                                 <Button variant="secondary" onClick={clickXNo}>
                                     Cancel
-                        </Button>
+                                </Button>
                             </Modal.Footer>
                         </Modal>
                         <h3>Positive Opinions</h3>

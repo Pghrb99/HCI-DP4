@@ -8,7 +8,7 @@ import { faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 import {db} from 'firebase.js';
 import { useHistory } from 'react-router';
 
-const TopBar = ({ userName, isSignedIn, docId, removeReview, submit, setSubmit, ongoing, setOngoing, complete, setComplete }) => {
+const TopBar = ({ userName, isSignedIn, docId, removeReview, submit, setSubmit, ongoing, setOngoing, complete}) => {
     const history = useHistory();
     const [currentDoc, setCurrentDoc] = useState();
     
@@ -24,8 +24,6 @@ const TopBar = ({ userName, isSignedIn, docId, removeReview, submit, setSubmit, 
         setCancel(false);
     }
     const clickCNo = () => setCancel(false);
-
-    const clickComplete = () => setComplete(true);
 
     useEffect(() => {
         db.collection("Activities").doc(docId).get().then((doc) => {
@@ -82,25 +80,22 @@ const TopBar = ({ userName, isSignedIn, docId, removeReview, submit, setSubmit, 
                     }
                 </div>
                 {complete ?
-                    <Button variant='success' id='MPP-topbar-complete' disabled style={{cursor:'default'}}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>
+                    <Button variant='success' id='MPP-topbar-complete' onClick={clickCancel}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>
                     :
-                    <div>
-                        <Button variant='success' id='MPP-topbar-complete' onClick={clickComplete}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>
-                        <Button variant='secondary' id='MPP-topbar-ongoing' onClick={clickCancel}>Ongoing<FontAwesomeIcon icon={faTimes} style={{marginLeft:'10px'}}/></Button>
-                    </div>
+                    <Button variant='secondary' id='MPP-topbar-ongoing' onClick={clickCancel}>Ongoing<FontAwesomeIcon icon={faTimes} style={{marginLeft:'10px'}}/></Button>
                 }
                 
                 {/* ongoing, see_info은 눌리면 activityinfopage로 이동*/}
 
                 <Modal show={cancel} onHide={clickCNo}>
-                    <Modal.Header closeButton>
+                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
                         <Modal.Title id="MPP-modal-title">Cancel Activity</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>
-                        <p style={{fontFamily:'arial', color:'black', fontSize:'18px', marginLeft:"0"}}>Are you sure you want to cancel?</p>
-                        <p style={{fontFamily:'arial', color:'black', fontSize:'18px', marginLeft:"0"}}>(If you select 'Yes,' your review will be removed autometically.)</p>
+                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
+                        <p style={{fontFamily:'arial', color: 'black', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>Are you sure you want to cancel?</p>
+                        <p style={{fontFamily:'arial', color: 'black', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>(If you select 'Yes,' your review will be removed autometically.)</p>
                     </Modal.Body>
-                    <Modal.Footer>
+                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
                         <Button variant="primary" onClick={clickCYes}>
                             <Link to={"/info"} style={{color:"white"}}>Yes</Link>
                         </Button>

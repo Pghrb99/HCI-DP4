@@ -141,7 +141,7 @@ function App() {
                     <Switch>
                     
                         <PrivateRoute exact path="/mypage" component={Mypage} />
-                        <PrivateRoute exact path="/myprogress" render={() => <MyProgressPage achievlist={achievlist} setAchievlist={setAchievlist} tags={tags} setTags={setTags} reviewlist={reviewlist} addReview={addReview} removeReview={removeReview} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing} complete={complete} setComplete={setComplete}/>} />
+                        <Route exact path="/myprogress" render={() => <MyProgressPage achievlist={achievlist} setAchievlist={setAchievlist} tags={tags} setTags={setTags} reviewlist={reviewlist} addReview={addReview} removeReview={removeReview} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing} complete={complete} setComplete={setComplete}/>} />
                         
                         <Route exact path="/" component={TagSearchPage} />
                         <Route exact path="/result" component={TagSearchResultPage} />

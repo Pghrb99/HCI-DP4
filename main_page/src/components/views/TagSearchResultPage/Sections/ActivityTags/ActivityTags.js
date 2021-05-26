@@ -155,10 +155,10 @@ const ActivityTags = ({tags, docId, plusbutton}) => {
             }
             {plusbutton && <Button variant='success' id='tagplus' onClick={clickTagplus}><FontAwesomeIcon icon={faPlus} /></Button>}
             <Modal size='lg' show={tagplus} onHide={clickTPNo}>
-                <Modal.Header closeButton style={{ backgroundColor: '#d1d1d1', color: '#356864', border: 'none', paddingBottom:'5px'}}>
+                <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
                     <Modal.Title style={{marginTop: '10px'}}>Add Tags</Modal.Title>
                 </Modal.Header>
-                <Modal.Body style={{ backgroundColor: '#d1d1d1', color: '#356864', border: 'none', textAlign: 'center', paddingTop: '5px', paddingBottom: '0'}}>
+                <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', textAlign: 'center', paddingTop: '5px', paddingBottom: '0'}}>
                     <table style={{ width: '100%', textAlign: 'left', margin: '0 20px 0 20px' }}>
                         <thead>
                             <tr>
@@ -213,7 +213,7 @@ const ActivityTags = ({tags, docId, plusbutton}) => {
                         </InputGroup>
                     </div>
                 </Modal.Body>
-                <Modal.Footer style={{ backgroundColor: '#d1d1d1', color: '#356864', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
+                <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
                     <Button variant="primary" onClick={clickTPYes}>
                         Submit
                             </Button>

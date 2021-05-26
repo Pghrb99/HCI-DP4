@@ -72,17 +72,17 @@ const Review = ({ isPositive, isMe, name, years, achiev, content, data, like, ph
                 </Card.Body>
             </Card>
             <Modal size='lg' show={images} onHide={clickINo} scrollable={true}>
-                <Modal.Header closeButton>
+                <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
                     <Modal.Title>Images</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
                     <div id="review-photo-container">
                         {photourl.map(photo => {
                             return (<img src={photo} style={{width:'90%'}}></img>);
                         })}
                     </div>
                 </Modal.Body>
-                <Modal.Footer>
+                <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
                         <Button variant="secondary" onClick={clickINo}>
                             Close
                         </Button>
