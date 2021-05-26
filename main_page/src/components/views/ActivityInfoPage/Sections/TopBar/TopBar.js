@@ -60,7 +60,7 @@ const TopBar = ({docId, isSignedIn, userName, submit, setSubmit, ongoing, setOng
     const clickCancel = () => setCancel(true);
     const clickCYes = () => {
         if (submit) {
-            setSubmit(false);
+            // setSubmit(false);
         }
     db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).delete();
 
