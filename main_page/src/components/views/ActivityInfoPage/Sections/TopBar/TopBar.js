@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 import {db} from 'firebase.js';
 import { useHistory } from 'react-router';
-
+import {  Alert  } from 'antd';
 const TopBar = ({docId, isSignedIn, userName, removeReview, submit, setSubmit, ongoing, setOngoing, complete}) => {
     const history = useHistory();
     const [currentDoc, setCurrentDoc] = useState();
@@ -15,7 +15,9 @@ const TopBar = ({docId, isSignedIn, userName, removeReview, submit, setSubmit, o
     const [start, setStart] = useState(false);
     const [cancel, setCancel] = useState(false);
     
-    const clickStart = () => setStart(true);
+    const clickStart = () => {
+        isSignedIn ? setStart(true) : history.push('/login');
+    }
     const clickSYes = () => {
         setOngoing(true);
         setStart(false);
