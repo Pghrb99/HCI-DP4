@@ -8,7 +8,6 @@ import { faEdit, faInfo, faChevronCircleDown, faChevronCircleUp, faPencilAlt } f
 import { db } from 'firebase.js'
 import { UndoOutlined } from '@material-ui/icons';
 
-
 const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubmit, ongoing }) => {
     const username = userName;
     const [countend, setend] = useState(0);
@@ -23,6 +22,7 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
     const [numInfo, setNumInfo] = useState(false);
 
     useEffect(() => {
+
         db.collection("Activities").doc(docId).get().then((doc) => {
             setCurrentDoc({
                 imgs: doc.get("imgs"),
@@ -473,10 +473,10 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
                             {reviewlist.map(rev => {
                                 if (rev['isPositive']) {
                                     if (rev['name'] == username) {
-                                        return <Review reviewId={rev['reviewId']} docId={docId} username={username} isPositive={true} isMe={true} name={rev['name']} years={rev['years']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
+                                        return <Review reviewId={rev['reviewId']} docId={docId} isPositive={true} isMe={true} name={rev['name']} years={rev['years']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                                     }
                                     else {
-                                        return <Review reviewId={rev['reviewId']} docId={docId} username={username} isPositive={true} isMe={false} name={rev['name']} years={rev['years']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
+                                        return <Review reviewId={rev['reviewId']} docId={docId} isPositive={true} isMe={false} name={rev['name']} years={rev['years']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
                                     }
                                 }
                             })}
@@ -487,10 +487,10 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
                             {reviewlist.map(rev => {
                                 if (!rev['isPositive']) {
                                     if (rev['name'] == username) {
-                                        return <Review reviewId={rev['reviewId']} docId={docId} username={username} isPositive={false} isMe={true} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
+                                        return <Review reviewId={rev['reviewId']} docId={docId} isPositive={false} isMe={true} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                                     }
                                     else {
-                                        return <Review reviewId={rev['reviewId']} docId={docId} username={username} isPositive={false} isMe={false} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
+                                        return <Review reviewId={rev['reviewId']} docId={docId} isPositive={false} isMe={false} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
                                     }    
                                 }})
                             }

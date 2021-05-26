@@ -328,6 +328,7 @@ const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchiev
                     return achiev;
                 }
             })
+            // 여기에 review의 photourl에 tempurl을 추가하는 코드 넣어야 함
             setTempurl('');
             setAchievlist(temp);
             for (let j = 0; j < temp.length; j++) {
@@ -369,6 +370,7 @@ const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchiev
                 return achiev;
             }
         })
+        // 여기에 review의 photourl에 tempurl을 제거하는 코드 넣어야 함
         setTempurl('');
         setAchievlist(temp);
         setComplete(false);
@@ -667,10 +669,10 @@ const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchiev
                     {reviewlist.map(rev => {
                             if (rev['isPositive']) {
                                 if (rev['name'] == username) {
-                                    return <Review docId={docId} username={username} isPositive={true} isMe={true} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
+                                    return <Review reviewId={rev['reviewId']} docId={docId} isPositive={true} isMe={true} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                                 }
                                 else {
-                                    return <Review docId={docId} username={username} isPositive={true} isMe={false} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
+                                    return <Review reviewId={rev['reviewId']} docId={docId} isPositive={true} isMe={false} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
                                 }
                             }
                         })}
@@ -680,10 +682,10 @@ const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchiev
                     {reviewlist.map(rev => {
                             if (!rev['isPositive']) {
                                 if (rev['name'] == username) {
-                                    return <Review docId={docId} username={username} isPositive={false} isMe={true} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
+                                    return <Review reviewId={rev['reviewId']} docId={docId} isPositive={false} isMe={true} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                                 }
                                 else {
-                                    return <Review docId={docId} username={username} isPositive={false} isMe={false} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
+                                    return <Review reviewId={rev['reviewId']} docId={docId} isPositive={false} isMe={false} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
                                 }
                             }
                         })}
