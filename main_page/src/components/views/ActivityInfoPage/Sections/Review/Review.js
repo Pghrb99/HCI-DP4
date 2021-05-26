@@ -8,29 +8,31 @@ import { faThumbsUp as regularthumbsup } from "@fortawesome/free-regular-svg-ico
 import ProgressDocument from 'components/views/MyProgressPage/Sections/ProgressDocument/ProgressDocument';
 import { LeftCircleFilled } from '@ant-design/icons';
 import {firebase, db} from 'firebase.js';
+import { useAuth } from 'contexts/AuthContext'
 
 const Review = ({ reviewId, docId, username, isPositive, isMe, name, years, achiev, content, data, like, photourl, clickReview, clickRemove }) => {
     const [numOfLike, setNumOfLike] = useState(like);
     const [images, setImages] = useState(false);
     const [isthumb, setIsThumb] = useState(false);
+    const {currentUser} = useAuth();
     // 나중에는 like 상속받아야 함
 
     useEffect(() => {
         const reviewRef = db.collection("Activities").doc(docId).collection("Reviews").doc(reviewId);
         reviewRef.get().then((reviewDoc) => {
-            if(reviewDoc.get("likeUsers").includes(username)) {
-                setIsThumb(reviewDoc.get('likeUsers').includes(username));
+            if(reviewDoc.get("likeUsers").includes(currentUser.email)) {
+                setIsThumb(reviewDoc.get('likeUsers').includes(currentUser.email));
             }
         });
     }, []);
 
     const clickLike = (event) => {
-        // if (username != name) {
+        // if (currentUser.email != name) {
             const reviewRef = db.collection("Activities").doc(docId).collection("Reviews").doc(reviewId);
             if (!event.currentTarget.className.includes("MMP-numOfLike")) {
                 reviewRef.update({
                     like: firebase.firestore.FieldValue.increment(1),
-                    likeUsers: firebase.firestore.FieldValue.arrayUnion(username)
+                    likeUsers: firebase.firestore.FieldValue.arrayUnion(currentUser.email)
                 });
                 event.currentTarget.className += " MMP-numOfLike";
                 setNumOfLike(numOfLike + 1);
@@ -39,7 +41,7 @@ const Review = ({ reviewId, docId, username, isPositive, isMe, name, years, achi
             else {
                 reviewRef.update({
                     like: firebase.firestore.FieldValue.increment(-1),
-                    likeUsers: firebase.firestore.FieldValue.arrayRemove(username)
+                    likeUsers: firebase.firestore.FieldValue.arrayRemove(currentUser.email)
                 });
                 event.currentTarget.className = "AIP-reviews-likes"
                 setNumOfLike(numOfLike - 1);
