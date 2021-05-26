@@ -1,62 +1,74 @@
-import React from 'react'
 import './Userimfo.scss'
-import hockey_world_1400 from '../../../imgs/hockey_world_1400.png'
-const Userimfo = (imfo) => {
+import React, {useState, useEffect} from 'react';
+import {db} from '../../../../../../../firebase'
 
-    const image = {
-        backgroundPosition :"center",
-        backgroundImage: 'url(' + hockey_world_1400 +')',
-    //    height : "75vh";
-    //    width : "100vw";
-       height : "130px",
-       width : "250px",
-    // backgroundColor: 'aqua',
-    // backgroundRepeat: no-repeat;
-    backgroundPosition: 'center',
-    backgroundSize: 'cover',
-        // opacity : "0.7"
-        marginTop : '100px',
-        marginLeft: '50px'
-    }
+const Userinfo = (userEmail) => {
+const [userdata, setresult] = useState([]);
+const [ongoingnum, setongoing] = useState([]);
+const [endnum, setend] = useState([]);
+let ongoingact = 0; 
+let endact = 0; 
+useEffect(() => {
+console.log(userEmail.userEmail)
 
+        let userinfo = []
+        let snapshot1 = db.collection('UserInfo').doc(userEmail.userEmail);
+        snapshot1.get().then((doc => {
+                userinfo.push({ 
+                        name : doc.get("name"),
+                        phoneNumber : doc.get("phone"),
+                        sex : doc.get("gender"),
+                        email : doc.get("email"),
+                        age : doc.get("age"),
+                        birthday : doc.get("birthday"),
+                        aboutMe: doc.get("aboutme")
+                    });
+                
+                setresult(userinfo);
+    }));
+
+
+    (async () => {
+        let actRef  = db.collection('UserInfo').doc(userEmail.userEmail).collection('Activities');
+        const snapshot2 = await actRef.get();
+        snapshot2.forEach(doc => {
+            if(doc.data().state == true){
+                ongoingact++;
+            }
+            else endact++;
+            })
+            setongoing(ongoingact);
+            setend(endact);
+        })();  
+
+
+        }, []);
+
+
+    if(userdata[0] != undefined){
     return (
     <div id = 'maincontext' >
         {/* <div style={image} > </div> */}
         <br/>
-        <p id = 'userimfo' > User Imfo </p>
-        <p> Name : Kimminseok </p>
-        <p> Age(Sex) : 23(M) </p>
-        <p> Phone-number : 010-1234-5678 </p>
-        <p> Email : kaist@kaist.ac.kr </p>
-        <p> Favorite Tags : Soccer.. </p>
-        <p> Hobbies in Progress : 4 </p>
-        <p> completed Hobbies  : 2 </p>
-        <p> About Me  :  <br/>
-        
-         </p>
-        {/* <p> Name : imfo.name </p>
-        <p> Age(Sex) : imfo.age(imfo.sex) </p>
-        <p> Phone-number : imfo.phonenumber </p>
-        <p> Email : imfo.email </p>
-        <p> Favorite Tags : imfo.tags </p>
-        <p> Hobbies in Progress : imfo.Progresshobbies </p>
-        <p> completed Hobbies  : imfo.completedHobbies </p> 
-        <p> About Me  :  <br/>
-        imfo.content  </p>
-         */}
-
-
-        
-
-
-
+        <p id = 'userimfo' > User Info </p>
+        <p> Name : {userdata[0].name} </p>
+        <p> birthday : {userdata[0].birthday} </p>
+        <p> Age(Sex) : {userdata[0].age}({userdata[0].sex}) </p>
+        <p> Phone-number : {userdata[0].phoneNumber} </p>
+        <p> Email : {userdata[0].email} </p>
+        <p> Hobbies in Progress : {ongoingnum} </p>
+        <p> completed Hobbies  : {endnum} </p>
+        <p> About Me  : <br/> 
+        {userdata[0].aboutMe} </p>
     </div>
 
     
     )
 }
+else return (<div>
+    Can't find userdata
+    </div>
+    )
+}
 
-
-
-
-export default Userimfo
+export default Userinfo
