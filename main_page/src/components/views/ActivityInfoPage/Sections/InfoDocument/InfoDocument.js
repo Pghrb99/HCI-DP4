@@ -7,8 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faPlus, faChevronCircleDown, faChevronCircleUp, faPencilAlt } from "@fortawesome/free-solid-svg-icons"
 import { db } from 'firebase.js'
 
-const InfoDocument = ({ docId, achievlist, submit, setSubmit, ongoing }) => {
-    const username = "Changhae Lee";
+const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubmit, ongoing }) => {
+    const username = userName;
     const [currentDoc, setCurrentDoc] = useState();
     const [review, setReview] = useState(false);
     const [reviewlist, setReviewlist] = useState([]);
@@ -289,7 +289,7 @@ const InfoDocument = ({ docId, achievlist, submit, setSubmit, ongoing }) => {
                 <div id="AIP-requirments" style={{ marginTop: '30px' }}>
                     <div style={{ width: '100%', display: 'inline-block' }}>
                         <h2 style={{ float: 'left' }}>Requirments</h2>
-                        <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Edit Requirments</Button>
+                        <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing && !isSignedIn}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Edit Requirments</Button>
                     </div>
                     <ul>
                     {currentDoc.requirements.map((content, index) => (
@@ -302,7 +302,7 @@ const InfoDocument = ({ docId, achievlist, submit, setSubmit, ongoing }) => {
                     <div id="AIP-achievements" style={{ marginTop: '30px' }}>
                         <div style={{ width: '100%', display: 'inline-block' }}>
                             <h2 style={{ float: 'left' }}>Achievements</h2>
-                            <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Edit Achievements</Button>
+                            <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing && !isSignedIn}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Edit Achievements</Button>
                         </div>
                         <ListGroup id="AIP-achievements-list">
                             {achievlist.map((achiev, i) => {
@@ -331,7 +331,7 @@ const InfoDocument = ({ docId, achievlist, submit, setSubmit, ongoing }) => {
                                     <Button id="AIP-reviews-write" variant="success" onClick={clickReview}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Modify your Review</Button>
                                 </div>
                                 :
-                                <Button id="AIP-reviews-write" variant="success" onClick={clickReview} disabled={!ongoing}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Write a Review</Button>
+                                <Button id="AIP-reviews-write" variant="success" onClick={clickReview} disabled={!ongoing && !isSignedIn}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Write a Review</Button>
                             }
                             {/*ongoing disabled*/}
                         </div>
@@ -430,7 +430,7 @@ const InfoDocument = ({ docId, achievlist, submit, setSubmit, ongoing }) => {
                     <div id="AIP-communities" style={{ marginTop: '30px' }}>
                         <div style={{ width: '100%', display: 'inline-block' }}>
                             <h2 style={{ float: 'left' }}>Communities</h2>
-                            <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Edit Requirments</Button>
+                            <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing && !isSignedIn}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Edit Requirments</Button>
                         </div>
                         {currentDoc.communities.links.map((link, index) => (
                             <a

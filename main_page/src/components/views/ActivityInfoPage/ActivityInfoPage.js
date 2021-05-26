@@ -31,6 +31,8 @@ const ActivityInfoPage = ({achievlist, setAchievlist, reviewlist, addReview, rem
             <div id="AIP-hori-div">
                 <HorizontalBar/>
                 <InfoDocument
+                    userName={currentUser && currentUser.email}
+                    isSignedIn={currentUser}
                     docId={docId}
                     achievlist={achievlist}
                     submit={submit} 

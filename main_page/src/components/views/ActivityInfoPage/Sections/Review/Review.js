@@ -21,6 +21,7 @@ const Review = ({ docId, username, isPositive, isMe, name, years, achiev, conten
         db.collection("Activities").doc(docId).collection('Reviews').get().then(querySnapshot => {
             querySnapshot.forEach(doc => {
                 if (doc.get('name') == name) {
+                    console.log(":  "+username)
                     setIsthumb(doc.get('likeUsers').includes(username));
                 }
             })
