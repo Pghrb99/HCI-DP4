@@ -8,14 +8,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { db } from '../../../../../firebase'
 
-const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchievlist, submit, setSubmit, setComplete }) => {
+const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, setComplete }) => { 
     const username = userName;
     const [countend, setend] = useState(0);
     const [countlength, setlength] = useState(0);
     const [currentDoc, setCurrentDoc] = useState();
     const [resultdata, setresult] = useState([]);
     const [reviewlist, setReviewlist] = useState([]);
-    const [tempselect, setTempselect] = useState(new Array(achievlist.length).fill(false));
+    const [achievlist, setachievlist] = useState([]);
+    const [showachievlist, setshowachievlist] = useState([]);
+    const [tempselect, setTempselect] = useState([]);
     const [modify, setModify] = useState(false);
     const [prove, setProve] = useState(false);
     const [cancel, setCancel] = useState(false);
@@ -26,6 +28,7 @@ const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchiev
     const [recommend, setRecommend] = useState(true); // useState(submit ? reviewlist[0]['isPositive'] : true);
     const [range, setRange] = useState([5, 5, 5, 5, 5]); // useState(submit ? reviewlist[0]['data'] : [5, 5, 5, 5, 5]);
     const [remove, setRemove] = useState(false);
+    const [reloadtest, setreloadtest] = useState(false);
 
     useEffect(() => {
         db.collection("Activities").doc(docId).get().then((doc) => {
@@ -37,7 +40,51 @@ const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchiev
                 numerics: doc.get("numerics"),
                 communities: doc.get("communities"),
             });
-        })
+        });
+        
+        (async () => {
+            let temparray = []
+            let reloadtest1 = false;
+            let actRefforthis  = db.collection('UserInfo').doc(username).collection('Activities').doc(docId)
+            actRefforthis.get().then((doc) => {
+                if(doc.get("achievement").length != 0){
+                for(let i=0;i<doc.get("achievement").length;i++){
+                temparray.push({
+                    name: doc.get("achievement")[i].name,
+                    explain: doc.get("achievement")[i].explain,
+                    isCompleted: doc.get("achievement")[i].isCompleted,
+                    isSelected: doc.get("achievement")[i].isSelected,
+                    photourl : doc.get("achievement")[i].photourl
+                })
+            } 
+                setTempselect(Array(temparray.length).fill(false));
+                setachievlist(temparray);
+            }
+            else {
+                reloadtest1= true;}
+
+            if(reloadtest1){
+            (async () => {
+                let actRefforthis  = db.collection('Activities').doc(docId).collection('Achievements');
+                const snapshotfor = await actRefforthis.get();
+                let temparray = []
+                snapshotfor.forEach(doc => {
+                    temparray.push({
+                        name: doc.data().name,
+                        explain: doc.data().explain,
+                        isCompleted: doc.data().isCompleted,
+                        isSelected: doc.data().isSelected,
+                        photourl : ''
+                    })
+                    })
+                    setTempselect(Array(temparray.length).fill(false));
+                    setachievlist(temparray);
+    
+                })();  
+            }
+                })   
+            })();
+
 
         db.collection("Activities").doc(docId).collection('Reviews').onSnapshot((querySnapshot) => {
             const tempReviewList = [];
@@ -65,26 +112,26 @@ const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchiev
         });
 
 
-    // let tempcountend =0;
-    // (async () => {
-    //     let snapshot3 = db.collection('UserInfo').doc(username).collection('Activities');
-    //     const snapshot2 = await snapshot3.get();
-    //     snapshot2.forEach(doc => {
-    //         if(typeof currentDoc != 'undefined'){
-    //         if(doc.data().name == currentDoc.name){
-    //             if(doc.get("achievement").length != 0){
-    //             for(let i=0; i<doc.get("achievement").length;i++){
-    //                 if(doc.get("achievement")[i].finish == true){
-    //                     tempcountend++;
-    //                 }
-    //             }
-    //             setend(tempcountend);
-    //             setlength(doc.get("achievement").length);
-    //         }}
-    //     }
+    let tempcountend =0;
+    (async () => {
+        let snapshot3 = db.collection('UserInfo').doc(username).collection('Activities');
+        const snapshot2 = await snapshot3.get();
+        snapshot2.forEach(doc => {
+            if(typeof currentDoc != 'undefined'){
+            if(doc.data().name == currentDoc.name){
+                if(doc.get("achievement").length != 0){
+                for(let i=0; i<doc.get("achievement").length;i++){
+                    if(doc.get("achievement")[i].finish == true){
+                        tempcountend++;
+                    }
+                }
+                setend(tempcountend);
+                setlength(doc.get("achievement").length);
+            }}
+        }
             
-    //     })
-    //     })(); 
+        })
+        })(); 
 
 
 
@@ -92,25 +139,25 @@ const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchiev
     }, []);
 
     const calculateTotal = () => {
-        // var cnt = 0;
-        // achievlist.forEach(achiev => {
-        //     if (achiev['isSelected']) {
-        //         cnt++;
-        //     }
-        // });
-        // return cnt;
-        return countlength;
+        var cnt = 0;
+        achievlist.forEach(achiev => {
+            if (achiev['isSelected']) {
+                cnt++;
+            }
+        });
+        return cnt;
+        // return countlength;
     }
 
     const calculateCompleted = () => {
-        // var cnt = 0;
-        // achievlist.forEach(achiev => {
-        //     if (achiev['isCompleted']) {
-        //         cnt++;
-        //     }
-        // });
-        // return cnt;
-        return countend;
+        var cnt = 0;
+        achievlist.forEach(achiev => {
+            if (achiev['isCompleted']) {
+                cnt++;
+            }
+        });
+        return cnt;
+        // return countend;
     }
 
     const calculatePercent = () => {
@@ -137,24 +184,46 @@ const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchiev
                 photourl: achiev['photourl']
             })
         })
-        setAchievlist(temp);
+        setachievlist(temp);
         setTempselect(new Array(achievlist.length).fill(false));
         for (let j = 0; j < temp.length; j++) {
             if (temp[j]['isSelected'] && !temp[j]['isCompleted']) {
-                setComplete(false);
+                // setComplete(false);
+                const cityRefforPyes = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
+                cityRefforPyes.update({ isComplete : false });
                 break;
             }
             if (j == temp.length-1) {
-                setComplete(true);
+                // setComplete(true);
+                const cityRefforPyes = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
+                cityRefforPyes.update({ isComplete : true });
             }
         }
         setModify(false);
-    }
+
+        let useractivity = [];
+
+        for (let i=0; i<temp.length; i++){
+            useractivity.push({
+                name: temp[i].name,
+                explain: temp[i].explain,
+                isCompleted: temp[i].isCompleted,
+                isSelected: temp[i].isSelected,
+                photourl: ""
+            })
+        }
+
+        const cityReffor = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
+        cityReffor.update({
+            achievement: useractivity
+        });
+}
 
     const clickMNo = () => {
         setTempselect(new Array(achievlist.length).fill(false));
         setModify(false);
     }
+
 
     const clickModifyLabel = (event) => {
         const s = event.currentTarget.className;
@@ -292,7 +361,6 @@ const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchiev
                 res.push(achievlist[j]['photourl']);
             }
         }
-        console.log(res);
         return res;
     }
 
@@ -311,12 +379,21 @@ const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchiev
     }
 
     const clickPYes = () => {
-        console.log(tempurl);
+        let useractivity = [];
         const i = parseInt(attained.split('|')[1]);
         if (tempurl !== '') {
+            console.log(tempurl)
             $(".MMP-temp").attr('class', "MMP-success " + attained);
             const temp = achievlist.map((achiev, j) => {
                 if (j == i) {
+                    console.log(j, useractivity)
+                    useractivity.push({
+                        name: achiev.name,
+                        explain: achiev.explain,
+                        isCompleted: true,
+                        isSelected: achiev.isSelected,
+                        photourl: tempurl
+                    })
                     return ({
                         name: achiev['name'],
                         explain: achiev['explain'],
@@ -326,19 +403,40 @@ const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchiev
                     });
                 }
                 else {
+                    console.log(j, useractivity)
+                    useractivity.push({
+                        name: achiev.name,
+                        explain: achiev.explain,
+                        isCompleted: achiev.isCompleted,
+                        isSelected: achiev.isSelected,
+                        photourl: achiev.photourl
+                    })
                     return achiev;
                 }
             })
             // 여기에 review의 photourl에 tempurl을 추가하는 코드 넣어야 함
+            console.log('왜?', useractivity)
+            const cityReffor = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
+            cityReffor.update({
+                achievement: useractivity
+            });
+            // db.collection('UserInfo').doc(username).collection('Activities').doc(docId).update({ achievement : temp });
+
             setTempurl('');
-            setAchievlist(temp);
+            setachievlist(temp);
+            
             for (let j = 0; j < temp.length; j++) {
                 if (temp[j]['isSelected'] && !temp[j]['isCompleted']) {
-                    setComplete(false);
+                    // setComplete(false);
+                    const cityRefforPyes = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
+                    cityRefforPyes.update({ isComplete : false });
                     break;
                 }
                 if (j == temp.length-1) {
-                    setComplete(true);
+                    // setComplete(true);
+                    const cityRefforPyes = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
+                    cityRefforPyes.update({ isComplete : true });
+
                 }
             }
             setProve(false);
@@ -355,10 +453,18 @@ const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchiev
     }
 
     const clickCYes = () => {
+        let useractivity = [];
         const i = parseInt(attained.split('|')[1]);
         $(".MMP-temp").attr('class', attained.replace("MMP-success ", ''));
         const temp = achievlist.map((achiev, j) => {
             if (j == i) {
+                useractivity.push({
+                    name: achiev.name,
+                    explain: achiev.explain,
+                    isCompleted: false,
+                    isSelected: achiev.isSelected,
+                    photourl: tempurl
+                })
                 return ({
                     name: achiev['name'],
                     explain: achiev['explain'],
@@ -368,13 +474,29 @@ const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchiev
                 })
             }
             else {
+                useractivity.push({
+                    name: achiev.name,
+                    explain: achiev.explain,
+                    isCompleted: achiev.isCompleted,
+                    isSelected: achiev.isSelected,
+                    photourl: achiev.photourl
+                })
                 return achiev;
             }
         })
         // 여기에 review의 photourl에 tempurl을 제거하는 코드 넣어야 함
+
+        const cityReffor = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
+        cityReffor.update({
+            achievement: useractivity
+        });
+
+        db.collection('UserInfo').doc(username).collection('Activities').doc(docId).update({ achievement : temp });
         setTempurl('');
-        setAchievlist(temp);
-        setComplete(false);
+        setachievlist(temp);
+        const cityRefforPyes = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
+        cityRefforPyes.update({ isComplete : false });
+        // setComplete(false);
         setCancel(false);
     }
 
@@ -429,13 +551,10 @@ const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchiev
 
     let result = [];
     let tempreviews = [];
-    console.log(activityname);
-    console.log(docId);
 
     useEffect(() => {
 
         let snapshot = db.collection('Activities').doc(docId);
-        console.log(snapshot.collection('Reviews'));
 
         snapshot.get().then((doc => {
             if (activityname == doc.data().name) {
@@ -519,9 +638,11 @@ const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchiev
                         </Button>
                     </Modal.Footer>
                 </Modal>
-
+                        
                 {(emptyCheck(achievlist.map(achiev => { return achiev['isSelected']; }))) ?
-                    <div style={{ width: '100%', marginTop: '15px', textAlign: 'center', fontSize: '24px' }}>You have not selected achievements yet.</div>
+                
+                    <div style={{ width: '100%', marginTop: '15px', textAlign: 'center', fontSize: '24px' }}>You have not selected achievements yet. </div>
+                    
                     :
                     <ListGroup id="MMP-achievements-list">
                         {achievlist.map((achiev, i) => {

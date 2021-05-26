@@ -9,7 +9,7 @@ import { useLocation } from 'react-router'
 import { useAuth } from 'contexts/AuthContext';
 import { db } from 'firebase.js';
 
-const ActivityInfoPage = ({achievlist, setAchievlist, removeReview, submit, setSubmit, complete, setComplete}) => {
+const ActivityInfoPage = ({achievlist, submit, setSubmit, complete}) => {
     const location = useLocation();
     const docId = location.state.docId;
     const {currentUser} = useAuth();
@@ -31,7 +31,6 @@ const ActivityInfoPage = ({achievlist, setAchievlist, removeReview, submit, setS
                 userName={username}
                 isSignedIn={currentUser}
                 docId={docId}
-                removeReview={removeReview}
                 submit={submit}
                 setSubmit={setSubmit}
                 ongoing={ongoing}

@@ -9,7 +9,9 @@ import {db} from 'firebase.js';
 import { useHistory } from 'react-router';
 import { useAuth } from '../../../../../contexts/AuthContext'
 
-const TopBar = ({ userName, isSignedIn, docId, removeReview, submit, setSubmit, ongoing, setOngoing, complete}) => {
+const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOngoing, complete}) => {
+
+    let completebool;   
     const history = useHistory();
     const [currentDoc, setCurrentDoc] = useState();
     
@@ -18,7 +20,6 @@ const TopBar = ({ userName, isSignedIn, docId, removeReview, submit, setSubmit, 
     const clickCancel = () => setCancel(true);
     const clickCYes = () => {
         if (submit) {
-            removeReview();
             setSubmit(false);
         }
         setOngoing(false);
@@ -27,6 +28,9 @@ const TopBar = ({ userName, isSignedIn, docId, removeReview, submit, setSubmit, 
     const clickCNo = () => setCancel(false);
 
     useEffect(() => {
+
+        db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {completebool = doc.get("isComplete")}) 
+
         db.collection("Activities").doc(docId).get().then((doc) => {
             setCurrentDoc({
                 name: doc.get("name"),
@@ -83,12 +87,11 @@ const TopBar = ({ userName, isSignedIn, docId, removeReview, submit, setSubmit, 
                         currentDoc && <ActivityTags docId={docId} plusbutton={false}/>
                     }
                 </div>
-                {complete ?
+                {completebool ?
                     <Button variant='success' id='MPP-topbar-complete' onClick={clickCancel}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>
                     :
                     <Button variant='secondary' id='MPP-topbar-ongoing' onClick={clickCancel}>Ongoing<FontAwesomeIcon icon={faTimes} style={{marginLeft:'10px'}}/></Button>
                 }
-                
                 {/* ongoing, see_info은 눌리면 activityinfopage로 이동*/}
 
                 <Modal show={cancel} onHide={clickCNo}>

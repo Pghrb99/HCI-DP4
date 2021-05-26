@@ -8,32 +8,74 @@ import { faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 import {db} from 'firebase.js';
 import { useHistory } from 'react-router';
 import { useAuth } from '../../../../../contexts/AuthContext'
+import {firebase} from 'firebase.js';
 
-const TopBar = ({docId, isSignedIn, userName, removeReview, submit, setSubmit, ongoing, setOngoing, complete}) => {
+const TopBar = ({docId, isSignedIn, userName, submit, setSubmit, ongoing, setOngoing, complete}) => {
+    const {currentUser} = useAuth();
     const history = useHistory();
     const [currentDoc, setCurrentDoc] = useState();
-
+    const [activityName, setactivityName] = useState();
     const [start, setStart] = useState(false);
     const [cancel, setCancel] = useState(false);
     
+
+    db.collection("Activities").doc(docId).get().then((doc) => {
+        setactivityName(doc.get("name"))
+    })
+
     const clickStart = () => {
         isSignedIn ? setStart(true) : history.push('/login');
     }
     const clickSYes = () => {
         setOngoing(true);
         setStart(false);
+
+        if(isSignedIn){
+            const data = {
+                name: activityName, 
+                isComplete: false,
+                achievement : []
+                };
+            db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).set(data);
+            };
+
+        if(isSignedIn){
+            const cityReffor11 = db.collection('Activities').doc(docId);
+            cityReffor11.update({
+                numOfUsers: firebase.firestore.FieldValue.increment(1)
+            });
+            };  
+
+            if(isSignedIn){
+                const cityReffor = db.collection('UserInfo').doc(userName).collection('Activities').doc(docId);
+                cityReffor.update({
+                    startTime: firebase.firestore.Timestamp.fromDate(new Date()) 
+                });
+            };
+
+
     }
     const clickSNo = () => setStart(false);
 
     const clickCancel = () => setCancel(true);
     const clickCYes = () => {
         if (submit) {
-            removeReview();
             setSubmit(false);
         }
+    db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).delete();
+
+    if(isSignedIn){
+        const cityReffor11 = db.collection('Activities').doc(docId);
+        cityReffor11.update({
+            numOfUsers: firebase.firestore.FieldValue.increment(-1)
+        });
+        };  
+
         setOngoing(false);
         setCancel(false);
     }
+
+
     const clickCNo = () => setCancel(false);
 
     useEffect(() => {
