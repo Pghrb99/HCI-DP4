@@ -432,10 +432,10 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
                             {reviewlist.map(rev => {
                                 if (rev['isPositive']) {
                                     if (rev['name'] == username) {
-                                        return <Review isPositive={true} isMe={true} name={rev['name']} years={rev['years']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
+                                        return <Review docId={docId} username={username} isPositive={true} isMe={true} name={rev['name']} years={rev['years']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                                     }
                                     else {
-                                        return <Review isPositive={true} isMe={false} name={rev['name']} years={rev['years']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
+                                        return <Review docId={docId} username={username} isPositive={true} isMe={false} name={rev['name']} years={rev['years']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
                                     }
                                 }
                             })}
