@@ -7,10 +7,8 @@ import Review from '../../../ActivityInfoPage/Sections/Review/Review';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { db } from '../../../../../firebase'
-import { useAuth } from '../../../../../contexts/AuthContext'
 
 const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchievlist, submit, setSubmit, setComplete }) => {
-    const {currentUser} = useAuth();    
     const username = userName;
     const [countend, setend] = useState(0);
     const [countlength, setlength] = useState(0);
@@ -66,26 +64,26 @@ const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchiev
         })
 
 
-    let tempcountend =0;
-    (async () => {
-        let snapshot3 = db.collection('UserInfo').doc(currentUser.email).collection('Activities');
-        const snapshot2 = await snapshot3.get();
-        snapshot2.forEach(doc => {
-            if(typeof currentDoc != 'undefined'){
-            if(doc.data().name == currentDoc.name){
-                if(doc.get("achievement").length != 0){
-                for(let i=0; i<doc.get("achievement").length;i++){
-                    if(doc.get("achievement")[i].finish == true){
-                        tempcountend++;
-                    }
-                }
-                setend(tempcountend);
-                setlength(doc.get("achievement").length);
-            }}
-        }
+    // let tempcountend =0;
+    // (async () => {
+    //     let snapshot3 = db.collection('UserInfo').doc(username).collection('Activities');
+    //     const snapshot2 = await snapshot3.get();
+    //     snapshot2.forEach(doc => {
+    //         if(typeof currentDoc != 'undefined'){
+    //         if(doc.data().name == currentDoc.name){
+    //             if(doc.get("achievement").length != 0){
+    //             for(let i=0; i<doc.get("achievement").length;i++){
+    //                 if(doc.get("achievement")[i].finish == true){
+    //                     tempcountend++;
+    //                 }
+    //             }
+    //             setend(tempcountend);
+    //             setlength(doc.get("achievement").length);
+    //         }}
+    //     }
             
-        })
-        })(); 
+    //     })
+    //     })(); 
 
 
 
