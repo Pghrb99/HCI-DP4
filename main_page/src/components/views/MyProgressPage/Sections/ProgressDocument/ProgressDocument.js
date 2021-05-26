@@ -9,9 +9,9 @@ import { faPlus, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { db } from '../../../../../firebase'
 import { useAuth } from '../../../../../contexts/AuthContext'
 
-const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, submit, setSubmit, setComplete }) => {
+const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchievlist, submit, setSubmit, setComplete }) => {
     const {currentUser} = useAuth();    
-    const username = "Changhae Lee";
+    const username = userName;
     const [countend, setend] = useState(0);
     const [countlength, setlength] = useState(0);
     const [currentDoc, setCurrentDoc] = useState();

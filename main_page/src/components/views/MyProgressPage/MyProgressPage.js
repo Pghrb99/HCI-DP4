@@ -20,7 +20,7 @@ const MyProgressPage = ({achievlist, setAchievlist, setTags, removeReview, submi
             isSignedIn={currentUser} docId={docId} removeReview={removeReview} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing} complete={complete}/>
             <div id="AIP-hori-div">
                 <HorizontalBar/>
-                <ProgressDocument docId={docId} achievlist={achievlist} setAchievlist={setAchievlist} submit={submit} setSubmit={setSubmit} setComplete={setComplete}/>
+                <ProgressDocument userName={currentUser && currentUser.email} docId={docId} achievlist={achievlist} setAchievlist={setAchievlist} submit={submit} setSubmit={setSubmit} setComplete={setComplete}/>
             </div>
             <GoTop/>
         </div>
