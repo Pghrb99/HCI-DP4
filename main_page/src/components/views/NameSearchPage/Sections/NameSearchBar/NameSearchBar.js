@@ -81,7 +81,7 @@ const NameSearchBar = () => {
                 onSearch={onSearch}
             >
                 <Input
-                    placeholder="Please typing little bit slowly"
+                    placeholder="Search"
                     className="inputField"
                     style={{ width: 480, height: 50 }}
                     onChange={onTextChange}
