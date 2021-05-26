@@ -19,7 +19,6 @@ const Review = ({ reviewId, docId, isPositive, isMe, name, days, achiev, content
     useEffect(() => {
         const reviewRef = db.collection("Activities").doc(docId).collection("Reviews").doc(reviewId);
         reviewRef.get().then((reviewDoc) => {
-            console.log(reviewDoc.get('achiev'));
             if(currentUser && reviewDoc.get("likeUsers").includes(currentUser.email)) {
                 setIsThumb(reviewDoc.get('likeUsers').includes(currentUser.email));
             }
