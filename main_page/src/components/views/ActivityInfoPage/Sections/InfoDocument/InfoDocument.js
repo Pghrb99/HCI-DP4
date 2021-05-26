@@ -6,9 +6,14 @@ import Review from '../Review/Review'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faPlus, faChevronCircleDown, faChevronCircleUp, faPencilAlt } from "@fortawesome/free-solid-svg-icons"
 import { db } from 'firebase.js'
+import { useAuth } from '../../../../../contexts/AuthContext'
+import { UndoOutlined } from '@material-ui/icons';
+
 
 const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubmit, ongoing }) => {
+    const {currentUser} = useAuth();
     const username = userName;
+    const [countend, setend] = useState(0);
     const [currentDoc, setCurrentDoc] = useState();
     const [review, setReview] = useState(false);
     const [reviewlist, setReviewlist] = useState([]);
@@ -27,6 +32,7 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
                 requirements: doc.get("requirements"),
                 numerics: doc.get("numerics"),
                 communities: doc.get("communities"),
+                name: doc.get("name"),
             });
         })
 
@@ -56,13 +62,14 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
     }, []);
 
     const calculateCompleted = () => {
-        var cnt = 0;
-        achievlist.forEach(achiev => {
-            if (achiev['isCompleted']) {
-                cnt++;
-            }
-        });
-        return cnt;
+        // var cnt = 0;
+        // achievlist.forEach(achiev => {
+        //     if (achiev['isCompleted']) {
+        //         cnt++;
+        //     }
+        // });
+        // return cnt;
+        return countend;
     }
 
     const addReview = () => {
@@ -130,7 +137,7 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
         db.collection('Activities').doc(docId).collection('Reviews').get().then(querySnapshot => {
             querySnapshot.forEach(doc => {
                 if (doc.get('name') == username) {
-                    tempachiev = doc.get('achiev');
+                    tempachiev = calculateCompleted();
                     db.collection('Activities').doc(docId).collection('Reviews').doc(doc.id).delete();
                     const rev = {
                         isPositive: recommend,
@@ -214,6 +221,30 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
         setMore(!more);
     }
 
+    if(currentUser){
+    let tempcountend =0;
+    (async () => {
+        let snapshot3 = db.collection('UserInfo').doc(userName).collection('Activities');
+        const snapshot2 = await snapshot3.get();
+        snapshot2.forEach(doc => {
+            if(typeof currentDoc != 'undefined'){
+            if(doc.data().name == currentDoc.name){
+                if(doc.get("achievement").length != 0){
+                for(let i=0; i<doc.get("achievement").length;i++){
+                    if(doc.get("achievement")[i].finish == true){
+                        tempcountend++;
+                    }
+                }
+                setend(tempcountend);
+            }}
+        }
+            
+        })
+        })(); 
+    }
+
+
+
     if (typeof currentDoc != 'undefined') {
         return (
             <div id="infodocument">
@@ -289,7 +320,6 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
                 <div id="AIP-requirments" style={{ marginTop: '30px' }}>
                     <div style={{ width: '100%', display: 'inline-block' }}>
                         <h2 style={{ float: 'left' }}>Requirments</h2>
-                        <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing && !isSignedIn}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Edit Requirments</Button>
                     </div>
                     <ul>
                     {currentDoc.requirements.map((content, index) => (
@@ -302,7 +332,7 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
                     <div id="AIP-achievements" style={{ marginTop: '30px' }}>
                         <div style={{ width: '100%', display: 'inline-block' }}>
                             <h2 style={{ float: 'left' }}>Achievements</h2>
-                            <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing && !isSignedIn}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Edit Achievements</Button>
+                            <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing || !isSignedIn}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Edit Achievements</Button>
                         </div>
                         <ListGroup id="AIP-achievements-list">
                             {achievlist.map((achiev, i) => {
@@ -331,7 +361,7 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
                                     <Button id="AIP-reviews-write" variant="success" onClick={clickReview}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Modify your Review</Button>
                                 </div>
                                 :
-                                <Button id="AIP-reviews-write" variant="success" onClick={clickReview} disabled={!ongoing && !isSignedIn}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Write a Review</Button>
+                                <Button id="AIP-reviews-write" variant="success" onClick={clickReview} disabled={!ongoing || !isSignedIn}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Write a Review</Button>
                             }
                             {/*ongoing disabled*/}
                         </div>
@@ -404,10 +434,10 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
                             {reviewlist.map(rev => {
                                 if (rev['isPositive']) {
                                     if (rev['name'] == username) {
-                                        return <Review docId={docId} username={username} isPositive={true} isMe={true} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
+                                        return <Review isPositive={true} isMe={true} name={rev['name']} years={rev['years']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                                     }
                                     else {
-                                        return <Review docId={docId} username={username} isPositive={true} isMe={false} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
+                                        return <Review isPositive={true} isMe={false} name={rev['name']} years={rev['years']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
                                     }
                                 }
                             })}
@@ -430,7 +460,6 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
                     <div id="AIP-communities" style={{ marginTop: '30px' }}>
                         <div style={{ width: '100%', display: 'inline-block' }}>
                             <h2 style={{ float: 'left' }}>Communities</h2>
-                            <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing && !isSignedIn}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Edit Requirments</Button>
                         </div>
                         {currentDoc.communities.links.map((link, index) => (
                             <a

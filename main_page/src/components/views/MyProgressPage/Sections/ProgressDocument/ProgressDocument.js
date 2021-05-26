@@ -7,9 +7,13 @@ import Review from '../../../ActivityInfoPage/Sections/Review/Review';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { db } from '../../../../../firebase'
+import { useAuth } from '../../../../../contexts/AuthContext'
 
-const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchievlist, submit, setSubmit, setComplete }) => {
-    const username = userName;
+const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, submit, setSubmit, setComplete }) => {
+    const {currentUser} = useAuth();    
+    const username = "Changhae Lee";
+    const [countend, setend] = useState(0);
+    const [countlength, setlength] = useState(0);
     const [currentDoc, setCurrentDoc] = useState();
     const [resultdata, setresult] = useState([]);
     const [reviewlist, setReviewlist] = useState([]);
@@ -60,26 +64,54 @@ const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchiev
             })
             setReviewlist(tempreviews);
         })
+
+
+    let tempcountend =0;
+    (async () => {
+        let snapshot3 = db.collection('UserInfo').doc(currentUser.email).collection('Activities');
+        const snapshot2 = await snapshot3.get();
+        snapshot2.forEach(doc => {
+            if(typeof currentDoc != 'undefined'){
+            if(doc.data().name == currentDoc.name){
+                if(doc.get("achievement").length != 0){
+                for(let i=0; i<doc.get("achievement").length;i++){
+                    if(doc.get("achievement")[i].finish == true){
+                        tempcountend++;
+                    }
+                }
+                setend(tempcountend);
+                setlength(doc.get("achievement").length);
+            }}
+        }
+            
+        })
+        })(); 
+
+
+
+
     }, []);
 
     const calculateTotal = () => {
-        var cnt = 0;
-        achievlist.forEach(achiev => {
-            if (achiev['isSelected']) {
-                cnt++;
-            }
-        });
-        return cnt;
+        // var cnt = 0;
+        // achievlist.forEach(achiev => {
+        //     if (achiev['isSelected']) {
+        //         cnt++;
+        //     }
+        // });
+        // return cnt;
+        return countlength;
     }
 
     const calculateCompleted = () => {
-        var cnt = 0;
-        achievlist.forEach(achiev => {
-            if (achiev['isCompleted']) {
-                cnt++;
-            }
-        });
-        return cnt;
+        // var cnt = 0;
+        // achievlist.forEach(achiev => {
+        //     if (achiev['isCompleted']) {
+        //         cnt++;
+        //     }
+        // });
+        // return cnt;
+        return countend;
     }
 
     const calculatePercent = () => {
