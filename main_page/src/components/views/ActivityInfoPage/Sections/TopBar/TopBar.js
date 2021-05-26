@@ -7,7 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 import {db} from 'firebase.js';
 import { useHistory } from 'react-router';
-import {  Alert  } from 'antd';
+import { useAuth } from '../../../../../contexts/AuthContext'
+
 const TopBar = ({docId, isSignedIn, userName, removeReview, submit, setSubmit, ongoing, setOngoing, complete}) => {
     const history = useHistory();
     const [currentDoc, setCurrentDoc] = useState();
@@ -53,7 +54,10 @@ const TopBar = ({docId, isSignedIn, userName, removeReview, submit, setSubmit, o
           }
         });
     }
-
+    const { logOut } = useAuth();
+    async function handleLogout() {
+        await logOut();
+    }
     return (
         <div id="AIP-nav-container" style={currentDoc && {backgroundImage: `url(${currentDoc.coverImg.src})`}}>
             <Pagination variant="success" id="AIP-label">
@@ -64,8 +68,8 @@ const TopBar = ({docId, isSignedIn, userName, removeReview, submit, setSubmit, o
             <div className="align-self-end">
                 {isSignedIn ?
                     <Nav className="mt-3">
-                        <Nav.Link className="mr-4"><span className="nav-text" id="nav-userName">{userName}</span></Nav.Link>
-                        <Nav.Link className="mr-5"><span className="nav-text" id="nav-signOut">Sign Out</span></Nav.Link>
+                        <Nav.Link  className="mr-4"><Link to={"/mypage"}><span className="nav-text" id="nav-userName">{userName}</span></Link></Nav.Link>
+                        <Nav.Link  className="mr-5" ><span className="nav-text" id="nav-signOut" onClick={handleLogout}>Sign Out</span></Nav.Link>
                     </Nav>
                     :
                     <Nav className="mt-3">
