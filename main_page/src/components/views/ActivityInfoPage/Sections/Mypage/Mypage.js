@@ -9,36 +9,6 @@ import { useAuth } from '../../../../../contexts/AuthContext'
 
 const Mypage = () => {
     const {currentUser} = useAuth();
-        // const cards = [
-        // {
-        //     name: "Ice Hockey",
-        //     imgSrc: hockey_world_1400,
-        //     tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        //     chartData:[1,2,3,4,5]
-    
-        // },
-        // {
-        //     name: "Ice Hockey",
-        //     imgSrc: hockey_world_1400,
-        //     tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        //     chartData:[5,7,5.6,9,10]
-    
-        // },
-        // {
-        //     name: "Ice Hockey",
-        //     imgSrc: hockey_world_1400,
-        //     tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        //     chartData:[5,7,5.6,9,10]
-    
-        // },
-        // {
-        //     name: "Ice Hockey",
-        //     imgSrc: hockey_world_1400,
-        //     tags:[{name: "Soccer"},{name : "Ice Hockey"},{name: "Soccer"},{name: "Soccer"},{name: "Soccer"}],
-        //     chartData:[5,7,5.6,9,10]
-    
-        // }
-        // ]
 
     return (
         <div>

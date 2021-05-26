@@ -6,12 +6,10 @@ import Review from '../Review/Review'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faPlus, faChevronCircleDown, faChevronCircleUp, faPencilAlt } from "@fortawesome/free-solid-svg-icons"
 import { db } from 'firebase.js'
-import { useAuth } from '../../../../../contexts/AuthContext'
 import { UndoOutlined } from '@material-ui/icons';
 
 
 const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubmit, ongoing }) => {
-    const {currentUser} = useAuth();
     const username = userName;
     const [countend, setend] = useState(0);
     const [currentDoc, setCurrentDoc] = useState();
@@ -221,10 +219,10 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
         setMore(!more);
     }
 
-    if(currentUser){
+    if(isSignedIn){
     let tempcountend =0;
     (async () => {
-        let snapshot3 = db.collection('UserInfo').doc(userName).collection('Activities');
+        let snapshot3 = db.collection('UserInfo').doc(username).collection('Activities');
         const snapshot2 = await snapshot3.get();
         snapshot2.forEach(doc => {
             if(typeof currentDoc != 'undefined'){

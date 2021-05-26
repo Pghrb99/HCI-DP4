@@ -65,7 +65,8 @@ const Cardbox = (userName) => {
                     tags : Object.keys(doc.get("tags")).map(x => ({name: x})),
                     img: doc.get("cardImg"),
                     key: doc.id,
-                    docId:progressCard[j].docId
+                    docId:progressCard[j].docId,
+                    givedocId:doc.id
                 });
                 console.log("a5")
             }
@@ -91,7 +92,8 @@ const Cardbox = (userName) => {
                     tags : Object.keys(doc.get("tags")).map(x => ({name: x})),
                     img: doc.get("cardImg"),
                     key: doc.id,
-                    docId:endCard[j].docId
+                    docId:endCard[j].docId,
+                    givedocId:doc.id
                 });
                 console.log("a7")
             }
@@ -132,6 +134,7 @@ const Cardbox = (userName) => {
                                 imgSrc={card.img.src}
                                 tags={card.tags}
                                 docId={card.docId}
+                                givedocId={card.givedocId}
                             />
                         </Col>
                         
@@ -153,6 +156,7 @@ const Cardbox = (userName) => {
                                 imgSrc={card.img.src}
                                 tags={card.tags}
                                 docId={card.docId}
+                                givedocId={card.givedocId}
                             />
                         </Col>
                         
