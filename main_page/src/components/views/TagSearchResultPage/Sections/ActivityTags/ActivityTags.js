@@ -7,7 +7,7 @@ import { faPlus, faTimes, faTag } from "@fortawesome/free-solid-svg-icons";
 import {db} from 'firebase.js';
 import { useAuth } from 'contexts/AuthContext';
 
-const ActivityTags = ({docId, plusbutton}) => {
+const ActivityTags = ({tags, docId, plusbutton}) => {
 
     const {currentUser} = useAuth();
     const userName = currentUser ? currentUser.email : 'none';
@@ -149,12 +149,10 @@ const ActivityTags = ({docId, plusbutton}) => {
 
     return (
         <ul className='ActivityTags'>
-            {taglist.map((tag) => (
-                <ActivityTag 
-                    name={tag.name}
-                    maker={tag.maker}
-                />
-            ))}
+            {tags ? tags.map(tag => (<ActivityTag name={tag.name}/>))
+                :
+                taglist.map(tag => (<ActivityTag name={tag.name} maker={tag.maker}/>))
+            }
             {plusbutton && <Button variant='success' id='tagplus' onClick={clickTagplus}><FontAwesomeIcon icon={faPlus} /></Button>}
             <Modal size='lg' show={tagplus} onHide={clickTPNo}>
                 <Modal.Header closeButton style={{ backgroundColor: '#BBEDCA', color: '#356864', border: 'none', paddingBottom:'5px'}}>
