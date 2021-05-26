@@ -129,12 +129,24 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
         db.collection('Activities').doc(docId).collection('Reviews').where('name', '==', username)
         .get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                doc.update({
+                doc.ref.update({
                     isPositive: recommend,
                     content: text,
                     data: range
                 });
             });
+            const docRef = db.collection('Activities').doc(docId);
+            return db.runTransaction((transaction) => {
+                return transaction.get(docRef).then((doc) => {
+                    const oldNumerics = doc.get("numerics");
+                    const oldNumericsTotal = [0,1,2,3,4].map((index) => doc.get("numerics")[index]*doc.get("numOfReviews"));
+                    const newNumerics = oldNumericsTotal.map((x, index) => 
+                        (x-oldNumerics[index]+range[index])/doc.get("numOfReviews"));
+                    transaction.update(docRef, {
+                        numerics: newNumerics
+                    });
+                })
+            })
         })
     }
 
