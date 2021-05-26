@@ -15,7 +15,7 @@ const TagSearchResultPage = () => {
     const {Title} = Typography;
     const tags = location.state.tags;
     const category = location.state.category;
-    const name = location.state.option;
+    const searchText = location.state.searchText;
     const [cards, setCards] = useState([]);
     const [noResults, setNoResults] = useState(false);
 
@@ -84,20 +84,13 @@ const TagSearchResultPage = () => {
             }));
         }
 
-        if(typeof name !== 'undefined') {
-            let namearray=[];
+        if(typeof searchText !== 'undefined') {
             let result = [];
-            let addcard;
-            console.log(name);
 
-            for (let i=0; i<name.length; i++) namearray.push(name[i].value);
-
-            let snapshot = db.collection('Activities');
-
-            snapshot.get().then((querySnapshot => {
+            db.collection('Activities').get().then((querySnapshot => {
                 for (let i in querySnapshot.docs) {
                     const doc = querySnapshot.docs[i];
-                    if(namearray.indexOf(doc.data().name) != -1 ){
+                    if(doc.get("name_lower").indexOf(searchText) != -1 ){
                         result.push({ 
                             name:doc.get("name"),
                             tags : Object.keys(doc.get("tags")).map(x => ({name: x})),
@@ -108,10 +101,8 @@ const TagSearchResultPage = () => {
                         });
                     }
                 }
-                console.log(result);
                 result.sort((x,y) => (y.chartData[0]-x.chartData[0]))
                 setCards(result);
-                // console.log(result);
                 if(result.length==0) {
                     setNoResults(true);
                 }

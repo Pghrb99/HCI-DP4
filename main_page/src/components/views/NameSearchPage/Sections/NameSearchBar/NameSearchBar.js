@@ -9,7 +9,6 @@ import {useHistory} from "react-router";
 
 const NameSearchBar = () => {
 
-    let addcard;
     let options = []
     let snapshot;
     const history = useHistory();
@@ -17,19 +16,9 @@ const NameSearchBar = () => {
     (async () => {
         snapshot = await db.collection('Activities').get();
         snapshot.forEach(doc => {
-        // addcard = {name:doc.data().name
-        //             }
         options.push(doc.data().name);
                 });
         })();
-
-    // (async () => {
-    // await console.log(options)
-    //     console.log(options.length)
-    // })();
-
-
-    // const {Search} = Input;
 
     const mockVal = (str) => {
         let temparray =[];
@@ -50,7 +39,6 @@ const NameSearchBar = () => {
 
     const onTextChange = (e) => {
         setText(e.target.value);
-        console.log(e.target.value);
     };
 
 
@@ -66,10 +54,9 @@ const NameSearchBar = () => {
 
 
     const onTextPressEnter = () => {
-        console.log(option);
         (() => {history.push({
             pathname: "/result",
-            state: {option:option}
+            state: {searchText:text}
           })})();
     };
 
