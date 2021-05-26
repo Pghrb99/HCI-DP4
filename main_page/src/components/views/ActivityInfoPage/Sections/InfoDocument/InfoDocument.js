@@ -120,7 +120,7 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
             return db.runTransaction((transaction) => {
                 return transaction.get(docRef).then((doc) => {
                     const newNumOfReviews = doc.get("numOfReviews") - 1;
-                    if (newNumOfReviews == 0) {
+                    if (newNumOfReviews <= 0) {
                         transaction.update(docRef, {
                             numOfReviews: 0,
                             numerics: [0, 0, 0, 0, 0]
