@@ -113,6 +113,21 @@
     margin-bottom: 10px;
 }
 
+#AIP-numerics-info {
+    width: 250px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin-top: 30px;
+    float: right;
+    background-color: #5C996B;
+    border: none;
+    font-size: 20px;
+}
+
+#AIP-numerics-info:hover {
+    background-color: #4c8059;
+}
+
 #AIP-edit-button {
     width: 250px;
     padding-top: 3px;
