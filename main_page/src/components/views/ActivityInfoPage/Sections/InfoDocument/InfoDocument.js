@@ -135,21 +135,20 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
         db.collection('Activities').doc(docId).collection('Reviews').get().then(querySnapshot => {
             querySnapshot.forEach(doc => {
                 if (doc.get('name') == username) {
-                    tempachiev = calculateCompleted();
-                    db.collection('Activities').doc(docId).collection('Reviews').doc(doc.id).delete();
+                    tempachiev = doc.get('achiev');
                     const rev = {
                         isPositive: recommend,
-                        name: username,
-                        years: 1,
-                        achiev: tempachiev,
+                        name: doc.get('name'),
+                        years: doc.get('years'),
+                        achiev: doc.get('achiev'),
                         content: text,
                         data: range,
                         like: 0,
-                        likeUsers: [],
-                        photourl: imgs()
+                        likeUsers: doc.get('likeUsers'),
+                        photourl: doc.get('photourl')
                     };
                     tempreviews.push(rev)
-                    db.collection('Activities').doc(docId).collection('Reviews').doc().set(rev);
+                    db.collection('Activities').doc(docId).collection('Reviews').doc(doc.id).update(rev);
                 }
                 else {
                     tempreviews.push({
