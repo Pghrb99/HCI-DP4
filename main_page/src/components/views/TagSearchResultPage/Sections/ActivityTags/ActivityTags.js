@@ -1,19 +1,70 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Button, Modal, InputGroup, FormControl } from 'react-bootstrap';
 import ActivityTag from '../ActivityTag/ActivityTag'
 import './ActivityTags.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTag } from "@fortawesome/free-solid-svg-icons";
+import {db} from 'firebase.js';
+import { useAuth } from 'contexts/AuthContext';
 
-const ActivityTags = ({tags, setTags, plusbutton}) => {
+const ActivityTags = ({docId, plusbutton}) => {
+
+    const {currentUser} = useAuth();
+    const userName = currentUser ? currentUser.email : 'none';
+
+    const [taglist, setTaglist] = useState([]);
     const [tagplus, setTagPlus] = useState(false);
-    const [candidates, setCandidates] = useState(["Cold", "White", "Canada", "Helmet"]);
+    const [candidates, setCandidates] = useState([]);
     const [newcands, setNewcands] = useState([]);
-    const [isSelected, setIsSelected] = useState(new Array(candidates.length).fill(false));
+    const [isSelected, setIsSelected] = useState([]);
     const [tagtext, setTagtext] = useState("");
 
+    const updateTags = () => {
+        let temptaglist = [];
+        db.collection('Activities').doc(docId).collection('Tags').get().then((querySnapshot) => {
+            querySnapshot.forEach(doc => {
+                temptaglist.push({
+                    name: doc.get('name'),
+                    name_lower: doc.get('name_lower'),
+                    maker: 'default'
+                })
+            })
+        });
+        db.collection('Activities').doc(docId).collection('UserTags').get().then((querySnapshot) => {
+            querySnapshot.forEach(doc => {
+                temptaglist.push({
+                    name: doc.get('name'),
+                    name_lower: doc.get('name_lower'),
+                    maker: doc.get('maker')
+                })
+            })
+        });
+        setTaglist(temptaglist);
+
+
+        let temprecommendtags = [];
+        db.collection('Activities').doc(docId).collection('RecommendTags').get().then((querySnapshot) => {
+            querySnapshot.forEach(doc => {
+                temprecommendtags.push({
+                    name: doc.get('name'),
+                    name_lower: doc.get('name_lower'),
+                    maker: 'none'
+                })
+            })
+            setCandidates(temprecommendtags);
+            setIsSelected(new Array(temprecommendtags.length).fill(false));
+        })
+
+        setNewcands([]);
+    }
+
+    useEffect(() => {
+        updateTags();
+    }, []);
+
     const clickTagplus = () => {
-        const tagname = tags.map(tag => {return tag['name']});
+        updateTags();
+        const tagname = taglist.map(tag => {return tag['name']});
         const temp = candidates.map(candidate => {
             return (tagname.includes(candidate));
         })
@@ -22,15 +73,41 @@ const ActivityTags = ({tags, setTags, plusbutton}) => {
     }
 
     const clickTPYes = () => {
-        const tagname = tags.map(tag => {return tag['name']});
+        const tagname = taglist.map(tag => {return tag['name']});
         candidates.forEach((candidate, i) => {
-            if (isSelected[i] && !tagname.includes(candidate)) {
-                console.log(candidate);
-                const temp = tags;
-                temp.push({key:candidate, name: candidate});
-                setTags(temp);
+            if (isSelected[i] && !tagname.includes(candidate['name'])) {
+                const temp = taglist;
+                const rev = {
+                    name: candidate['name'],
+                    name_lower: candidate['name_lower'],
+                    maker: userName
+                };
+                db.collection('Activities').doc(docId).collection('UserTags').doc().set(rev);
+                db.collection('Activities').doc(docId).collection('RecommendTags').get().then(querySnapshot => {
+                    querySnapshot.forEach(doc => {
+                        if (doc.get('name') == candidate['name']) {
+                            db.collection('Activities').doc(docId).collection('RecommendTags').doc(doc.id).delete();
+                        }
+                    })
+                });
+                temp.push(rev);
+                setTaglist(temp);
             }
         })
+        newcands.forEach((candidate, i) => {
+            if (isSelected[candidates.length+i] && !tagname.includes(candidate['name'])) {
+                const temp = taglist;
+                const rev = {
+                    name: candidate['name'],
+                    name_lower: candidate['name_lower'],
+                    maker: candidate['maker']
+                };
+                db.collection('Activities').doc(docId).collection('UserTags').doc().set(rev);
+                temp.push(rev);
+                setTaglist(temp);
+            }
+        })
+
         setTagPlus(false);
     }
     
@@ -44,7 +121,11 @@ const ActivityTags = ({tags, setTags, plusbutton}) => {
 
     const clickAdd = () => {
         const temp = newcands;
-        temp.push(tagtext);
+        temp.push({
+            name: tagtext,
+            name_lower: tagtext.toLowerCase(),
+            maker: userName
+        });
         setNewcands(temp);
         const temp2 = isSelected;
         temp2.push(true);
@@ -68,10 +149,10 @@ const ActivityTags = ({tags, setTags, plusbutton}) => {
 
     return (
         <ul className='ActivityTags'>
-            {tags.map((tag) => (
+            {taglist.map((tag) => (
                 <ActivityTag 
-                    key={tag.name}
                     name={tag.name}
+                    maker={tag.maker}
                 />
             ))}
             {plusbutton && <Button variant='success' id='tagplus' onClick={clickTagplus}><FontAwesomeIcon icon={faPlus} /></Button>}
@@ -84,21 +165,21 @@ const ActivityTags = ({tags, setTags, plusbutton}) => {
                         <thead>
                             <tr>
                                 <th colspan={2} style={{ width: '50%', fontSize: '24px', fontWeight: '600' }}>Related tags for this activity</th>
-                                <th style={{ width: '50%', fontSize: '24px', fontWeight: '600' }}>Tags you applied</th>
+                                <th colspan={2} style={{ width: '50%', fontSize: '24px', fontWeight: '600' }}>Tags you applied</th>
                             </tr>
                         </thead>
                         <tbody style={{ textAlign: 'left' }}>
                             <td>
                                 {candidates.map((candidate, i) => {
                                     if (!isSelected[i]) {
-                                        return (<tr><Button variant='success' className={"|"+i+"|"} id='newtag-tag' onClick={clickCandTag}><FontAwesomeIcon icon={faTag} style={{ marginRight: '10px' }} /><span className="newtagName">{candidate}</span></Button></tr>);
+                                        return (<tr><Button variant='success' className={"|"+i+"|"} id='newtag-tag' onClick={clickCandTag}><FontAwesomeIcon icon={faTag} style={{ marginRight: '10px' }} /><span className="newtagName">{candidate['name']}</span></Button></tr>);
                                     }
                                 })}
                             </td>
                             <td>
                                 {newcands.map((candidate, i) => {
                                     if (!isSelected[candidates.length+i]) {
-                                        return (<tr><Button variant='success' className={"|"+(candidates.length+i)+"|"} id='newtag-tag' onClick={clickCandTag}><FontAwesomeIcon icon={faTag} style={{ marginRight: '10px' }} /><span className="newtagName">{candidate}</span></Button></tr>);
+                                        return (<tr><Button variant='success' className={"|"+(candidates.length+i)+"|"} id='newtag-tag' onClick={clickCandTag}><FontAwesomeIcon icon={faTag} style={{ marginRight: '10px' }} /><span className="newtagName">{candidate['name']}</span></Button></tr>);
                                     }
                                 })}
                             </td>
@@ -106,12 +187,14 @@ const ActivityTags = ({tags, setTags, plusbutton}) => {
                                 {candidates.map((candidate, i) => {
                                     if (isSelected[i]) {
                                         console.log("hallo");
-                                        return (<tr><Button variant='success' className={"|"+i+"|"} id='newtag-tag' onClick={clickCandTag}><FontAwesomeIcon icon={faTag} style={{ marginRight: '10px' }} /><span className="newtagName">{candidate}</span></Button></tr>);
+                                        return (<tr><Button variant='success' className={"|"+i+"|"} id='newtag-tag' onClick={clickCandTag}><FontAwesomeIcon icon={faTag} style={{ marginRight: '10px' }} /><span className="newtagName">{candidate['name']}</span></Button></tr>);
                                     }
                                 })}
+                            </td>
+                            <td>
                                 {newcands.map((candidate, i) => {
                                     if (isSelected[candidates.length+i]) {
-                                        return (<tr><Button variant='success' className={"|"+(candidates.length+i)+"|"} id='newtag-tag' onClick={clickCandTag}><FontAwesomeIcon icon={faTag} style={{ marginRight: '10px' }} /><span className="newtagName">{candidate}</span></Button></tr>);
+                                        return (<tr><Button variant='success' className={"|"+(candidates.length+i)+"|"} id='newtag-tag' onClick={clickCandTag}><FontAwesomeIcon icon={faTag} style={{ marginRight: '10px' }} /><span className="newtagName">{candidate['name']}</span></Button></tr>);
                                     }
                                 })}
                             </td>

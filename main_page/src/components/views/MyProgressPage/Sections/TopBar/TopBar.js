@@ -3,7 +3,6 @@ import { Nav, Modal, Button, Pagination } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import ActivityTags from '../../../TagSearchResultPage/Sections/ActivityTags/ActivityTags'
 import './TopBar.scss'
-import bg from '../imgs/hockey_world_1400.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 import {db} from 'firebase.js';
@@ -77,9 +76,9 @@ const TopBar = ({ userName, isSignedIn, docId, removeReview, submit, setSubmit, 
                 <div id="MPP-reltags">
                     <span >Related tags : </span>
                     {ongoing ?
-                        currentDoc && <ActivityTags tags={currentDoc.tags} plusbutton={true}/>
+                        currentDoc && <ActivityTags docId={docId} plusbutton={true}/>
                         :
-                        currentDoc && <ActivityTags tags={currentDoc.tags} plusbutton={false}/>
+                        currentDoc && <ActivityTags docId={docId} plusbutton={false}/>
                     }
                 </div>
                 {complete ?
