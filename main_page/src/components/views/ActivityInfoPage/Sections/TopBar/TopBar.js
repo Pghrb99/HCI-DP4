@@ -8,7 +8,7 @@ import { faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 import {db} from 'firebase.js';
 import { useHistory } from 'react-router';
 
-const TopBar = ({docId, isSignedIn, userName, removeReview, submit, setSubmit, ongoing, setOngoing, complete, setComplete}) => {
+const TopBar = ({docId, isSignedIn, userName, removeReview, submit, setSubmit, ongoing, setOngoing, complete}) => {
     const history = useHistory();
     const [currentDoc, setCurrentDoc] = useState();
 
@@ -32,8 +32,6 @@ const TopBar = ({docId, isSignedIn, userName, removeReview, submit, setSubmit, o
         setCancel(false);
     }
     const clickCNo = () => setCancel(false);
-
-    const clickComplete = () => setComplete(true);
 
     useEffect(() => {
         db.collection("Activities").doc(docId).get().then((doc) => {
@@ -91,22 +89,17 @@ const TopBar = ({docId, isSignedIn, userName, removeReview, submit, setSubmit, o
                     }
                 </div>
                 { !ongoing && <Button id="AIP-topbar-start" onClick={clickStart}>Start!</Button> }
-                { ongoing && !complete && 
-                    <div>
-                        <Button variant='success' id='AIP-topbar-complete' onClick={clickComplete}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>
-                        <Button variant='secondary' id='AIP-topbar-ongoing' onClick={clickCancel}>Ongoing<FontAwesomeIcon icon={faTimes} style={{marginLeft:'10px'}}/></Button>
-                    </div>
-                }
-                { ongoing && complete && <Button variant='success' id='AIP-topbar-complete' disabled style={{cursor:'default'}}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>}
+                { ongoing && !complete && <Button variant='secondary' id='AIP-topbar-ongoing' onClick={clickCancel}>Ongoing<FontAwesomeIcon icon={faTimes} style={{marginLeft:'10px'}}/></Button>}
+                { ongoing && complete && <Button variant='success' id='AIP-topbar-complete' onClick={clickCancel}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>}
                 <Modal show={start} onHide={clickSNo}>
-                    <Modal.Header closeButton>
+                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: '#356864', border: 'none', paddingBottom:'5px'}}>
                         <Modal.Title>Start Activity</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>
-                        <p style={{fontFamily:'arial', color:'black', fontSize:'18px', marginLeft:"0"}}>Are you sure you want to start?</p>
-                        <p style={{fontFamily:'arial', color:'black', fontSize:'18px', marginLeft:"0"}}>(If you want to cancel the activity, click the 'Ongoing' button which will be created.)</p>
+                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: '#356864', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
+                        <p style={{fontFamily:'arial', color: '#356864', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>Are you sure you want to start?</p>
+                        <p style={{fontFamily:'arial', color: '#356864', fontSize:'16px', marginLeft:'20px', marginRight:'20px'}}>(If you want to cancel the activity, click the 'Ongoing' button which will be created.)</p>
                     </Modal.Body>
-                    <Modal.Footer>
+                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: '#356864', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
                         <Button variant="primary" onClick={clickSYes}>
                             Yes
                         </Button>
@@ -116,14 +109,14 @@ const TopBar = ({docId, isSignedIn, userName, removeReview, submit, setSubmit, o
                     </Modal.Footer>
                 </Modal>
                 <Modal show={cancel} onHide={clickCNo}>
-                    <Modal.Header closeButton>
+                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: '#356864', border: 'none', paddingBottom:'5px'}}>
                         <Modal.Title id="AIP-modal-title">Cancel Activity</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>
-                        <p style={{fontFamily:'arial', color:'black', fontSize:'18px', marginLeft:"0"}}>Are you sure you want to cancel?</p>
-                        <p style={{fontFamily:'arial', color:'black', fontSize:'18px', marginLeft:"0"}}>(If you select 'Yes,' your review will be removed autometically.)</p>
+                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: '#356864', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
+                        <p style={{fontFamily:'arial', color: '#356864', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>Are you sure you want to cancel?</p>
+                        <p style={{fontFamily:'arial', color: '#356864', fontSize:'16px', marginLeft:'20px', marginRight:'20px'}}>(If you select 'Yes,' your review will be removed autometically.)</p>
                     </Modal.Body>
-                    <Modal.Footer>
+                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: '#356864', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
                         <Button variant="primary" onClick={clickCYes}>
                             Yes
                         </Button>

@@ -17,33 +17,26 @@ const ActivityInfoPage = ({achievlist, setAchievlist, reviewlist, addReview, rem
         <div id="ActivityInfoPage">
             <Sidemenu />
             <TopBar
-            userName={currentUser && currentUser.email}
-            isSignedIn={currentUser}
-            docId={docId}
-            removeReview={removeReview}
-            submit={submit}
-            setSubmit={setSubmit}
-            ongoing={ongoing}
-            setOngoing={setOngoing}
-            complete={complete}
-            setComplete={setComplete}/>
+                userName={currentUser && currentUser.email}
+                isSignedIn={currentUser}
+                docId={docId}
+                removeReview={removeReview}
+                submit={submit}
+                setSubmit={setSubmit}
+                ongoing={ongoing}
+                setOngoing={setOngoing}
+                complete={complete}
+            />
 
             <div id="AIP-hori-div">
                 <HorizontalBar/>
                 <InfoDocument
-                docId={docId}
-                achievlist={achievlist}
-                setAchievlist={setAchievlist} 
-                reviewlist={reviewlist} 
-                addReview={addReview} 
-                removeReview={removeReview} 
-                submit={submit} 
-                setSubmit={setSubmit} 
-                ongoing={ongoing} 
-                setOngoing={setOngoing} 
-                complete={complete} 
-                setComplete={setComplete}/>
-
+                    docId={docId}
+                    achievlist={achievlist}
+                    submit={submit} 
+                    setSubmit={setSubmit} 
+                    ongoing={ongoing} 
+                />
             </div>
             <GoTop/>
         </div>
