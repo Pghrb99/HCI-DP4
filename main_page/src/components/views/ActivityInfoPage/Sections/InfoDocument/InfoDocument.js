@@ -41,6 +41,7 @@ const InfoDocument = ({ docId, achievlist, submit, setSubmit, ongoing }) => {
                     content: doc.get('content'),
                     data: doc.get('data'),
                     like: doc.get('like'),
+                    likeUsers: doc.get('likeUsers'),
                     photourl: doc.get('photourl')
                 })
                 if (doc.get('name') == username) {
@@ -73,6 +74,7 @@ const InfoDocument = ({ docId, achievlist, submit, setSubmit, ongoing }) => {
             content: text,
             data: range,
             like: 0,
+            likeUsers: [],
             photourl: imgs()
         };
         db.collection('Activities').doc(docId).collection('Reviews').doc().set(rev);
@@ -88,6 +90,7 @@ const InfoDocument = ({ docId, achievlist, submit, setSubmit, ongoing }) => {
                     content: doc.get('content'),
                     data: doc.get('data'),
                     like: doc.get('like'),
+                    likeUsers: doc.get('likeUsers'),
                     photourl: doc.get('photourl')
                 })
             })
@@ -112,6 +115,7 @@ const InfoDocument = ({ docId, achievlist, submit, setSubmit, ongoing }) => {
                         content: doc.get('content'),
                         data: doc.get('data'),
                         like: doc.get('like'),
+                        likeUsers: doc.get('likeUsers'),
                         photourl: doc.get('photourl')
                     })
                 }
@@ -136,6 +140,7 @@ const InfoDocument = ({ docId, achievlist, submit, setSubmit, ongoing }) => {
                         content: text,
                         data: range,
                         like: 0,
+                        likeUsers: [],
                         photourl: imgs()
                     };
                     tempreviews.push(rev)
@@ -150,6 +155,7 @@ const InfoDocument = ({ docId, achievlist, submit, setSubmit, ongoing }) => {
                         content: doc.get('content'),
                         data: doc.get('data'),
                         like: doc.get('like'),
+                        likeUsers: doc.get('likeUsers'),
                         photourl: doc.get('photourl')
                     })
                 }

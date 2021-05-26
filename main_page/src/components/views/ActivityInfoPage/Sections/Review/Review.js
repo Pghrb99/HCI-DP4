@@ -17,6 +17,7 @@ const Review = ({ docId, username, isPositive, isMe, name, years, achiev, conten
     // 나중에는 like 상속받아야 함
 
     useEffect(() => {
+        setIlikeit(isMe ? 0 : like);
         db.collection("Activities").doc(docId).collection('Reviews').get().then(querySnapshot => {
             querySnapshot.forEach(doc => {
                 if (doc.get('name') == name) {

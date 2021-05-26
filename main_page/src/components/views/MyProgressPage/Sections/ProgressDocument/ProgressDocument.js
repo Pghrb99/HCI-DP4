@@ -48,6 +48,7 @@ const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, subm
                     content: doc.get('content'),
                     data: doc.get('data'),
                     like: doc.get('like'),
+                    likeUsers: doc.get('likeUsers'),
                     photourl: doc.get('photourl')
                 })
                 if (doc.get('name') == username) {
@@ -154,6 +155,7 @@ const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, subm
             content: text,
             data: range,
             like: 0,
+            likeUsers: [],
             photourl: imgs()
         };
         db.collection('Activities').doc(docId).collection('Reviews').doc().set(rev);
@@ -169,6 +171,7 @@ const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, subm
                     content: doc.get('content'),
                     data: doc.get('data'),
                     like: doc.get('like'),
+                    likeUsers: doc.get('likeUsers'),
                     photourl: doc.get('photourl')
                 })
             })
@@ -193,6 +196,7 @@ const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, subm
                         content: doc.get('content'),
                         data: doc.get('data'),
                         like: doc.get('like'),
+                        likeUsers: doc.get('likeUsers'),
                         photourl: doc.get('photourl')
                     })
                 }
@@ -217,6 +221,7 @@ const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, subm
                         content: text,
                         data: range,
                         like: 0,
+                        likeUsers: [],
                         photourl: imgs()
                     };
                     tempreviews.push(rev)
@@ -231,6 +236,7 @@ const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, subm
                         content: doc.get('content'),
                         data: doc.get('data'),
                         like: doc.get('like'),
+                        likeUsers: doc.get('likeUsers'),
                         photourl: doc.get('photourl')
                     })
                 }
@@ -423,6 +429,7 @@ const ProgressDocument = ({ docId, activityname, achievlist, setAchievlist, subm
                     content: doc.get('content'),
                     data: doc.get('data'),
                     like: doc.get('like'),
+                    likeUsers: doc.get('likeUsers'),
                     photourl: doc.get('photourl')
                 })
                 if (doc.get('name') == username) {
