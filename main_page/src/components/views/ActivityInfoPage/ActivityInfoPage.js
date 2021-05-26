@@ -15,8 +15,11 @@ const ActivityInfoPage = ({achievlist, submit, setSubmit, complete}) => {
     const {currentUser} = useAuth();
     const [ongoing, setOngoing] = useState(false);
     const username = currentUser && currentUser.email;
+    const [completebool, setcompletebool] = useState(false);
 
     useEffect(() => {
+
+        db.collection('UserInfo').doc(username).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))})
         if (username) {
             db.collection('UserInfo').doc(username).collection('Activities').doc(docId).get().then(doc => {
                 if(doc.exists) setOngoing(true);
@@ -35,7 +38,7 @@ const ActivityInfoPage = ({achievlist, submit, setSubmit, complete}) => {
                 setSubmit={setSubmit}
                 ongoing={ongoing}
                 setOngoing={setOngoing}
-                complete={complete}
+                complete={completebool}
             />
 
             <div id="AIP-hori-div">

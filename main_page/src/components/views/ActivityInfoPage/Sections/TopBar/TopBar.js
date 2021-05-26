@@ -10,6 +10,7 @@ import { useHistory } from 'react-router';
 import { useAuth } from '../../../../../contexts/AuthContext'
 import {firebase} from 'firebase.js';
 
+
 const TopBar = ({docId, isSignedIn, userName, submit, setSubmit, ongoing, setOngoing, complete}) => {
     const {currentUser} = useAuth();
     const history = useHistory();
@@ -17,7 +18,9 @@ const TopBar = ({docId, isSignedIn, userName, submit, setSubmit, ongoing, setOng
     const [activityName, setactivityName] = useState();
     const [start, setStart] = useState(false);
     const [cancel, setCancel] = useState(false);
-    
+    const [completebool, setcompletebool] = useState(false);
+
+    db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))}) 
 
     db.collection("Activities").doc(docId).get().then((doc) => {
         setactivityName(doc.get("name"))
@@ -137,8 +140,8 @@ const TopBar = ({docId, isSignedIn, userName, submit, setSubmit, ongoing, setOng
                     }
                 </div>
                 { !ongoing && <Button id="AIP-topbar-start" onClick={clickStart}>Start!</Button> }
-                { ongoing && !complete && <Button variant='secondary' id='AIP-topbar-ongoing' onClick={clickCancel}>Ongoing<FontAwesomeIcon icon={faTimes} style={{marginLeft:'10px'}}/></Button>}
-                { ongoing && complete && <Button variant='success' id='AIP-topbar-complete' onClick={clickCancel}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>}
+                { ongoing && !completebool && <Button variant='secondary' id='AIP-topbar-ongoing' onClick={clickCancel}>Ongoing<FontAwesomeIcon icon={faTimes} style={{marginLeft:'10px'}}/></Button>}
+                { ongoing && completebool && <Button variant='success' id='AIP-topbar-complete' onClick={clickCancel}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>}
                 <Modal show={start} onHide={clickSNo}>
                     <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
                         <Modal.Title>Start Activity</Modal.Title>

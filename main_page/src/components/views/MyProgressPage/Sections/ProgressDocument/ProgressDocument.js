@@ -216,9 +216,8 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                 photourl: ""
             })
         }
-
-        const cityReffor = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
-        cityReffor.update({
+        console.log(useractivity)
+        db.collection('UserInfo').doc(username).collection('Activities').doc(docId).update({
             achievement: useractivity
         });
 }
@@ -384,17 +383,15 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
         let useractivity = [];
         const i = parseInt(attained.split('|')[1]);
         if (tempurl !== '') {
-            console.log(tempurl)
             $(".MMP-temp").attr('class', "MMP-success " + attained);
             const temp = achievlist.map((achiev, j) => {
                 if (j == i) {
-                    console.log(j, useractivity)
                     useractivity.push({
                         name: achiev.name,
                         explain: achiev.explain,
                         isCompleted: true,
                         isSelected: achiev.isSelected,
-                        photourl: tempurl
+                        photourl: 'tempurl'
                     })
                     return ({
                         name: achiev['name'],
@@ -405,7 +402,6 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                     });
                 }
                 else {
-                    console.log(j, useractivity)
                     useractivity.push({
                         name: achiev.name,
                         explain: achiev.explain,
@@ -417,7 +413,6 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                 }
             })
             // 여기에 review의 photourl에 tempurl을 추가하는 코드 넣어야 함
-            console.log('왜?', useractivity)
             const cityReffor = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
             cityReffor.update({
                 achievement: useractivity

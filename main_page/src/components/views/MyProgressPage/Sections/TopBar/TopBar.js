@@ -9,12 +9,11 @@ import {db} from 'firebase.js';
 import { useHistory } from 'react-router';
 import { useAuth } from '../../../../../contexts/AuthContext'
 
-const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOngoing, complete}) => {
-
-    let completebool;   
+const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOngoing}) => {
+    
     const history = useHistory();
     const [currentDoc, setCurrentDoc] = useState();
-    
+    const [completebool, setcompletebool] = useState(false);
     const [cancel, setCancel] = useState(false)
 
     const clickCancel = () => setCancel(true);
@@ -29,7 +28,7 @@ const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOn
 
     useEffect(() => {
 
-        db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {completebool = doc.get("isComplete")}) 
+        db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))}) 
 
         db.collection("Activities").doc(docId).get().then((doc) => {
             setCurrentDoc({
@@ -87,6 +86,7 @@ const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOn
                         currentDoc && <ActivityTags docId={docId} plusbutton={false}/>
                     }
                 </div>
+                {console.log(completebool)}
                 {completebool ?
                     <Button variant='success' id='MPP-topbar-complete' onClick={clickCancel}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>
                     :
@@ -100,7 +100,7 @@ const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOn
                     </Modal.Header>
                     <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
                         <p style={{fontFamily:'arial', color: 'black', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>Are you sure you want to cancel?</p>
-                        <p style={{fontFamily:'arial', color: 'black', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>(If you select 'Yes,' your review will be removed autometically.)</p>
+                        <p style={{fontFamily:'arial', color: 'black', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>(If you select 'Yes,' you can only remove your review)</p>
                     </Modal.Body>
                     <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
                         <Button variant="primary" onClick={clickCYes}>
