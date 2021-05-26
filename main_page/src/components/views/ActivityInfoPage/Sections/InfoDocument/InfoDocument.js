@@ -330,14 +330,14 @@ const InfoDocument = ({ docId, achievlist, submit, setSubmit, ongoing }) => {
                             {/*ongoing disabled*/}
                         </div>
                         <Modal show={review} onHide={clickRNo}>
-                            <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: '#356864', border: 'none', paddingBottom:'5px'}}>
+                            <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
                                 {submit ?
                                     <Modal.Title>Modify your Review</Modal.Title>
                                     :
                                     <Modal.Title>Write a Review</Modal.Title>
                                 }
                             </Modal.Header>
-                            <Modal.Body style={{ backgroundColor: '#eeeeee', color: '#356864', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
+                            <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
                                 <Form style={{marginLeft: '20px', marginRight: '20px'}}>
                                     <Form.Group controlId="MMP-text">
                                         <Form.Label id="MMP-reviews-formlabel">Text</Form.Label>
@@ -368,7 +368,7 @@ const InfoDocument = ({ docId, achievlist, submit, setSubmit, ongoing }) => {
                                     </Form.Group>
                                 </Form>
                             </Modal.Body>
-                            <Modal.Footer style={{ backgroundColor: '#eeeeee', color: '#356864', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
+                            <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
                                 <Button variant="primary" onClick={clickRYes}>
                                     Submit
                         </Button>
@@ -378,13 +378,13 @@ const InfoDocument = ({ docId, achievlist, submit, setSubmit, ongoing }) => {
                             </Modal.Footer>
                         </Modal>
                         <Modal show={remove} onHide={clickXNo}>
-                            <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: '#356864', border: 'none', paddingBottom:'5px'}}>
+                            <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
                                 <Modal.Title>Remove your Review</Modal.Title>
                             </Modal.Header>
-                            <Modal.Body style={{ backgroundColor: '#eeeeee', color: '#356864', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
-                                <p style={{fontFamily:'arial', color: '#356864', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>Are you sure you remove your review?</p>
+                            <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
+                                <p style={{fontFamily:'arial', color: 'black', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>Are you sure you remove your review?</p>
                             </Modal.Body>
-                            <Modal.Footer style={{ backgroundColor: '#eeeeee', color: '#356864', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
+                            <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
                                 <Button variant="danger" onClick={clickXYes}>
                                     Remove
                                 </Button>

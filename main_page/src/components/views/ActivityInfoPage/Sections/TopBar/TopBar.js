@@ -92,14 +92,14 @@ const TopBar = ({docId, isSignedIn, userName, removeReview, submit, setSubmit, o
                 { ongoing && !complete && <Button variant='secondary' id='AIP-topbar-ongoing' onClick={clickCancel}>Ongoing<FontAwesomeIcon icon={faTimes} style={{marginLeft:'10px'}}/></Button>}
                 { ongoing && complete && <Button variant='success' id='AIP-topbar-complete' onClick={clickCancel}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>}
                 <Modal show={start} onHide={clickSNo}>
-                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: '#356864', border: 'none', paddingBottom:'5px'}}>
+                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
                         <Modal.Title>Start Activity</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: '#356864', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
-                        <p style={{fontFamily:'arial', color: '#356864', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>Are you sure you want to start?</p>
-                        <p style={{fontFamily:'arial', color: '#356864', fontSize:'16px', marginLeft:'20px', marginRight:'20px'}}>(If you want to cancel the activity, click the 'Ongoing' button which will be created.)</p>
+                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
+                        <p style={{fontFamily:'arial', color: 'black', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>Are you sure you want to start?</p>
+                        <p style={{fontFamily:'arial', color: 'black', fontSize:'16px', marginLeft:'20px', marginRight:'20px'}}>(If you want to cancel the activity, click the 'Ongoing' button which will be created.)</p>
                     </Modal.Body>
-                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: '#356864', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
+                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
                         <Button variant="primary" onClick={clickSYes}>
                             Yes
                         </Button>
@@ -109,14 +109,14 @@ const TopBar = ({docId, isSignedIn, userName, removeReview, submit, setSubmit, o
                     </Modal.Footer>
                 </Modal>
                 <Modal show={cancel} onHide={clickCNo}>
-                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: '#356864', border: 'none', paddingBottom:'5px'}}>
+                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
                         <Modal.Title id="AIP-modal-title">Cancel Activity</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: '#356864', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
-                        <p style={{fontFamily:'arial', color: '#356864', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>Are you sure you want to cancel?</p>
-                        <p style={{fontFamily:'arial', color: '#356864', fontSize:'16px', marginLeft:'20px', marginRight:'20px'}}>(If you select 'Yes,' your review will be removed autometically.)</p>
+                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
+                        <p style={{fontFamily:'arial', color: 'black', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>Are you sure you want to cancel?</p>
+                        <p style={{fontFamily:'arial', color: 'black', fontSize:'16px', marginLeft:'20px', marginRight:'20px'}}>(If you select 'Yes,' your review will be removed autometically.)</p>
                     </Modal.Body>
-                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: '#356864', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
+                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
                         <Button variant="primary" onClick={clickCYes}>
                             Yes
                         </Button>

@@ -88,14 +88,14 @@ const TopBar = ({ userName, isSignedIn, docId, removeReview, submit, setSubmit, 
                 {/* ongoing, see_info은 눌리면 activityinfopage로 이동*/}
 
                 <Modal show={cancel} onHide={clickCNo}>
-                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: '#356864', border: 'none', paddingBottom:'5px'}}>
+                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
                         <Modal.Title id="MPP-modal-title">Cancel Activity</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: '#356864', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
-                        <p style={{fontFamily:'arial', color: '#356864', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>Are you sure you want to cancel?</p>
-                        <p style={{fontFamily:'arial', color: '#356864', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>(If you select 'Yes,' your review will be removed autometically.)</p>
+                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
+                        <p style={{fontFamily:'arial', color: 'black', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>Are you sure you want to cancel?</p>
+                        <p style={{fontFamily:'arial', color: 'black', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>(If you select 'Yes,' your review will be removed autometically.)</p>
                     </Modal.Body>
-                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: '#356864', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
+                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
                         <Button variant="primary" onClick={clickCYes}>
                             <Link to={"/info"} style={{color:"white"}}>Yes</Link>
                         </Button>
