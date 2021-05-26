@@ -39,29 +39,30 @@ const ProgressDocument = ({ userName, docId, activityname, achievlist, setAchiev
             });
         })
 
-        let tempreviews = [];
-        db.collection('Activities').doc(docId).collection('Reviews').get().then((querySnapshot) => {
-            querySnapshot.forEach(doc => {
-                tempreviews.push({
-                    isPositive: doc.get('isPositive'),
-                    name: doc.get('name'),
-                    years: doc.get('years'),
-                    achiev: doc.get('achiev'),
-                    content: doc.get('content'),
-                    data: doc.get('data'),
-                    like: doc.get('like'),
-                    likeUsers: doc.get('likeUsers'),
-                    photourl: doc.get('photourl')
-                })
-                if (doc.get('name') == username) {
+        db.collection("Activities").doc(docId).collection('Reviews').onSnapshot((querySnapshot) => {
+            const tempReviewList = [];
+            querySnapshot.forEach((reviewDoc) => {
+                tempReviewList.push({
+                    isPositive: reviewDoc.get('isPositive'),
+                    name: reviewDoc.get('name'),
+                    years: reviewDoc.get('years'),
+                    achiev: reviewDoc.get('achiev'),
+                    content: reviewDoc.get('content'),
+                    data: reviewDoc.get('data'),
+                    like: reviewDoc.get('like'),
+                    likeUsers: reviewDoc.get('likeUsers'),
+                    photourl: reviewDoc.get('photourl'),
+                    reviewId: reviewDoc.id
+                });
+                if(reviewDoc.get('name') == username) {
                     setSubmit(true);
-                    setText(doc.get('content'));
-                    setRecommend(doc.get('isPositive'));
-                    setRange(doc.get('data'));
+                    setText(reviewDoc.get('content'));
+                    setRecommend(reviewDoc.get('isPositive'));
+                    setRange(reviewDoc.get('data'));
                 }
-            })
-            setReviewlist(tempreviews);
-        })
+            });
+            setReviewlist(tempReviewList);
+        });
 
 
     // let tempcountend =0;
