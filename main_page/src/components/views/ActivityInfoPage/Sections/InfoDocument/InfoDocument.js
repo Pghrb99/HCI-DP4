@@ -35,28 +35,31 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
         })
 
         db.collection("Activities").doc(docId).collection('Reviews').onSnapshot((querySnapshot) => {
-            const tempReviewList = [];
-            querySnapshot.forEach((reviewDoc) => {
-                tempReviewList.push({
-                    isPositive: reviewDoc.get('isPositive'),
-                    name: reviewDoc.get('name'),
-                    years: reviewDoc.get('years'),
-                    achiev: reviewDoc.get('achiev'),
-                    content: reviewDoc.get('content'),
-                    data: reviewDoc.get('data'),
-                    like: reviewDoc.get('like'),
-                    likeUsers: reviewDoc.get('likeUsers'),
-                    photourl: reviewDoc.get('photourl'),
-                    reviewId: reviewDoc.id
+            db.collection('UserInfo').doc(username).get().then((doc) => {
+                const name = doc.get("name");
+                const tempReviewList = [];
+                querySnapshot.forEach((reviewDoc) => {
+                    tempReviewList.push({
+                        isPositive: reviewDoc.get('isPositive'),
+                        name: reviewDoc.get('name'),
+                        years: reviewDoc.get('years'),
+                        achiev: reviewDoc.get('achiev'),
+                        content: reviewDoc.get('content'),
+                        data: reviewDoc.get('data'),
+                        like: reviewDoc.get('like'),
+                        likeUsers: reviewDoc.get('likeUsers'),
+                        photourl: reviewDoc.get('photourl'),
+                        reviewId: reviewDoc.id
+                    });
+                    if(reviewDoc.get('name') == name) {
+                        setSubmit(true);
+                        setText(reviewDoc.get('content'));
+                        setRecommend(reviewDoc.get('isPositive'));
+                        setRange(reviewDoc.get('data'));
+                    }
                 });
-                if(reviewDoc.get('name') == username) {
-                    setSubmit(true);
-                    setText(reviewDoc.get('content'));
-                    setRecommend(reviewDoc.get('isPositive'));
-                    setRange(reviewDoc.get('data'));
-                }
+                setReviewlist(tempReviewList);
             });
-            setReviewlist(tempReviewList);
         });
     }, []);
 
@@ -72,79 +75,89 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
     }
 
     const addReview = () => {
-        const rev = {
-            isPositive: recommend,
-            name: username,
-            years: 1,
-            achiev: calculateCompleted(),
-            content: text,
-            data: range,
-            like: 0,
-            likeUsers: [],
-            photourl: imgs()
-        };
-        db.collection('Activities').doc(docId).collection('Reviews').add(rev);
-        const docRef = db.collection('Activities').doc(docId);
-        return db.runTransaction((transaction) => {
-            return transaction.get(docRef).then((doc) => {
-                const newNumOfReviews = doc.get("numOfReviews") + 1;
-                const oldNumericsTotal = [0,1,2,3,4].map((index) => doc.get("numerics")[index]*doc.get("numOfReviews"));
-                const newNumerics = oldNumericsTotal.map((x, index) => (x+range[index])/newNumOfReviews);
-                transaction.update(docRef, {
-                    numOfReviews: newNumOfReviews,
-                    numerics: newNumerics
-                });
+        db.collection('UserInfo').doc(username).get().then((doc) => {
+            const name = doc.get("name");
+            const rev = {
+                isPositive: recommend,
+                name: name,
+                years: 1,
+                achiev: calculateCompleted(),
+                content: text,
+                data: range,
+                like: 0,
+                likeUsers: [],
+                photourl: imgs()
+            };
+            db.collection('Activities').doc(docId).collection('Reviews').add(rev);
+            const docRef = db.collection('Activities').doc(docId);
+            return db.runTransaction((transaction) => {
+                return transaction.get(docRef).then((doc) => {
+                    const newNumOfReviews = doc.get("numOfReviews") + 1;
+                    const oldNumericsTotal = 
+                        [0,1,2,3,4].map((index) => doc.get("numerics")[index]*doc.get("numOfReviews"));
+                    const newNumerics = oldNumericsTotal.map((x, index) => (x+range[index])/newNumOfReviews);
+                    transaction.update(docRef, {
+                        numOfReviews: newNumOfReviews,
+                        numerics: newNumerics
+                    });
+                })
             })
         })
 
     }
 
     const removeReview = () => {
-        db.collection('Activities').doc(docId).collection('Reviews').where('name', '==', username)
-        .get().then((querySnapshot) => {
-            querySnapshot.forEach((reviewDoc) => reviewDoc.ref.delete())
-        });
-        const docRef = db.collection('Activities').doc(docId);
-        return db.runTransaction((transaction) => {
-            return transaction.get(docRef).then((doc) => {
-                const newNumOfReviews = doc.get("numOfReviews") - 1;
-                if (newNumOfReviews == 0) {
+        db.collection('UserInfo').doc(username).get().then((doc) => {
+            const name = doc.get("name");
+            db.collection('Activities').doc(docId).collection('Reviews').where('name', '==', name)
+            .get().then((querySnapshot) => {
+                querySnapshot.forEach((reviewDoc) => reviewDoc.ref.delete())
+            });
+            const docRef = db.collection('Activities').doc(docId);
+            return db.runTransaction((transaction) => {
+                return transaction.get(docRef).then((doc) => {
+                    const newNumOfReviews = doc.get("numOfReviews") - 1;
+                    if (newNumOfReviews == 0) {
+                        transaction.update(docRef, {
+                            numOfReviews: 0,
+                            numerics: [0, 0, 0, 0, 0]
+                        });
+                        return;
+                    }
+                    const oldNumericsTotal = [0,1,2,3,4].map((index) => doc.get("numerics")[index]*doc.get("numOfReviews"));
+                    const newNumerics = oldNumericsTotal.map((x, index) => (x-range[index])/newNumOfReviews);
                     transaction.update(docRef, {
-                        numOfReviews: 0,
-                        numerics: [0, 0, 0, 0, 0]
+                        numOfReviews: newNumOfReviews,
+                        numerics: newNumerics
                     });
-                    return;
-                }
-                const oldNumericsTotal = [0,1,2,3,4].map((index) => doc.get("numerics")[index]*doc.get("numOfReviews"));
-                const newNumerics = oldNumericsTotal.map((x, index) => (x-range[index])/newNumOfReviews);
-                transaction.update(docRef, {
-                    numOfReviews: newNumOfReviews,
-                    numerics: newNumerics
-                });
+                })
             })
         })
     }
 
     const updateReview = () => {
-        db.collection('Activities').doc(docId).collection('Reviews').where('name', '==', username)
-        .get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                doc.ref.update({
-                    isPositive: recommend,
-                    content: text,
-                    data: range
-                });
-            });
-            const docRef = db.collection('Activities').doc(docId);
-            return db.runTransaction((transaction) => {
-                return transaction.get(docRef).then((doc) => {
-                    const oldNumerics = doc.get("numerics");
-                    const oldNumericsTotal = [0,1,2,3,4].map((index) => doc.get("numerics")[index]*doc.get("numOfReviews"));
-                    const newNumerics = oldNumericsTotal.map((x, index) => 
-                        (x-oldNumerics[index]+range[index])/doc.get("numOfReviews"));
-                    transaction.update(docRef, {
-                        numerics: newNumerics
+        db.collection('UserInfo').doc(username).get().then((doc) => {
+            const name = doc.get("name");
+            db.collection('Activities').doc(docId).collection('Reviews').where('name', '==', name)
+            .get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    doc.ref.update({
+                        isPositive: recommend,
+                        content: text,
+                        data: range
                     });
+                });
+                const docRef = db.collection('Activities').doc(docId);
+                return db.runTransaction((transaction) => {
+                    return transaction.get(docRef).then((doc) => {
+                        const oldNumerics = doc.get("numerics");
+                        const oldNumericsTotal = [0,1,2,3,4].map((index) => doc.get("numerics")[index]*doc.get("numOfReviews"));
+                        const newNumerics = oldNumericsTotal.map((x, index) => 
+                            (x-oldNumerics[index]+range[index])/doc.get("numOfReviews"));
+                        transaction.update(docRef, {
+                            numerics: newNumerics
+                        });
+                    })
                 })
             })
         })
@@ -262,35 +275,35 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
                             <OverlayTrigger placement="top" overlay={<Tooltip>{"Boxing < Walking"}</Tooltip>}>
                                 <div class="AIP-numerics-subtitle">Easy to start</div>
                             </OverlayTrigger>
-                            <div class="AIP-numerics-numbers">{currentDoc.numerics[0]} / 10</div>
+                            <div class="AIP-numerics-numbers">{currentDoc.numerics[0].toFixed(1)} / 10</div>
                             <div class="AIP-numerics-radius"></div>
                         </ListGroup.Item>
                         <ListGroup.Item>
                             <OverlayTrigger placement="top" overlay={<Tooltip>{"Badminton < Horse riding"}</Tooltip>}>
                                 <div class="AIP-numerics-subtitle">Cost-effective</div>
                             </OverlayTrigger>
-                            <div class="AIP-numerics-numbers">{currentDoc.numerics[1]} / 10</div>
+                            <div class="AIP-numerics-numbers">{currentDoc.numerics[1].toFixed(1)} / 10</div>
                             <div class="AIP-numerics-radius"></div>
                         </ListGroup.Item>
                         <ListGroup.Item>
                             <OverlayTrigger placement="top" overlay={<Tooltip>{"Climbing Everest < Jogging"}</Tooltip>}>
                                 <div class="AIP-numerics-subtitle">Schedule-flexible</div>
                             </OverlayTrigger>
-                            <div class="AIP-numerics-numbers">{currentDoc.numerics[2]} / 10</div>
+                            <div class="AIP-numerics-numbers">{currentDoc.numerics[2].toFixed(1)} / 10</div>
                             <div class="AIP-numerics-radius"></div>
                         </ListGroup.Item>
                         <ListGroup.Item>
                             <OverlayTrigger placement="top" overlay={<Tooltip>{"Bullfighting < Yoga"}</Tooltip>}>
                                 <div class="AIP-numerics-subtitle">Safe</div>
                             </OverlayTrigger>
-                            <div class="AIP-numerics-numbers">{currentDoc.numerics[3]} / 10</div>
+                            <div class="AIP-numerics-numbers">{currentDoc.numerics[3].toFixed(1)} / 10</div>
                             <div class="AIP-numerics-radius"></div>
                         </ListGroup.Item>
                         <ListGroup.Item>
                             <OverlayTrigger placement="top" overlay={<Tooltip>{"Billiards < Pilates"}</Tooltip>}>
                                 <div class="AIP-numerics-subtitle">Good for health</div>
                             </OverlayTrigger>
-                            <div class="AIP-numerics-numbers">{currentDoc.numerics[4]} / 10</div>
+                            <div class="AIP-numerics-numbers">{currentDoc.numerics[4].toFixed(1)} / 10</div>
                             <div class="AIP-numerics-radius"></div>
                         </ListGroup.Item>
                     </ListGroup>
@@ -447,6 +460,9 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
                             </Modal.Footer>
                         </Modal>
                         <h3>Positive Opinions</h3>
+                        {!reviewlist.length ?
+                        <div style={{margin: "30px 20px", fontSize: "20px", color: "grey"}}>There is no positive review.</div>
+                        :
                         <div id="MMP-reviews-positive">
                             {reviewlist.map(rev => {
                                 if (rev['isPositive']) {
@@ -459,9 +475,12 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
                                 }
                             })}
                         </div>
+                        }
                         <h3>Negative Opinions</h3>
+                        {!reviewlist.length ?
+                        <div style={{margin: "30px 20px", fontSize: "20px", color: "grey"}}>There is no negative review.</div>
+                        :
                         <div id="MMP-reviews-negative">
-                            {/*issignedin => like button*/}
                             {reviewlist.map(rev => {
                                 if (!rev['isPositive']) {
                                     if (rev['name'] == username) {
@@ -472,7 +491,8 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
                                     }    
                                 }})
                             }
-                    </div>
+                        </div>
+                        }
                 </div>
                 <div id="AIP-communities" style={{ marginTop: '30px' }}>
                     <div style={{ width: '100%', display: 'inline-block' }}>

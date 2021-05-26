@@ -1,9 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import './NameSearchBar.scss'
-import SearchButton from '../../../TagSearchPage/Sections/SearchButton/SearchButton'
 import { AutoComplete, Input} from 'antd';
 import {db} from '../../../../../firebase'
-import { Link } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import {useHistory} from "react-router";
 
@@ -13,7 +11,6 @@ const NameSearchBar = () => {
     const [allOptions, setAllOptions] = useState([]);
     const [options, setOptions] = useState([]);
     const history = useHistory();
-    
     
     useEffect(() => {
         const tempOptionList = [];
@@ -37,6 +34,7 @@ const NameSearchBar = () => {
     const onSearch = (searchText) => {
         if (searchText.length==0 ) {
             setOptions([]);
+            return;
         }
         const lowerText = searchText.toLowerCase();
         let result = [];
