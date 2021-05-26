@@ -20,14 +20,14 @@ const Review = ({ reviewId, docId, username, isPositive, isMe, name, years, achi
     useEffect(() => {
         const reviewRef = db.collection("Activities").doc(docId).collection("Reviews").doc(reviewId);
         reviewRef.get().then((reviewDoc) => {
-            if(reviewDoc.get("likeUsers").includes(currentUser.email)) {
+            if(currentUser && reviewDoc.get("likeUsers").includes(currentUser.email)) {
                 setIsThumb(reviewDoc.get('likeUsers').includes(currentUser.email));
             }
         });
     }, []);
 
     const clickLike = (event) => {
-        // if (currentUser.email != name) {
+        if (currentUser) {
             const reviewRef = db.collection("Activities").doc(docId).collection("Reviews").doc(reviewId);
             if (!event.currentTarget.className.includes("MMP-numOfLike")) {
                 reviewRef.update({
@@ -47,7 +47,7 @@ const Review = ({ reviewId, docId, username, isPositive, isMe, name, years, achi
                 setNumOfLike(numOfLike - 1);
                 setIsThumb(false);
             }
-        // }
+        }
     }
 
     const clickImages = () => {
