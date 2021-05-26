@@ -7,9 +7,9 @@ import { faThumbsUp as solidthumbsup, faImages, faPencilAlt, faTrashAlt } from "
 import { faThumbsUp as regularthumbsup } from "@fortawesome/free-regular-svg-icons";
 import ProgressDocument from 'components/views/MyProgressPage/Sections/ProgressDocument/ProgressDocument';
 import { LeftCircleFilled } from '@ant-design/icons';
-import {db} from 'firebase.js';
+import {firebase, db} from 'firebase.js';
 
-const Review = ({ docId, username, isPositive, isMe, name, years, achiev, content, data, like, photourl, clickReview, clickRemove }) => {
+const Review = ({ reviewId, docId, username, isPositive, isMe, name, years, achiev, content, data, like, photourl, clickReview, clickRemove }) => {
     const [ilikeit, setIlikeit] = useState(like);
     const [images, setImages] = useState(false);
     const [isthumb, setIsthumb] = useState(false);
@@ -18,46 +18,30 @@ const Review = ({ docId, username, isPositive, isMe, name, years, achiev, conten
 
     useEffect(() => {
         setIlikeit(isMe ? 0 : like);
-        db.collection("Activities").doc(docId).collection('Reviews').get().then(querySnapshot => {
-            querySnapshot.forEach(doc => {
-                if (doc.get('name') == name) {
-                    setIsthumb(doc.get('likeUsers').includes(username));
-                }
-            })
+        const reviewRef = db.collection("Activities").doc(docId).collection("Reviews").doc(reviewId);
+        reviewRef.get().then((reviewDoc) => {
+            if(reviewDoc.get("likeUsers").includes(username)) {
+                setIsthumb(reviewDoc.get('likeUsers').includes(username));
+            }
         });
     }, []);
 
     const clickLike = (event) => {
         if (username != name) {
+            const reviewRef = db.collection("Activities").doc(docId).collection("Reviews").doc(reviewId);
             if (!event.currentTarget.className.includes("MMP-ilikeit")) {
-                db.collection('Activities').doc(docId).collection('Reviews').get().then((querySnapshot) => {
-                    querySnapshot.forEach(doc => {                    
-                        if (doc.get('name') == name) {
-                            var likelist = doc.get('likeUsers');
-                            likelist.push(username);
-                            var map = {like: ilikeit+1, likeUsers: likelist};
-                            db.collection('Activities').doc(docId).collection('Reviews').doc(doc.id).update(map);
-                        }
-                    })
+                reviewRef.update({
+                    like: firebase.firestore.FieldValue.increment(1),
+                    likeUsers: firebase.firestore.FieldValue.arrayUnion(username)
                 });
                 event.currentTarget.className += " MMP-ilikeit";
                 setIlikeit(ilikeit + 1);
                 setIsthumb(true);
             }
             else {
-                db.collection('Activities').doc(docId).collection('Reviews').get().then((querySnapshot) => {
-                    querySnapshot.forEach(doc => {
-                        if (doc.get('name') == name) {
-                            var likelist = [];
-                            doc.get('likeUsers').forEach(user => {
-                                if (user != username) {
-                                    likelist.push(user);
-                                }
-                            });
-                            var map = {like: ilikeit-1, likeUsers: likelist};
-                            db.collection('Activities').doc(docId).collection('Reviews').doc(doc.id).update(map);
-                        }
-                    })
+                reviewRef.update({
+                    like: firebase.firestore.FieldValue.increment(-1),
+                    likeUsers: firebase.firestore.FieldValue.arrayRemove(username)
                 });
                 event.currentTarget.className = "AIP-reviews-likes"
                 setIlikeit(ilikeit - 1);
@@ -67,7 +51,6 @@ const Review = ({ docId, username, isPositive, isMe, name, years, achiev, conten
     }
 
     const clickImages = () => {
-        console.log("hallo");
         if (photourl.length == 0) {
             alert("No Photo!");
         }

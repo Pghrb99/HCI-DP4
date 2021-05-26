@@ -38,6 +38,7 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
         db.collection('Activities').doc(docId).collection('Reviews').get().then((querySnapshot) => {
             querySnapshot.forEach(doc => {
                 tempreviews.push({
+                    reviewId: doc.id,
                     isPositive: doc.get('isPositive'),
                     name: doc.get('name'),
                     years: doc.get('years'),
@@ -88,6 +89,7 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
         db.collection('Activities').doc(docId).collection('Reviews').get().then((querySnapshot) => {
             querySnapshot.forEach(doc => {
                 tempreviews.push({
+                    reviewId: doc.id,
                     isPositive: doc.get('isPositive'),
                     name: doc.get('name'),
                     years: doc.get('years'),
@@ -153,6 +155,7 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
                 }
                 else {
                     tempreviews.push({
+                        reviewId: doc.id,
                         isPositive: doc.get('isPositive'),
                         name: doc.get('name'),
                         years: doc.get('years'),
@@ -432,10 +435,10 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
                             {reviewlist.map(rev => {
                                 if (rev['isPositive']) {
                                     if (rev['name'] == username) {
-                                        return <Review docId={docId} username={username} isPositive={true} isMe={true} name={rev['name']} years={rev['years']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
+                                        return <Review reviewId={rev['reviewId']} docId={docId} username={username} isPositive={true} isMe={true} name={rev['name']} years={rev['years']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                                     }
                                     else {
-                                        return <Review docId={docId} username={username} isPositive={true} isMe={false} name={rev['name']} years={rev['years']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
+                                        return <Review reviewId={rev['reviewId']} docId={docId} username={username} isPositive={true} isMe={false} name={rev['name']} years={rev['years']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
                                     }
                                 }
                             })}
@@ -446,10 +449,10 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
                             {reviewlist.map(rev => {
                                 if (!rev['isPositive']) {
                                     if (rev['name'] == username) {
-                                        return <Review docId={docId} username={username} isPositive={false} isMe={true} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
+                                        return <Review reviewId={rev['reviewId']} docId={docId} username={username} isPositive={false} isMe={true} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                                     }
                                     else {
-                                        return <Review docId={docId} username={username} isPositive={false} isMe={false} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
+                                        return <Review reviewId={rev['reviewId']} docId={docId} username={username} isPositive={false} isMe={false} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
                                     }
                                 }
                             })}
