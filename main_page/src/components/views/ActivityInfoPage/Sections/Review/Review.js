@@ -10,33 +10,31 @@ import { LeftCircleFilled } from '@ant-design/icons';
 import {firebase, db} from 'firebase.js';
 
 const Review = ({ reviewId, docId, username, isPositive, isMe, name, years, achiev, content, data, like, photourl, clickReview, clickRemove }) => {
-    const [ilikeit, setIlikeit] = useState(like);
+    const [numOfLike, setNumOfLike] = useState(like);
     const [images, setImages] = useState(false);
-    const [isthumb, setIsthumb] = useState(false);
-    const [thumbsup, setThumbsup] = useState(regularthumbsup);
+    const [isthumb, setIsThumb] = useState(false);
     // 나중에는 like 상속받아야 함
 
     useEffect(() => {
-        setIlikeit(isMe ? 0 : like);
         const reviewRef = db.collection("Activities").doc(docId).collection("Reviews").doc(reviewId);
         reviewRef.get().then((reviewDoc) => {
             if(reviewDoc.get("likeUsers").includes(username)) {
-                setIsthumb(reviewDoc.get('likeUsers').includes(username));
+                setIsThumb(reviewDoc.get('likeUsers').includes(username));
             }
         });
     }, []);
 
     const clickLike = (event) => {
-        if (username != name) {
+        // if (username != name) {
             const reviewRef = db.collection("Activities").doc(docId).collection("Reviews").doc(reviewId);
-            if (!event.currentTarget.className.includes("MMP-ilikeit")) {
+            if (!event.currentTarget.className.includes("MMP-numOfLike")) {
                 reviewRef.update({
                     like: firebase.firestore.FieldValue.increment(1),
                     likeUsers: firebase.firestore.FieldValue.arrayUnion(username)
                 });
-                event.currentTarget.className += " MMP-ilikeit";
-                setIlikeit(ilikeit + 1);
-                setIsthumb(true);
+                event.currentTarget.className += " MMP-numOfLike";
+                setNumOfLike(numOfLike + 1);
+                setIsThumb(true);
             }
             else {
                 reviewRef.update({
@@ -44,10 +42,10 @@ const Review = ({ reviewId, docId, username, isPositive, isMe, name, years, achi
                     likeUsers: firebase.firestore.FieldValue.arrayRemove(username)
                 });
                 event.currentTarget.className = "AIP-reviews-likes"
-                setIlikeit(ilikeit - 1);
-                setIsthumb(false);
+                setNumOfLike(numOfLike - 1);
+                setIsThumb(false);
             }
-        }
+        // }
     }
 
     const clickImages = () => {
@@ -90,9 +88,9 @@ const Review = ({ reviewId, docId, username, isPositive, isMe, name, years, achi
                         <div class="AIP-reviews-points"><Badge variant="dark">Safe: {data[3]}</Badge></div>
                         <div class="AIP-reviews-points"><Badge variant="dark">Good for health: {data[4]}</Badge></div>
                         {isthumb ?
-                            <div className="AIP-reviews-likes MMP-ilikeit" onClick={clickLike}><FontAwesomeIcon icon={solidthumbsup} /><span> {ilikeit}</span></div>
+                            <div className="AIP-reviews-likes MMP-numOfLike" onClick={clickLike}><FontAwesomeIcon icon={solidthumbsup} /><span> {numOfLike}</span></div>
                             :
-                            <div className="AIP-reviews-likes" onClick={clickLike}><FontAwesomeIcon icon={regularthumbsup} /><span> {ilikeit}</span></div>
+                            <div className="AIP-reviews-likes" onClick={clickLike}><FontAwesomeIcon icon={regularthumbsup} /><span> {numOfLike}</span></div>
                         }
                     </div>
                 </Card.Body>
