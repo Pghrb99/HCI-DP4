@@ -332,7 +332,7 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
                     <div id="AIP-achievements" style={{ marginTop: '30px' }}>
                         <div style={{ width: '100%', display: 'inline-block' }}>
                             <h2 style={{ float: 'left' }}>Achievements</h2>
-                            <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing && !isSignedIn}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Edit Achievements</Button>
+                            <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing || !isSignedIn}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Edit Achievements</Button>
                         </div>
                         <ListGroup id="AIP-achievements-list">
                             {achievlist.map((achiev, i) => {
@@ -361,7 +361,7 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
                                     <Button id="AIP-reviews-write" variant="success" onClick={clickReview}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Modify your Review</Button>
                                 </div>
                                 :
-                                <Button id="AIP-reviews-write" variant="success" onClick={clickReview} disabled={!ongoing && !isSignedIn}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Write a Review</Button>
+                                <Button id="AIP-reviews-write" variant="success" onClick={clickReview} disabled={!ongoing || !isSignedIn}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Write a Review</Button>
                             }
                             {/*ongoing disabled*/}
                         </div>
