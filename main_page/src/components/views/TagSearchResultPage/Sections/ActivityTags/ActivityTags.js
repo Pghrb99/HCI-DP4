@@ -3,7 +3,7 @@ import { Button, Modal, InputGroup, FormControl } from 'react-bootstrap';
 import ActivityTag from '../ActivityTag/ActivityTag'
 import './ActivityTags.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faTag } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTimes, faTag } from "@fortawesome/free-solid-svg-icons";
 import {db} from 'firebase.js';
 import { useAuth } from 'contexts/AuthContext';
 
@@ -157,18 +157,24 @@ const ActivityTags = ({docId, plusbutton}) => {
             ))}
             {plusbutton && <Button variant='success' id='tagplus' onClick={clickTagplus}><FontAwesomeIcon icon={faPlus} /></Button>}
             <Modal size='lg' show={tagplus} onHide={clickTPNo}>
-                <Modal.Header closeButton style={{ backgroundColor: '#BBEDCA', color: '#356864', border: 'none', paddingTop:'10px', paddingBottom:'5px'}}>
-                    <Modal.Title>Add Tags</Modal.Title>
+                <Modal.Header closeButton style={{ backgroundColor: '#BBEDCA', color: '#356864', border: 'none', paddingBottom:'5px'}}>
+                    <Modal.Title style={{marginTop: '10px'}}>Add Tags</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ backgroundColor: '#BBEDCA', color: '#356864', border: 'none', textAlign: 'center', paddingTop: '5px', paddingBottom: '0'}}>
-                    <table style={{ width: '90%' }}>
+                    <table style={{ width: '100%', textAlign: 'left', margin: '0 20px 0 20px' }}>
                         <thead>
                             <tr>
-                                <th colspan={2} style={{ width: '50%', fontSize: '24px', fontWeight: '600' }}>Related tags for this activity</th>
-                                <th colspan={2} style={{ width: '50%', fontSize: '24px', fontWeight: '600' }}>Tags you applied</th>
+                                <th colspan={2} id="newtag-table-title">Tags you did not apply</th>
+                                <th colspan={2} id="newtag-table-title">Tags you applied</th>
+                            </tr>
+                            <tr>
+                                <th id="newtag-table-subtitle">Recommended Tags</th>
+                                <th id="newtag-table-subtitle">Custom Tags</th>
+                                <th id="newtag-table-subtitle">Recommended Tags</th>
+                                <th id="newtag-table-subtitle">Custom Tags</th>
                             </tr>
                         </thead>
-                        <tbody style={{ textAlign: 'left' }}>
+                        <tbody>
                             <td>
                                 {candidates.map((candidate, i) => {
                                     if (!isSelected[i]) {
