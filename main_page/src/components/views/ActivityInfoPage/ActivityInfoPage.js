@@ -6,18 +6,29 @@ import HorizontalBar from './Sections/HorizontalBar/HorizontalBar'
 import InfoDocument from './Sections/InfoDocument/InfoDocument';
 import GoTop from '../GoTop/GoTop';
 import { useLocation } from 'react-router'
-import { useAuth } from 'contexts/AuthContext'
+import { useAuth } from 'contexts/AuthContext';
+import { db } from 'firebase.js';
 
-const ActivityInfoPage = ({achievlist, setAchievlist, reviewlist, addReview, removeReview, submit, setSubmit, ongoing, setOngoing, complete, setComplete}) => {
+const ActivityInfoPage = ({achievlist, setAchievlist, removeReview, submit, setSubmit, complete, setComplete}) => {
     const location = useLocation();
     const docId = location.state.docId;
     const {currentUser} = useAuth();
+    const [ongoing, setOngoing] = useState(false);
+    const username = currentUser && currentUser.email;
+
+    useEffect(() => {
+        if (username) {
+            db.collection('UserInfo').doc(username).collection('Activities').doc(docId).get().then(doc => {
+                if(doc.exists) setOngoing(true);
+            });
+        }
+    })
 
     return (
         <div id="ActivityInfoPage">
             <Sidemenu />
             <TopBar
-                userName={currentUser && currentUser.email}
+                userName={username}
                 isSignedIn={currentUser}
                 docId={docId}
                 removeReview={removeReview}
@@ -31,7 +42,7 @@ const ActivityInfoPage = ({achievlist, setAchievlist, reviewlist, addReview, rem
             <div id="AIP-hori-div">
                 <HorizontalBar/>
                 <InfoDocument
-                    userName={currentUser && currentUser.email}
+                    userName={username}
                     isSignedIn={currentUser}
                     docId={docId}
                     achievlist={achievlist}

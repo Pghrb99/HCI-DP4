@@ -10,16 +10,16 @@ import { LeftCircleFilled } from '@ant-design/icons';
 import {firebase, db} from 'firebase.js';
 import { useAuth } from 'contexts/AuthContext'
 
-const Review = ({ reviewId, docId, username, isPositive, isMe, name, years, achiev, content, data, like, photourl, clickReview, clickRemove }) => {
+const Review = ({ reviewId, docId, isPositive, isMe, name, years, achiev, content, data, like, photourl, clickReview, clickRemove }) => {
     const [numOfLike, setNumOfLike] = useState(like);
     const [images, setImages] = useState(false);
     const [isthumb, setIsThumb] = useState(false);
     const {currentUser} = useAuth();
-    // 나중에는 like 상속받아야 함
 
     useEffect(() => {
         const reviewRef = db.collection("Activities").doc(docId).collection("Reviews").doc(reviewId);
         reviewRef.get().then((reviewDoc) => {
+            console.log(reviewDoc.get('achiev'));
             if(currentUser && reviewDoc.get("likeUsers").includes(currentUser.email)) {
                 setIsThumb(reviewDoc.get('likeUsers').includes(currentUser.email));
             }
