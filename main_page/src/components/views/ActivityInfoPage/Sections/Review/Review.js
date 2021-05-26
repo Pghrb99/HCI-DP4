@@ -10,7 +10,7 @@ import { LeftCircleFilled } from '@ant-design/icons';
 import {firebase, db} from 'firebase.js';
 import { useAuth } from 'contexts/AuthContext'
 
-const Review = ({ reviewId, docId, isPositive, isMe, name, years, achiev, content, data, like, photourl, clickReview, clickRemove }) => {
+const Review = ({ reviewId, docId, isPositive, isMe, name, days, achiev, content, data, like, photourl, clickReview, clickRemove }) => {
     const [numOfLike, setNumOfLike] = useState(like);
     const [images, setImages] = useState(false);
     const [isthumb, setIsThumb] = useState(false);
@@ -81,7 +81,7 @@ const Review = ({ reviewId, docId, isPositive, isMe, name, years, achiev, conten
                             </span>
                         }
                     </Card.Title>
-                    <Card.Subtitle>{years} years, completed {achiev} achievements</Card.Subtitle>
+                    <Card.Subtitle>{days} days, completed {achiev? achiev : 0} achievements</Card.Subtitle>
                     <Card.Text style={{ marginLeft: "10px" }}>{content}</Card.Text>
                     <div>
                         <div class="AIP-reviews-points"><Badge variant="dark">Easy to start: {data[0]}</Badge></div>
