@@ -4,8 +4,8 @@ import {db} from '../../../../../../../firebase'
 
 const Userinfo = (userEmail) => {
 const [userdata, setresult] = useState([]);
-const [ongoingnum, setongoing] = useState([]);
-const [endnum, setend] = useState([]);
+const [ongoingnum, setongoing] = useState(0);
+const [endnum, setend] = useState(0);
 let ongoingact = 0; 
 let endact = 0; 
 useEffect(() => {
@@ -32,10 +32,10 @@ console.log(userEmail.userEmail)
         let actRef  = db.collection('UserInfo').doc(userEmail.userEmail).collection('Activities');
         const snapshot2 = await actRef.get();
         snapshot2.forEach(doc => {
-            if(doc.data().state == true){
-                ongoingact++;
+            if(doc.data().isComplete == true){
+                endact++;
             }
-            else endact++;
+            else ongoingact++;
             })
             setongoing(ongoingact);
             setend(endact);
