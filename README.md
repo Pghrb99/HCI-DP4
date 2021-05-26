@@ -4,8 +4,14 @@ Pongpong is a website which provides organized information of various active hob
 
 ## How to Start
 
-To look around the website, just click the link ~.
-To see our code detailedly, execute 'git clone' first. Then, in a folder 'main_page,' type npm install and npm start.
+To look around the website, just click the link <https://www.naver.com/>.
+
+To see our code detailedly,
+```
+$ cd HCI-DP4/main_page
+$ npm install
+$ npm start
+```
 
 ## How to Use
 
@@ -14,9 +20,14 @@ After you click an activity-card, you will be in activity-information-page. Ther
 If you like it, you can start this activity by clicking the start button. Then, my-progress-page would be available. In the page, you can select achievements which you want and accomplish them.
 
 ## Used Libraries and Frameworks
-* react-bootstrap bootstrap@4.5.3
-* jquery
-* @fortawesome/fontawesome-svg-core
-* @fortawesome/free-solid-svg-icons @fortawesome/free-regular-svg-icons @fortawesome/free-brands-svg-icons
-* @fortawesome/react-fontawesome
-* react-bootstrap-range-slider
+* react (ver 17.0.2)
+* bootstrap (ver 4.5.3)
+* react-bootstrap (ver 1.6.0)
+* react-bootstrap-range-slider (ver 2.0.2)
+* ant-design (ver 4.15.5)
+* fortawesome (ver 1.2.35)
+* material-ui (ver 4.11.4)
+* node-scss (ver 6.0.0)
+* firebase (ver 8.6.2)
+* jquery (ver 3.6.0)
+* react-chartjs-2 (ver 3.0.3)
