@@ -39,6 +39,7 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                 requirements: doc.get("requirements"),
                 numerics: doc.get("numerics"),
                 communities: doc.get("communities"),
+                name: doc.get("name"),
             });
         });
         
@@ -87,28 +88,31 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
 
 
         db.collection("Activities").doc(docId).collection('Reviews').onSnapshot((querySnapshot) => {
-            const tempReviewList = [];
-            querySnapshot.forEach((reviewDoc) => {
-                tempReviewList.push({
-                    isPositive: reviewDoc.get('isPositive'),
-                    name: reviewDoc.get('name'),
-                    years: reviewDoc.get('years'),
-                    achiev: reviewDoc.get('achiev'),
-                    content: reviewDoc.get('content'),
-                    data: reviewDoc.get('data'),
-                    like: reviewDoc.get('like'),
-                    likeUsers: reviewDoc.get('likeUsers'),
-                    photourl: reviewDoc.get('photourl'),
-                    reviewId: reviewDoc.id
+            db.collection('UserInfo').doc(username).get().then((doc) => {
+                const name = doc.get("name");
+                const tempReviewList = [];
+                querySnapshot.forEach((reviewDoc) => {
+                    tempReviewList.push({
+                        isPositive: reviewDoc.get('isPositive'),
+                        name: reviewDoc.get('name'),
+                        days: reviewDoc.get('days'),
+                        achiev: reviewDoc.get('achiev'),
+                        content: reviewDoc.get('content'),
+                        data: reviewDoc.get('data'),
+                        like: reviewDoc.get('like'),
+                        likeUsers: reviewDoc.get('likeUsers'),
+                        photourl: reviewDoc.get('photourl'),
+                        reviewId: reviewDoc.id
+                    });
+                    if(reviewDoc.get('name') == name) {
+                        setSubmit(true);
+                        setText(reviewDoc.get('content'));
+                        setRecommend(reviewDoc.get('isPositive'));
+                        setRange(reviewDoc.get('data'));
+                    }
                 });
-                if(reviewDoc.get('name') == username) {
-                    setSubmit(true);
-                    setText(reviewDoc.get('content'));
-                    setRecommend(reviewDoc.get('isPositive'));
-                    setRange(reviewDoc.get('data'));
-                }
+                setReviewlist(tempReviewList);
             });
-            setReviewlist(tempReviewList);
         });
 
 
@@ -247,101 +251,99 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
     }
 
     const addReview = () => {
-        const rev = {
-            isPositive: recommend,
-            name: username,
-            years: 1,
-            achiev: calculateCompleted(),
-            content: text,
-            data: range,
-            like: 0,
-            likeUsers: [],
-            photourl: imgs()
-        };
-        db.collection('Activities').doc(docId).collection('Reviews').doc().set(rev);
-
-        let tempreviews = [];
-        db.collection('Activities').doc(docId).collection('Reviews').get().then((querySnapshot) => {
-            querySnapshot.forEach(doc => {
-                tempreviews.push({
-                    isPositive: doc.get('isPositive'),
-                    name: doc.get('name'),
-                    years: doc.get('years'),
-                    achiev: doc.get('achiev'),
-                    content: doc.get('content'),
-                    data: doc.get('data'),
-                    like: doc.get('like'),
-                    likeUsers: doc.get('likeUsers'),
-                    photourl: doc.get('photourl')
+        db.collection('UserInfo').doc(username).get().then((doc) => {
+            const name = doc.get("name");
+            db.collection('UserInfo').doc(username).collection('Activities').doc(docId).get().then((doc) => {
+                const startTime = doc.get("startTime").toDate()
+                const rev = {
+                    isPositive: recommend,
+                    name: name,
+                    days: Math.round((new Date().getTime() - startTime.getTime())/(1000*60*60*24)),
+                    achiev: calculateCompleted(),
+                    content: text,
+                    data: range,
+                    like: 0,
+                    likeUsers: [],
+                    photourl: imgs()
+                };
+                db.collection('Activities').doc(docId).collection('Reviews').add(rev);
+                const docRef = db.collection('Activities').doc(docId);
+                return db.runTransaction((transaction) => {
+                    return transaction.get(docRef).then((doc) => {
+                        const newNumOfReviews = doc.get("numOfReviews") + 1;
+                        const oldNumericsTotal = 
+                            [0,1,2,3,4].map((index) => doc.get("numerics")[index]*doc.get("numOfReviews"));
+                        const newNumerics = oldNumericsTotal.map((x, index) => (x+range[index])/newNumOfReviews);
+                        transaction.update(docRef, {
+                            numOfReviews: newNumOfReviews,
+                            numerics: newNumerics
+                        });
+                    })
                 })
             })
-            setReviewlist(tempreviews);
+        })
 
-        });
     }
 
     const removeReview = () => {
-        let tempreviews = [];
-        db.collection('Activities').doc(docId).collection('Reviews').get().then(querySnapshot => {
-            querySnapshot.forEach(doc => {
-                if (doc.get('name') == username) {
-                    db.collection('Activities').doc(docId).collection('Reviews').doc(doc.id).delete();
-                }
-                else {
-                    tempreviews.push({
-                        isPositive: doc.get('isPositive'),
-                        name: doc.get('name'),
-                        years: doc.get('years'),
-                        achiev: doc.get('achiev'),
-                        content: doc.get('content'),
-                        data: doc.get('data'),
-                        like: doc.get('like'),
-                        likeUsers: doc.get('likeUsers'),
-                        photourl: doc.get('photourl')
-                    })
-                }
+        db.collection('UserInfo').doc(username).get().then((doc) => {
+            const name = doc.get("name");
+            db.collection('Activities').doc(docId).collection('Reviews').where('name', '==', name)
+            .get().then((querySnapshot) => {
+                querySnapshot.forEach((reviewDoc) => reviewDoc.ref.delete())
+            });
+            const docRef = db.collection('Activities').doc(docId);
+            return db.runTransaction((transaction) => {
+                return transaction.get(docRef).then((doc) => {
+                    const newNumOfReviews = doc.get("numOfReviews") - 1;
+                    if (newNumOfReviews == 0) {
+                        transaction.update(docRef, {
+                            numOfReviews: 0,
+                            numerics: [0, 0, 0, 0, 0]
+                        });
+                        return;
+                    }
+                    const oldNumericsTotal = [0,1,2,3,4].map((index) => doc.get("numerics")[index]*doc.get("numOfReviews"));
+                    const newNumerics = oldNumericsTotal.map((x, index) => (x-range[index])/newNumOfReviews);
+                    transaction.update(docRef, {
+                        numOfReviews: newNumOfReviews,
+                        numerics: newNumerics
+                    });
+                })
             })
-            setReviewlist(tempreviews);
         })
     }
 
     const updateReview = () => {
-        let tempreviews = [];
-        let tempachiev = 0;
-        db.collection('Activities').doc(docId).collection('Reviews').get().then(querySnapshot => {
-            querySnapshot.forEach(doc => {
-                if (doc.get('name') == username) {
-                    tempachiev = doc.get('achiev');
-                    const rev = {
-                        isPositive: recommend,
-                        name: doc.get('name'),
-                        years: doc.get('years'),
-                        achiev: doc.get('achiev'),
-                        content: text,
-                        data: range,
-                        like: 0,
-                        likeUsers: doc.get('likeUsers'),
-                        photourl: doc.get('photourl')
-                    };
-                    tempreviews.push(rev)
-                    db.collection('Activities').doc(docId).collection('Reviews').doc(doc.id).update(rev);
-                }
-                else {
-                    tempreviews.push({
-                        isPositive: doc.get('isPositive'),
-                        name: doc.get('name'),
-                        years: doc.get('years'),
-                        achiev: doc.get('achiev'),
-                        content: doc.get('content'),
-                        data: doc.get('data'),
-                        like: doc.get('like'),
-                        likeUsers: doc.get('likeUsers'),
-                        photourl: doc.get('photourl')
+        db.collection('UserInfo').doc(username).get().then((doc) => {
+            const name = doc.get("name");
+            db.collection('UserInfo').doc(username).collection('Activities').doc(docId).get().then((doc) => {
+                const startTime = doc.get("startTime").toDate();
+                db.collection('Activities').doc(docId).collection('Reviews').where('name', '==', name)
+                .get().then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        doc.ref.update({
+                            isPositive: recommend,
+                            content: text,
+                            data: range,
+                            days: Math.round((new Date().getTime() - startTime.getTime())/(1000*60*60*24)),
+                        });
+                    });
+                    const docRef = db.collection('Activities').doc(docId);
+                    return db.runTransaction((transaction) => {
+                        return transaction.get(docRef).then((doc) => {
+                            const oldNumerics = doc.get("numerics");
+                            const oldNumericsTotal = [0,1,2,3,4].map((index) => doc.get("numerics")[index]*doc.get("numOfReviews"));
+                            const newNumerics = oldNumericsTotal.map((x, index) => 
+                                (x-oldNumerics[index]+range[index])/doc.get("numOfReviews"));
+                            transaction.update(docRef, {
+                                numerics: newNumerics
+                            });
+                        })
                     })
-                }
-            })
-            setReviewlist(tempreviews);
-        })
+                })
+            });
+        });
     }
 
     const selectImg = (event) => {
@@ -549,51 +551,6 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
         }));
     }
 
-    let result = [];
-    let tempreviews = [];
-
-    useEffect(() => {
-
-        let snapshot = db.collection('Activities').doc(docId);
-
-        snapshot.get().then((doc => {
-            if (activityname == doc.data().name) {
-                result.push({
-                    description: doc.get("description"),
-                    communities: doc.get("communities"),
-                    imgs: doc.get("imgs"),
-                    requirements: doc.get("requirements"),
-                    videos: doc.get("videos"),
-                    numerics: doc.get("numerics"),
-                });
-            }
-            setresult(result);
-        }))
-
-        snapshot.collection('Reviews').get().then((querySnapshot) => {
-            querySnapshot.forEach(doc => {
-                tempreviews.push({
-                    isPositive: doc.get('isPositive'),
-                    name: doc.get('name'),
-                    years: doc.get('years'),
-                    achiev: doc.get('achiev'),
-                    content: doc.get('content'),
-                    data: doc.get('data'),
-                    like: doc.get('like'),
-                    likeUsers: doc.get('likeUsers'),
-                    photourl: doc.get('photourl')
-                })
-                if (doc.get('name') == username) {
-                    setText(doc.get('content'));
-                    setRecommend(doc.get('isPositive'));
-                    setRange(doc.get('data'));
-                }
-            })
-            setReviewlist(tempreviews);
-        })
-
-    }, []);
-
     return (
         <div id="progressdocument">
             <div id="MMP-percentage" >
@@ -787,6 +744,9 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                     </Modal.Footer>
                 </Modal>
                 <h3>Positive Opinions</h3>
+                {!reviewlist.length ?
+                <div style={{margin: "30px 20px", fontSize: "20px", color: "grey"}}>There is no positive review.</div>
+                :
                 <div id="MMP-reviews-positive">
                     {reviewlist.map(rev => {
                             if (rev['isPositive']) {
@@ -799,7 +759,11 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                             }
                         })}
                 </div>
+                }
                 <h3>Negative Opinions</h3>
+                {!reviewlist.length ?
+                <div style={{margin: "30px 20px", fontSize: "20px", color: "grey"}}>There is no negative review.</div>
+                :
                 <div id="MMP-reviews-negative">
                     {reviewlist.map(rev => {
                             if (!rev['isPositive']) {
@@ -812,6 +776,7 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                             }
                         })}
                 </div>
+                }
             </div>
         </div>
     )
