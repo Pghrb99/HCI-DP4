@@ -2,22 +2,26 @@
 
 Pongpong is a website which provides organized information of various active hobbies to users and motivates them to continue the selected hobby.
 
-## How to Start
+## Main features
+* Tag search - searching activities by related tags(include tags, exclude tags)
+* Name search - searching activities by their name
+* Category page - discovering activities by categories
+* Hot activity page - discovering what activities are highly rated or popular
+* Activity info page - organized information about a certain activity(breif description, numerics, reviews)
+* My progress page - current achievement progress
+* My page - personal information about activities
 
-To look around the website, just click the link <https://www.naver.com/>.
-
-To see our code detailedly,
-```
-$ cd HCI-DP4/main_page
-$ npm install
-$ npm start
-```
-
-## How to Use
-
-First, we recommend to sign up. Then, using the sidemenu, you can search activities with tags or names. Or, you can see all categories and hot activities.
-After you click an activity-card, you will be in activity-information-page. There are a lot of information of the activity you chose.
-If you like it, you can start this activity by clicking the start button. Then, my-progress-page would be available. In the page, you can select achievements which you want and accomplish them.
+## Main components
+* App.js
+* TagSearchPage.js
+* NameSearchPage.js
+* TagSearchResultPage.js
+* LoginPage.js
+* RegisterPage.js
+* CategoryPage.js
+* HotActivityPage.js
+* ActivityInfoPage.js
+* MyProgressPage.js
 
 ## Used Libraries and Frameworks
 * react (ver 17.0.2)
