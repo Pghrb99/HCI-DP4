@@ -25,118 +25,6 @@ import {auth} from '../firebase'
 import './App.css';
 
 function App() {
-    const [submit, setSubmit] = useState(false);
-    const [ongoing, setOngoing] = useState(false);
-    const [complete, setComplete] = useState(false);
-    const [tags, setTags] = useState([{name: "Hi", isInclude: true},{name: "Bye", isInclude: false}]);
-
-
-    
-    const [reviewlist, setReviewList] = useState([
-        {
-            isPositive: true,
-            isMe: false,
-            name: "Harry Potter",
-            years: 6,
-            achiev: 20,
-            content: "You'll find it super fun. I promise.",
-            data: [2, 4, 6, 8, 10],
-            like: 31,
-            photourl: []
-        },
-        {
-            isPositive: false,
-            isMe: false,
-            name: "Hermione Granger",
-            years: 1,
-            achiev: 2,
-            content: "It's soooo dangerous. I've broken my leg :(",
-            data: [3, 2, 4, 1, 2],
-            like: 17,
-            photourl: []
-        },
-        {
-            isPositive: true,
-            isMe: false,
-            name: "Ronald Weasley",
-            years: 2,
-            achiev: 6,
-            content: "The best sport in the world!",
-            data: [7, 3, 6, 2, 9],
-            like: 20,
-            photourl: []
-        },
-    ]);
-
-    function addReview(review) {
-        const temp = reviewlist;
-        temp.unshift(review)
-        setReviewList(temp);
-    }
-
-    function removeReview() {
-        const temp = reviewlist;
-        temp.shift();
-        setReviewList(temp);
-    }
-
-    const [achievlist, setAchievlist] = useState([
-        {
-            name: "Getting into ice",
-            explain: "Keep skating for 10 minutes.",
-            isSelected: false,
-            isCompleted: false,
-            photourl: ''
-        },
-        {
-            name: "Skating faster",
-            explain: "Skate 400m in 1 minutes.",
-            isSelected: false,
-            isCompleted: false,
-            photourl: ''
-        },
-        {
-            name: "Skating for a long time",
-            explain: "Skate more than 10 minutes.",
-            isSelected: false,
-            isCompleted: false,
-            photourl: ''
-        },
-        {
-            name: "Getting into shot",
-            explain: "Score more than 5 out of 10 penalty shots.",
-            isSelected: false,
-            isCompleted: false,
-            photourl: ''
-        },
-        {
-            name: "Shooting precisely",
-            explain: "Score a goal from one goal to the other.",
-            isSelected: false,
-            isCompleted: false,
-            photourl: ''
-        },
-        {
-            name: "Dribbling calmly",
-            explain: "Circle the link with the puck.",
-            isSelected: false,
-            isCompleted: false,
-            photourl: ''
-        },
-        {
-            name: "Wall-passing",
-            explain: "Wall-pass 5 times from each side of the enemy.",
-            isSelected: false,
-            isCompleted: false,
-            photourl: ''
-        }
-    ]);
-
-    function addReview(review) {
-        const temp = reviewlist;
-        temp.unshift(review)
-        setReviewList(temp);
-    }
 
     const [currentUser, setCurrentUser] = useState();
     const [loading, setLoading] = useState(true);
@@ -166,12 +54,11 @@ function App() {
                     
                         <PrivateRoute exact path="/mypage" component={Mypage} />
                         
-                        <Route exact path="/myprogress" render={(props) => (currentUser ? <MyProgressPage achievlist={achievlist}  tags={tags} setTags={setTags} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing} complete={complete} {...props}/> : <Redirect to="/login"/>)} />
-
+                        <Route exact path="/myprogress" render={(props) => (currentUser ? <MyProgressPage/> : <Redirect to="/login"/>)} />
                         
                         <Route exact path="/" component={TagSearchPage} />
                         <Route exact path="/result" component={TagSearchResultPage} />
-                        <Route exact path="/info" render={() => <ActivityInfoPage achievlist={achievlist} setAchievlist={setAchievlist} tags={tags} setTags={setTags} reviewlist={reviewlist} addReview={addReview} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing} complete={complete} setComplete={setComplete}/>}/>
+                        <Route exact path="/info" render={() => <ActivityInfoPage/>}/>
                         
                         <Route exact path="/category" component={CategoryPage} />
                         <NonuserRoute exact path="/login" component={LoginPage} />

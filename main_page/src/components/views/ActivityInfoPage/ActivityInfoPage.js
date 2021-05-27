@@ -9,7 +9,7 @@ import { useLocation } from 'react-router'
 import { useAuth } from 'contexts/AuthContext';
 import { db } from 'firebase.js';
 
-const ActivityInfoPage = ({achievlist}) => {
+const ActivityInfoPage = () => {
     const location = useLocation();
     const docId = location.state.docId;
     const {currentUser} = useAuth();
@@ -26,7 +26,6 @@ const ActivityInfoPage = ({achievlist}) => {
                 <InfoDocument
                     currentUser = {currentUser}
                     docId={docId}
-                    achievlist={achievlist}
                 />
             </div>
             <GoTop/>
