@@ -242,6 +242,9 @@ const InfoDocument = ({ currentUser, docId}) => {
         setAchievements(true);
     }
     const clickAchievements = () => {
+        let temparray = achievlist;
+        temparray.push({name : achivetext1, explain : achivetext2})
+        setachievlist(temparray)
         if(achivetext1 != " "){
             let achivdata = {
                 name : achivetext1,
