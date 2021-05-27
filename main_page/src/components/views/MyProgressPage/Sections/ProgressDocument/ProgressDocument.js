@@ -132,7 +132,7 @@ const ProgressDocument = ({ currentUser, docId }) => {
     let tempcountend = 0;
     let tempcountlength = 0;
     (async () => {
-        let snapshot2 = db.collection('UserInfo').doc(username).collection('Activities').doc(docId).collection('Achievements');
+        let snapshot2 = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements');
         const snapshot3 = await snapshot2.get();
         snapshot3.forEach(doc => {
             tempcountlength++;
@@ -152,25 +152,25 @@ const ProgressDocument = ({ currentUser, docId }) => {
     }, []);
 
     const calculateTotal = () => {
-        var cnt = 0;
-        achievlist.forEach(achiev => {
-            if (achiev['isSelected']) {
-                cnt++;
-            }
-        });
-        return cnt;
-        // return countlength;
+        // var cnt = 0;
+        // achievlist.forEach(achiev => {
+        //     if (achiev['isSelected']) {
+        //         cnt++;
+        //     }
+        // });
+        // return cnt;
+        return countlength;
     }
 
     const calculateCompleted = () => {
-        var cnt = 0;
-        achievlist.forEach(achiev => {
-            if (achiev['isCompleted']) {
-                cnt++;
-            }
-        });
-        return cnt;
-        // return countend;
+        // var cnt = 0;
+        // achievlist.forEach(achiev => {
+        //     if (achiev['isCompleted']) {
+        //         cnt++;
+        //     }
+        // });
+        // return cnt;
+        return countend;
     }
 
     const calculatePercent = () => {

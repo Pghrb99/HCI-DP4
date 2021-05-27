@@ -9,6 +9,7 @@ import { db } from 'firebase.js'
 import { UndoOutlined } from '@material-ui/icons';
 
 const InfoDocument = ({ currentUser, docId, achievlist}) => {
+    const [countlength, setlength] = useState(0);
     const [countend, setend] = useState(0);
     const [currentDoc, setCurrentDoc] = useState();
     const [review, setReview] = useState(false);
@@ -257,7 +258,7 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
         let tempcountend = 0;
         let tempcountlength = 0;
         (async () => {
-            let snapshot2 = db.collection('UserInfo').doc(username).collection('Activities').doc(docId).collection('Achievements');
+            let snapshot2 = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements');
             const snapshot3 = await snapshot2.get();
             snapshot3.forEach(doc => {
                 tempcountlength++;
