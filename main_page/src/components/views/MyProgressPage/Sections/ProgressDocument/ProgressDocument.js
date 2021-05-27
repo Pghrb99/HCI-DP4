@@ -45,24 +45,23 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
         
         (async () => {
             let temparray = []
-            let reloadtest1 = false;
-            let actRefforthis  = db.collection('UserInfo').doc(username).collection('Activities').doc(docId)
-            actRefforthis.get().then((doc) => {
-                if(doc.get("achievement").length != 0){
-                for(let i=0;i<doc.get("achievement").length;i++){
+            let reloadtest1 = true;
+            let actReffleft  = db.collection('UserInfo').doc(username).collection('Activities').doc(docId).collection('Achievements')
+            const snapshot2 = await actReffleft.get();
+                snapshot2.forEach(doc => {
+                    reloadtest1 = false;
                 temparray.push({
-                    name: doc.get("achievement")[i].name,
-                    explain: doc.get("achievement")[i].explain,
-                    isCompleted: doc.get("achievement")[i].isCompleted,
-                    isSelected: doc.get("achievement")[i].isSelected,
-                    photourl : doc.get("achievement")[i].photourl
+                    name: doc.get("name"),
+                    explain: doc.get("explain"),
+                    isCompleted: doc.get("isCompleted"),
+                    isSelected: doc.get("isSelected"),
+                    photourl : doc.get("photourl")
                 })
-            } 
+            })
+            if(!reloadtest1){
                 setTempselect(Array(temparray.length).fill(false));
                 setachievlist(temparray);
             }
-            else {
-                reloadtest1= true;}
 
             if(reloadtest1){
             (async () => {
@@ -83,7 +82,6 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
     
                 })();  
             }
-                })   
             })();
 
 
@@ -197,8 +195,6 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                 const cityRefforPyes = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
                 await cityRefforPyes.update({ isComplete : false });
                  db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))}) 
-                 console.log('false입니다')
-                 console.log(completebool)
                 })();
                 break;
             }
@@ -209,8 +205,6 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                 await cityRefforPyes.update({ isComplete : true });
 
         db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))}) 
-        console.log('true입니다')
-        console.log(completebool)
                 })();
             }
         }
@@ -227,10 +221,9 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                 photourl: ""
             })
         }
-        console.log(useractivity)
-        db.collection('UserInfo').doc(username).collection('Activities').doc(docId).update({
-            achievement: useractivity
-        });
+        for(let i=0; i<useractivity.length;i++){
+        db.collection('UserInfo').doc(username).collection('Activities').doc(docId).collection('Achievements').doc(useractivity[i].name).set(useractivity[i]);
+    }
 }
 
     const clickMNo = () => {
@@ -424,10 +417,9 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                 }
             })
             // 여기에 review의 photourl에 tempurl을 추가하는 코드 넣어야 함
-            const cityReffor = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
-            cityReffor.update({
-                achievement: useractivity
-            });
+            for(let i=0; i<useractivity.length;i++){
+                db.collection('UserInfo').doc(username).collection('Activities').doc(docId).collection('Achievements').doc(useractivity[i].name).set(useractivity[i]);   
+                }
             // db.collection('UserInfo').doc(username).collection('Activities').doc(docId).update({ achievement : temp });
 
             setTempurl('');
@@ -441,8 +433,6 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                     await cityRefforPyes.update({ isComplete : false });
                     
                     db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))}) 
-                    console.log('false입니다')
-                    console.log(completebool)
                     })();
                 
                     break;
@@ -453,8 +443,6 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                     const cityRefforPyes = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
                     await cityRefforPyes.update({ isComplete : true });
                     db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))}) 
-                    console.log('true')
-                    console.log(completebool)
                     })();
 
                 }
@@ -506,21 +494,18 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
         })
         // 여기에 review의 photourl에 tempurl을 제거하는 코드 넣어야 함
 
-        const cityReffor = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
-        cityReffor.update({
-            achievement: useractivity
-        });
+        for(let i=0; i<useractivity.length;i++){
+            db.collection('UserInfo').doc(username).collection('Activities').doc(docId).collection('Achievements').doc(useractivity[i].name).set(useractivity[i]);
+            }
 
-        db.collection('UserInfo').doc(username).collection('Activities').doc(docId).update({ achievement : temp });
+        // db.collection('UserInfo').doc(username).collection('Activities').doc(docId).update({ achievement : temp });
         setTempurl('');
         setachievlist(temp);
         (async () => {
         const cityRefforPyes = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
         await cityRefforPyes.update({ isComplete : false });
         
-        db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))})
-        console.log('false입니다')
-        console.log(completebool)        
+        db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))})    
 
         })();
         // setComplete(false);
