@@ -24,6 +24,12 @@ const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOn
         }
         setOngoing(false);
         setCancel(false);
+        history.push({
+          pathname: '/info',
+          state: {
+            docId: docId
+          }
+        });
     }
     const clickCNo = () => setCancel(false);
 
@@ -104,7 +110,7 @@ const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOn
                     </Modal.Body>
                     <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
                         <Button variant="primary" onClick={clickCYes}>
-                            <Link to={"/info"} style={{color:"white"}}>Yes</Link>
+                            Yes
                         </Button>
                         <Button variant="danger" onClick={clickCNo}>
                             No

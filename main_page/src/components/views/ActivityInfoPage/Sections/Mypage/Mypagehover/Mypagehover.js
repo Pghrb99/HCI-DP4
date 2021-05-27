@@ -17,29 +17,31 @@ useEffect(() => {
     let temptextprogress =[];
     let tempcountend = 0;
     let tempcountprogress = 0;
-    
-    let snapshot3  = db.collection('UserInfo').doc(userEmail).collection('Activities').doc(hoverdocId);
-    snapshot3.get().then((doc => {
-        for(let i=0; i<doc.get("achievement").length;i++){
-            if(doc.get("achievement")[i].isSelected == true){
-            if(doc.get("achievement")[i].isCompleted == true){
-                temptextend.push({ name:doc.get("achievement")[i].name, description: doc.get("achievement")[i].explain})
-                tempcountend++;
-            }
-            else{
-                temptextprogress.push({ name:doc.get("achievement")[i].name, description: doc.get("achievement")[i].explain})
-                tempcountprogress++;
-            }
-        }
-        }
 
+    (async () => {  
+        let actReffleftzz  = db.collection('UserInfo').doc(userEmail).collection('Activities').doc(hoverdocId).collection('Achievements');
+        const snapshot3 = await actReffleftzz.get();
+        snapshot3.forEach( (doc) => {
+                if(doc.get("isSelected") == true){
+                    if(doc.get("isCompleted") == true){
+                        temptextend.push({ name:doc.get("name"), 
+                        description: doc.get("explain")})
+                        tempcountend++;
+                    }
+                    else{
+                        temptextprogress.push({ name:doc.get("name"), 
+                        description: doc.get("explain")})
+                        tempcountprogress++;
+                    }
+            }
+        })
         settextend(temptextend);
         settextprogress(temptextprogress);
         setprogress(tempcountprogress);
         setend(tempcountend);
         setlength(tempcountend + tempcountprogress);
-        }))
-        }, []);
+    })();
+    }, []);
 
 
     let context; 
@@ -56,10 +58,10 @@ useEffect(() => {
     }
     
     else{
-        context = <p>Achievements completed</p>
+        context = <p>Done Achievements</p>
         let num = 1;
         for(let i=0; i<textend.length; i++){
-            context1.push(<div> {num}. {textend[i].name} : {textend[i].description}</div>)
+            context1.push(<div> {num}) {textend[i].name} </div>);
             num++;
         }
     }
