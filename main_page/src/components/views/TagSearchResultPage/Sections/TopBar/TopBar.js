@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { useHistory } from 'react-router';
 import { useAuth } from '../../../../../contexts/AuthContext'
 
-const TopBar = ({tags, category, isSignedIn, userName}) => {
+const TopBar = ({searchText, tags, category, isSignedIn, userName}) => {
     const { logOut } = useAuth();
     const history = useHistory();
     async function handleLogout() {
@@ -40,7 +40,9 @@ const TopBar = ({tags, category, isSignedIn, userName}) => {
                 }
             </div>
             <div className="align-self-center" id="search-result">
-                {typeof category == 'undefined' ? "Search result" : "Category: "+category}
+                {
+                (typeof category == 'undefined') ? (searchText ? `Results for "${searchText}"` : "Search result"): "Category: "+category
+                }
             </div>
             {
                 typeof tags != 'undefined' &&
