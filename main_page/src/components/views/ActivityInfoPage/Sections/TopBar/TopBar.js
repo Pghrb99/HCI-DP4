@@ -142,7 +142,7 @@ const TopBar = ({currentUser, docId}) => {
                 {currentDoc && currentDoc.name}
             </div>
             <div className="align-self-start" id="AIP-tags">
-                <div id="AIP-reltags" style={{width:'50%'}}>
+                <div id="AIP-reltags">
                     <span >Related tags : </span>
                     {ongoingbool ?
                         currentDoc && <ActivityTags docId={docId} plusbutton={true}/>
