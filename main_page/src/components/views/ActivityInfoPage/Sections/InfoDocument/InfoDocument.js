@@ -523,7 +523,7 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
                         </Modal>
                         <h3>Positive Opinions</h3>
                         {!(reviewlist.filter((x) => x.isPositive).length) ?
-                        <div style={{margin: "30px 20px", fontSize: "20px", color: "grey"}}>There is no positive review.</div>
+                        <div style={{margin: "30px 20px", fontSize: "20px", color: "grey"}}>There is no positive opinion.</div>
                         :
                         <div id="MMP-reviews-positive">
                             {reviewlist.map(rev => {
@@ -540,7 +540,7 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
                         }
                         <h3>Negative Opinions</h3>
                         {!(reviewlist.filter((x) => !(x.isPositive)).length) ?
-                        <div style={{margin: "30px 20px", fontSize: "20px", color: "grey"}}>There is no negative review.</div>
+                        <div style={{margin: "30px 20px", fontSize: "20px", color: "grey"}}>There is no negative opinion.</div>
                         :
                         <div id="MMP-reviews-negative">
                             {reviewlist.map(rev => {
