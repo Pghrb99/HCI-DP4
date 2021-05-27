@@ -1,7 +1,8 @@
 .wrapper {
     $sidemenu-background: hsl(0, 0%, 89%);
 
-    $sidemenu-button: rgb(22, 56, 95); 
+    $sidemenu-button-dark: #2c584e;
+    $sidemenu-button-light: #eeeeee;
 
     $sidemenu-text: #2c584e;
     // #07887f #315a5a #356864
@@ -137,12 +138,24 @@
         
     }
     
-    #sidebarCollapse {
+    #sidebarCollapse-dark {
         background-color: transparent;
         position: absolute;
         top: 0px;
         left: 10px;
-        color: $sidemenu-button;
+        color: $sidemenu-button-dark;
+        border: 0;
+        cursor: pointer;
+        font-size: 40px;
+        z-index: 11;
+    }
+
+    #sidebarCollapse-light {
+        background-color: transparent;
+        position: absolute;
+        top: 0px;
+        left: 10px;
+        color: $sidemenu-button-light;
         border: 0;
         cursor: pointer;
         font-size: 40px;

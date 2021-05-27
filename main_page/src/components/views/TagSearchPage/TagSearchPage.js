@@ -25,7 +25,7 @@ function TagSearchPage(props) {
   }
   return (
     <div className="TagSearchPage">
-      <Sidemenu />
+      <Sidemenu isDark={true}/>
       {/*<TopBar userName={"Changhae"} isSignedIn={true}/>*/}
       <TopBar userName={currentUser && currentUser.email} isSignedIn={currentUser}/>
       <img src={logo} id="logo"/>

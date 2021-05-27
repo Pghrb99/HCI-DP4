@@ -17,14 +17,13 @@ const TopBar = ({docId, currentUser, submit, setSubmit, ongoing, setOngoing, com
     const [activityName, setactivityName] = useState();
     const [start, setStart] = useState(false);
     const [cancel, setCancel] = useState(false);
-    const [completebool, setcompletebool] = useState(false);
 
     useEffect(() => {
         db.collection("Activities").doc(docId).get().then((doc) => {
             setactivityName(doc.get("name"))
         })
         if(currentUser){
-        db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))})
+            db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))})
         }
         db.collection("Activities").doc(docId).get().then((doc) => {
             setCurrentDoc({
@@ -56,14 +55,14 @@ const TopBar = ({docId, currentUser, submit, setSubmit, ongoing, setOngoing, com
             cityReffor11.update({
                 numOfUsers: firebase.firestore.FieldValue.increment(1)
             });
-            };  
+        };  
 
-            if(currentUser){
-                const cityReffor = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId);
-                cityReffor.update({
-                    startTime: firebase.firestore.Timestamp.fromDate(new Date()) 
-                });
-            };
+        if(currentUser){
+            const cityReffor = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId);
+            cityReffor.update({
+                startTime: firebase.firestore.Timestamp.fromDate(new Date()) 
+            });
+        };
     }
     const clickSNo = () => setStart(false);
 
@@ -137,8 +136,8 @@ const TopBar = ({docId, currentUser, submit, setSubmit, ongoing, setOngoing, com
                     }
                 </div>
                 { !ongoing && <Button id="AIP-topbar-start" onClick={clickStart}>Start!</Button> }
-                { ongoing && !completebool && <Button variant='secondary' id='AIP-topbar-ongoing' onClick={clickCancel}>Ongoing<FontAwesomeIcon icon={faTimes} style={{marginLeft:'10px'}}/></Button>}
-                { ongoing && completebool && <Button variant='success' id='AIP-topbar-complete' onClick={clickCancel}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>}
+                { ongoing && !complete && <Button variant='secondary' id='AIP-topbar-ongoing' onClick={clickCancel}>Ongoing<FontAwesomeIcon icon={faTimes} style={{marginLeft:'10px'}}/></Button>}
+                { ongoing && complete && <Button variant='success' id='AIP-topbar-complete' onClick={clickCancel}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>}
                 <Modal show={start} onHide={clickSNo}>
                     <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
                         <Modal.Title>Start Activity</Modal.Title>

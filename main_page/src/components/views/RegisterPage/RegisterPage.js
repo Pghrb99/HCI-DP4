@@ -125,7 +125,7 @@ function RegisterPage(props) {
 
   return (
     <>
-      <Sidemenu />
+      <Sidemenu isDark={true}/>
       <Layout style={{backgroundColor: "rgb(247, 247, 247)"}}>
         <Header style={{height: "80px", backgroundColor: "rgb(247, 247, 247)"}}>
           

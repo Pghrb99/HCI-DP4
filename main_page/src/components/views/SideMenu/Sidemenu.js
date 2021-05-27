@@ -20,7 +20,7 @@ function clickCollapse() {
     $('.overlay').removeClass('active');
 }
 
-const Sidemenu = () => {
+const Sidemenu = ({isDark}) => {
     return (
         <div className="wrapper">
             <nav id="sidebar">
@@ -56,7 +56,7 @@ const Sidemenu = () => {
                 </ul>
             </nav>
             <div id="content">
-                <button type="button" id="sidebarCollapse" className="btn btn-info" onClick={clickSide}>
+                <button type="button" id={isDark ? "sidebarCollapse-dark" : "sidebarCollapse-light"} className="btn btn-info" onClick={clickSide}>
                     <FontAwesomeIcon icon={faBars}/>
                 </button>
             </div>

@@ -9,7 +9,7 @@ function NameSearchPage(props) {
   const {currentUser} = useAuth();
   return (
     <div className="NameSearchPage">
-      <Sidemenu />
+      <Sidemenu isDark={true}/>
       {/*<TopBar userName={"Changhae"} isSignedIn={true}/>*/}
       <TopBar userName={currentUser && currentUser.email} isSignedIn={currentUser}/>
       <img src={logo} id="logo"/>
