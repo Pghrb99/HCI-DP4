@@ -103,30 +103,33 @@ const ProgressDocument = ({ currentUser, docId }) => {
                     photourl: doc.get("photourl")
                 })
             })
-            if (!reloadtest1) {
-                setTempselect(Array(temparray.length).fill(false));
-                setachievlist(temparray);
-            }
 
-            if (reloadtest1) {
-                (async () => {
-                    let actRefforthis = db.collection('Activities').doc(docId).collection('Achievements');
-                    const snapshotfor = await actRefforthis.get();
-                    let temparray = []
-                    snapshotfor.forEach(doc => {
-                        temparray.push({
-                            name: doc.data().name,
-                            explain: doc.data().explain,
-                            isCompleted: doc.data().isCompleted,
-                            isSelected: doc.data().isSelected,
-                            photourl: ''
-                        })
-                    })
-                    setTempselect(Array(temparray.length).fill(false));
-                    setachievlist(temparray);
+            let actRefforthis = db.collection('Activities').doc(docId).collection('Achievements');
+            const snapshotfor = await actRefforthis.get();
+            let temparrayalpha = []
+            snapshotfor.forEach(doc => {
+                temparrayalpha.push({
+                    name: doc.data().name,
+                    explain: doc.data().explain,
+                    isCompleted: doc.data().isCompleted,
+                    isSelected: doc.data().isSelected,
+                    photourl: ''
+                })
+            })
+            if(temparray.length !=0 && temparrayalpha.length != 0){
+            for(let i=0; i<temparrayalpha.length; i++){
+                let k=0;
+                for(let j=0; j<temparray.length; j++){
+                    if(temparrayalpha[i].name == temparray[j].name && temparrayalpha[i].explain == temparray[j].explain){k=1;}
+                }
+                if(k == 0) temparray.push(temparrayalpha[i]);
+            }}
+            else if(temparray.length == 0 && temparrayalpha.length != 0){temparray = temparrayalpha}
+            else if(temparray.length != 0 && temparrayalpha.length == 0){}
+            else;
+            setTempselect(Array(temparray.length).fill(false));
+            setachievlist(temparray);
 
-                })();
-            }
         })();
 
     let tempcountend = 0;
