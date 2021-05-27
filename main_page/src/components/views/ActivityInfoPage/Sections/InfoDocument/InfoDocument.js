@@ -45,7 +45,7 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
         })
 
         db.collection("Activities").doc(docId).collection('Reviews').orderBy('like', 'desc').onSnapshot((querySnapshot) => {
-            const name = currentUser ? currentUser.displayName : "";
+            const uid = currentUser ? currentUser.uid : "";
             const tempReviewList = [];
             querySnapshot.forEach((reviewDoc) => {
                 const rev = {
@@ -60,7 +60,7 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
                     photourl: reviewDoc.get('photourl'),
                     reviewId: reviewDoc.id
                 }
-                if(reviewDoc.get('name') == name) {
+                if(reviewDoc.get('uid') == uid) {
                     tempReviewList.unshift(rev);
                     setSubmitbool(true);
                     setText(reviewDoc.get('content'));
@@ -92,13 +92,14 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
             const rev = {
                 isPositive: recommend,
                 name: currentUser.displayName,
+                uid: currentUser.uid,
                 days: Math.round((new Date().getTime() - startTime.getTime())/(1000*60*60*24)),
                 achiev: calculateCompleted(),
                 content: text,
                 data: range,
                 like: 0,
                 likeUsers: [],
-                photourl: imgs()
+                photourl: imgs(),
             };
             db.collection('Activities').doc(docId).collection('Reviews').add(rev);
             const docRef = db.collection('Activities').doc(docId);
@@ -119,7 +120,7 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
     }
 
     const removeReview = () => {
-        db.collection('Activities').doc(docId).collection('Reviews').where('name', '==', currentUser.displayName)
+        db.collection('Activities').doc(docId).collection('Reviews').where('uid', '==', currentUser.uid)
         .get().then((querySnapshot) => {
             querySnapshot.forEach((reviewDoc) => reviewDoc.ref.delete())
         });
@@ -147,7 +148,7 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
     const updateReview = () => {
         db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).get().then((doc) => {
             const startTime = doc.get("startTime").toDate();
-            db.collection('Activities').doc(docId).collection('Reviews').where('name', '==', currentUser.displayName)
+            db.collection('Activities').doc(docId).collection('Reviews').where('uid', '==', currentUser.uid)
             .get().then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     doc.ref.update({
@@ -526,7 +527,7 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
                         <div id="MMP-reviews-positive">
                             {reviewlist.map(rev => {
                                 if (rev['isPositive']) {
-                                    if (rev['name'] == currentUser ? currentUser.displayName : "") {
+                                    if (rev['uid'] == (currentUser ? currentUser.uid : "")) {
                                         return <Review reviewId={rev['reviewId']} docId={docId} isPositive={true} isMe={true} name={rev['name']} days={rev['days']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                                     }
                                     else {
@@ -543,7 +544,7 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
                         <div id="MMP-reviews-negative">
                             {reviewlist.map(rev => {
                                 if (!rev['isPositive']) {
-                                    if (rev['name'] == currentUser ? currentUser.displayName : "") {
+                                    if (rev['uid'] == (currentUser ? currentUser.uid : "")) {
                                         return <Review reviewId={rev['reviewId']} docId={docId} isPositive={false} isMe={true} name={rev['name']} days={rev['days']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                                     }
                                     else {
