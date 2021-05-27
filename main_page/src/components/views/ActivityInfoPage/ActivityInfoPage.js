@@ -14,11 +14,10 @@ const ActivityInfoPage = ({achievlist, submit, setSubmit, complete}) => {
     const docId = location.state.docId;
     const {currentUser} = useAuth();
     const [ongoing, setOngoing] = useState(false);
-    const username = currentUser && currentUser.email;
 
     useEffect(() => {
-        if (username) {
-            db.collection('UserInfo').doc(username).collection('Activities').doc(docId).get().then(doc => {
+        if (currentUser) {
+            db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).get().then(doc => {
                 if(doc.exists) setOngoing(true);
             });
         }
@@ -28,8 +27,7 @@ const ActivityInfoPage = ({achievlist, submit, setSubmit, complete}) => {
         <div id="ActivityInfoPage">
             <Sidemenu />
             <TopBar
-                userName={username}
-                isSignedIn={currentUser}
+                currentUser = {currentUser}
                 docId={docId}
                 submit={submit}
                 setSubmit={setSubmit}
@@ -39,8 +37,7 @@ const ActivityInfoPage = ({achievlist, submit, setSubmit, complete}) => {
             <div id="AIP-hori-div">
                 <HorizontalBar/>
                 <InfoDocument
-                    userName={username}
-                    isSignedIn={currentUser}
+                    currentUser = {currentUser}
                     docId={docId}
                     achievlist={achievlist}
                     submit={submit} 

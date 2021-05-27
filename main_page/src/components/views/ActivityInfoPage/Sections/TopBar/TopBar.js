@@ -7,12 +7,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 import {db} from 'firebase.js';
 import { useHistory } from 'react-router';
-import { useAuth } from '../../../../../contexts/AuthContext'
+import { useAuth } from 'contexts/AuthContext'
 import {firebase} from 'firebase.js';
 
 
-const TopBar = ({docId, isSignedIn, userName, submit, setSubmit, ongoing, setOngoing, complete}) => {
-    const {currentUser} = useAuth();
+const TopBar = ({docId, currentUser, submit, setSubmit, ongoing, setOngoing, complete}) => {
     const history = useHistory();
     const [currentDoc, setCurrentDoc] = useState();
     const [activityName, setactivityName] = useState();
@@ -24,8 +23,8 @@ const TopBar = ({docId, isSignedIn, userName, submit, setSubmit, ongoing, setOng
         db.collection("Activities").doc(docId).get().then((doc) => {
             setactivityName(doc.get("name"))
         })
-        if(isSignedIn){
-        db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))})
+        if(currentUser){
+        db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))})
         }
         db.collection("Activities").doc(docId).get().then((doc) => {
             setCurrentDoc({
@@ -37,13 +36,13 @@ const TopBar = ({docId, isSignedIn, userName, submit, setSubmit, ongoing, setOng
     }, []);
 
     const clickStart = () => {
-        isSignedIn ? setStart(true) : history.push('/login');
+        currentUser ? setStart(true) : history.push('/login');
     }
     const clickSYes = () => {
         setOngoing(true);
         setStart(false);
 
-        if(isSignedIn){
+        if(currentUser){
             const data = {
                 name: activityName, 
                 isComplete: false,
@@ -52,15 +51,15 @@ const TopBar = ({docId, isSignedIn, userName, submit, setSubmit, ongoing, setOng
             db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).set(data);
             };
 
-        if(isSignedIn){
+        if(currentUser){
             const cityReffor11 = db.collection('Activities').doc(docId);
             cityReffor11.update({
                 numOfUsers: firebase.firestore.FieldValue.increment(1)
             });
             };  
 
-            if(isSignedIn){
-                const cityReffor = db.collection('UserInfo').doc(userName).collection('Activities').doc(docId);
+            if(currentUser){
+                const cityReffor = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId);
                 cityReffor.update({
                     startTime: firebase.firestore.Timestamp.fromDate(new Date()) 
                 });
@@ -75,7 +74,7 @@ const TopBar = ({docId, isSignedIn, userName, submit, setSubmit, ongoing, setOng
     }
     db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).delete();
 
-    if(isSignedIn){
+    if(currentUser){
         const cityReffor11 = db.collection('Activities').doc(docId);
         cityReffor11.update({
             numOfUsers: firebase.firestore.FieldValue.increment(-1)
@@ -106,12 +105,12 @@ const TopBar = ({docId, isSignedIn, userName, submit, setSubmit, ongoing, setOng
             <Pagination variant="success" id="AIP-label">
                 <Pagination.Item id="AIP-info-label" variant="success" active={true}>Activity Information</Pagination.Item>
                 <Pagination.Item id="AIP-prog-label" variant="success" active={false} disabled={!ongoing}><div onClick={sendHistory} style={{color: "rgb(77, 163, 77)"}}>My Progress</div></Pagination.Item>
-                {/*isSignedIn && 추가 필요*/}
+                {/*currentUser && 추가 필요*/}
             </Pagination>
             <div className="align-self-end">
-                {isSignedIn ?
+                {currentUser ?
                     <Nav className="mt-3">
-                        <Nav.Link  className="mr-4"><Link to={"/mypage"}><span className="nav-text" id="nav-userName">{userName}</span></Link></Nav.Link>
+                        <Nav.Link  className="mr-4"><Link to={"/mypage"}><span className="nav-text" id="nav-currentUser.email">{currentUser.email}</span></Link></Nav.Link>
                         <Nav.Link  className="mr-5" ><span className="nav-text" id="nav-signOut" onClick={handleLogout}>Sign Out</span></Nav.Link>
                     </Nav>
                     :
