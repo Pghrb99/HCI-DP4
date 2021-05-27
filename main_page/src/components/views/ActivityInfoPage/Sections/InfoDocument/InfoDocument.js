@@ -7,9 +7,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faInfo, faChevronCircleDown, faChevronCircleUp, faPencilAlt } from "@fortawesome/free-solid-svg-icons"
 import { db } from 'firebase.js'
 import { UndoOutlined } from '@material-ui/icons';
+import { useAuth } from 'contexts/AuthContext'
 
 const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubmit, ongoing }) => {
     const username = userName;
+    const {currentUser}  = useAuth();
     const [countend, setend] = useState(0);
     const [currentDoc, setCurrentDoc] = useState();
     const [review, setReview] = useState(false);
@@ -35,31 +37,29 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
         })
 
         db.collection("Activities").doc(docId).collection('Reviews').onSnapshot((querySnapshot) => {
-            db.collection('UserInfo').doc(username).get().then((doc) => {
-                const name = doc.get("name");
-                const tempReviewList = [];
-                querySnapshot.forEach((reviewDoc) => {
-                    tempReviewList.push({
-                        isPositive: reviewDoc.get('isPositive'),
-                        name: reviewDoc.get('name'),
-                        days: reviewDoc.get('days'),
-                        achiev: reviewDoc.get('achiev'),
-                        content: reviewDoc.get('content'),
-                        data: reviewDoc.get('data'),
-                        like: reviewDoc.get('like'),
-                        likeUsers: reviewDoc.get('likeUsers'),
-                        photourl: reviewDoc.get('photourl'),
-                        reviewId: reviewDoc.id
-                    });
-                    if(reviewDoc.get('name') == name) {
-                        setSubmit(true);
-                        setText(reviewDoc.get('content'));
-                        setRecommend(reviewDoc.get('isPositive'));
-                        setRange(reviewDoc.get('data'));
-                    }
+            const name = currentUser ? currentUser.displayName : "";
+            const tempReviewList = [];
+            querySnapshot.forEach((reviewDoc) => {
+                tempReviewList.push({
+                    isPositive: reviewDoc.get('isPositive'),
+                    name: reviewDoc.get('name'),
+                    days: reviewDoc.get('days'),
+                    achiev: reviewDoc.get('achiev'),
+                    content: reviewDoc.get('content'),
+                    data: reviewDoc.get('data'),
+                    like: reviewDoc.get('like'),
+                    likeUsers: reviewDoc.get('likeUsers'),
+                    photourl: reviewDoc.get('photourl'),
+                    reviewId: reviewDoc.id
                 });
-                setReviewlist(tempReviewList);
+                if(reviewDoc.get('name') == name) {
+                    setSubmit(true);
+                    setText(reviewDoc.get('content'));
+                    setRecommend(reviewDoc.get('isPositive'));
+                    setRange(reviewDoc.get('data'));
+                }
             });
+            setReviewlist(tempReviewList);
         });
     }, []);
 

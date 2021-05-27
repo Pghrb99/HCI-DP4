@@ -84,6 +84,9 @@ function RegisterPage(props) {
       const diff = Date.now() - date1.getTime();
       const ageDate = new Date(diff); // miliseconds from epoch
       auth.onAuthStateChanged(user => {
+        user.updateProfile({
+          displayName: values.name
+        })
         db.collection("UserInfo").doc(user.email).set({
             aboutme: values.aboutme,
             birthday: values.birthday, //Age calc later
