@@ -8,7 +8,7 @@ import { faEdit, faInfo, faChevronCircleDown, faChevronCircleUp, faPencilAlt } f
 import { db } from 'firebase.js'
 import { UndoOutlined } from '@material-ui/icons';
 
-const InfoDocument = ({ currentUser, docId, achievlist}) => {
+const InfoDocument = ({ currentUser, docId}) => {
     const [countlength, setlength] = useState(0);
     const [countend, setend] = useState(0);
     const [currentDoc, setCurrentDoc] = useState();
@@ -25,8 +25,30 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
     const [numInfo, setNumInfo] = useState(false);
     const [ongoingbool, setongoingbool] = useState(false);
     const [submitbool, setSubmitbool] = useState(false);
-
+    const [achievlist, setachievlist] = useState([]);
     useEffect(() => {
+
+
+
+(async () => {
+    let actRefforthis = db.collection('Activities').doc(docId).collection('Achievements');
+    const snapshotfor = await actRefforthis.get();
+    let temparray = []
+    snapshotfor.forEach(doc => {
+        temparray.push({
+            name: doc.data().name,
+            explain: doc.data().explain,
+            isCompleted: doc.data().isCompleted,
+            isSelected: doc.data().isSelected,
+            photourl: ''
+        })
+    })
+    setachievlist(temparray);
+})();
+
+
+
+
         if(currentUser){
             db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).onSnapshot((doc) => {
                 setongoingbool(doc.exists)
