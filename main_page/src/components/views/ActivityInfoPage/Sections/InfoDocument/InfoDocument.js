@@ -532,7 +532,7 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
                                         return <Review reviewId={rev['reviewId']} achiev={countend} docId={docId} isPositive={true} isMe={true} name={rev['name']} days={rev['days']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                                     }
                                     else {
-                                        return <Review reviewId={rev['reviewId']} achiev={countend} docId={docId} isPositive={true} isMe={false} name={rev['name']} days={rev['days']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
+                                        return <Review reviewId={rev['reviewId']} achiev={rev['achiev']} docId={docId} isPositive={true} isMe={false} name={rev['name']} days={rev['days']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
                                     }
                                 }
                             })}
@@ -546,7 +546,7 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
                             {reviewlist.map(rev => {
                                 if (!rev['isPositive']) {
                                     if (rev['uid'] == (currentUser ? currentUser.uid : "")) {
-                                        return <Review reviewId={rev['reviewId']} docId={docId} isPositive={false} isMe={true} name={rev['name']} days={rev['days']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
+                                        return <Review reviewId={rev['reviewId']} docId={docId} isPositive={false} isMe={true} name={rev['name']} days={rev['days']} achiev={countend} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                                     }
                                     else {
                                         return <Review reviewId={rev['reviewId']} docId={docId} isPositive={false} isMe={false} name={rev['name']} days={rev['days']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
