@@ -8,7 +8,7 @@ import { faEdit, faInfo, faChevronCircleDown, faChevronCircleUp, faPencilAlt } f
 import { db } from 'firebase.js'
 import { UndoOutlined } from '@material-ui/icons';
 
-const InfoDocument = ({ currentUser, docId, achievlist, submit, setSubmit}) => {
+const InfoDocument = ({ currentUser, docId, achievlist}) => {
     const [countend, setend] = useState(0);
     const [currentDoc, setCurrentDoc] = useState();
     const [review, setReview] = useState(false);
@@ -23,14 +23,15 @@ const InfoDocument = ({ currentUser, docId, achievlist, submit, setSubmit}) => {
     const [more, setMore] = useState(false);
     const [numInfo, setNumInfo] = useState(false);
     const [ongoingbool, setongoingbool] = useState(false);
-
+    const [submitbool, setSubmitbool] = useState(false);
 
     useEffect(() => {
         if(currentUser){
-        db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).onSnapshot((doc) => {
-            setongoingbool(doc.exists)
+            db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).onSnapshot((doc) => {
+                setongoingbool(doc.exists)
             })
         }
+
         db.collection("Activities").doc(docId).onSnapshot((doc) => {
             setCurrentDoc({
                 imgs: doc.get("imgs"),
@@ -43,27 +44,41 @@ const InfoDocument = ({ currentUser, docId, achievlist, submit, setSubmit}) => {
             });
         })
 
-        db.collection("Activities").doc(docId).collection('Reviews').onSnapshot((querySnapshot) => {
+        db.collection("Activities").doc(docId).collection('Reviews').orderBy('like', 'desc').onSnapshot((querySnapshot) => {
             const name = currentUser ? currentUser.displayName : "";
             const tempReviewList = [];
             querySnapshot.forEach((reviewDoc) => {
-                tempReviewList.push({
-                    isPositive: reviewDoc.get('isPositive'),
-                    name: reviewDoc.get('name'),
-                    days: reviewDoc.get('days'),
-                    achiev: reviewDoc.get('achiev'),
-                    content: reviewDoc.get('content'),
-                    data: reviewDoc.get('data'),
-                    like: reviewDoc.get('like'),
-                    likeUsers: reviewDoc.get('likeUsers'),
-                    photourl: reviewDoc.get('photourl'),
-                    reviewId: reviewDoc.id
-                });
                 if(reviewDoc.get('name') == name) {
-                    setSubmit(true);
+                    tempReviewList.unshift({
+                        isPositive: reviewDoc.get('isPositive'),
+                        name: reviewDoc.get('name'),
+                        days: reviewDoc.get('days'),
+                        achiev: reviewDoc.get('achiev'),
+                        content: reviewDoc.get('content'),
+                        data: reviewDoc.get('data'),
+                        like: reviewDoc.get('like'),
+                        likeUsers: reviewDoc.get('likeUsers'),
+                        photourl: reviewDoc.get('photourl'),
+                        reviewId: reviewDoc.id
+                    });
+                    setSubmitbool(true);
                     setText(reviewDoc.get('content'));
                     setRecommend(reviewDoc.get('isPositive'));
                     setRange(reviewDoc.get('data'));
+                }
+                else {
+                    tempReviewList.push({
+                        isPositive: reviewDoc.get('isPositive'),
+                        name: reviewDoc.get('name'),
+                        days: reviewDoc.get('days'),
+                        achiev: reviewDoc.get('achiev'),
+                        content: reviewDoc.get('content'),
+                        data: reviewDoc.get('data'),
+                        like: reviewDoc.get('like'),
+                        likeUsers: reviewDoc.get('likeUsers'),
+                        photourl: reviewDoc.get('photourl'),
+                        reviewId: reviewDoc.id
+                    });
                 }
             });
             setReviewlist(tempReviewList);
@@ -206,9 +221,9 @@ const InfoDocument = ({ currentUser, docId, achievlist, submit, setSubmit}) => {
     
 
     const clickRYes = () => {
-        setSubmit(true);
+        setSubmitbool(true);
         setReview(false);
-        if (submit) {
+        if (submitbool) {
             updateReview();
         }
         else {
@@ -227,7 +242,7 @@ const InfoDocument = ({ currentUser, docId, achievlist, submit, setSubmit}) => {
         setText("");
         setRecommend(true);
         setRange([5, 5, 5, 5, 5]);
-        setSubmit(false);
+        setSubmitbool(false);
         setRemove(false);
         removeReview();
     }
@@ -412,7 +427,7 @@ const InfoDocument = ({ currentUser, docId, achievlist, submit, setSubmit}) => {
                 <div id="AIP-reviews" style={{ marginTop: '30px' }}>
                     <div style={{ width: '100%', display: 'inline-block' }}>
                         <h2 style={{ float: 'left' }}>Reviews</h2>
-                        {submit ?
+                        {submitbool ?
                             <div>
                                     <Button id="AIP-reviews-remove" variant="danger" onClick={clickRemove}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Remove your Review</Button>
                                 
@@ -452,7 +467,7 @@ const InfoDocument = ({ currentUser, docId, achievlist, submit, setSubmit}) => {
                     </Modal>
                     <Modal show={review} onHide={clickRNo}>
                         <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom: '5px' }}>
-                            {submit ?
+                            {submitbool ?
                                 <Modal.Title>Modify your Review</Modal.Title>
                                 :
                                 <Modal.Title>Write a Review</Modal.Title>
@@ -521,7 +536,7 @@ const InfoDocument = ({ currentUser, docId, achievlist, submit, setSubmit}) => {
                         <div id="MMP-reviews-positive">
                             {reviewlist.map(rev => {
                                 if (rev['isPositive']) {
-                                    if (rev['name'] == currentUser.email) {
+                                    if (rev['name'] == currentUser.displayName) {
                                         return <Review reviewId={rev['reviewId']} docId={docId} isPositive={true} isMe={true} name={rev['name']} days={rev['days']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                                     }
                                     else {
