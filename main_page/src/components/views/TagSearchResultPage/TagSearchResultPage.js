@@ -113,7 +113,7 @@ const TagSearchResultPage = () => {
     return (
         <div>
             <Sidemenu/>
-            <TopBar tags={tags} category={category} userName={currentUser && currentUser.email} isSignedIn={currentUser}/>
+            <TopBar searchText={searchText} tags={tags} category={category} userName={currentUser && currentUser.email} isSignedIn={currentUser}/>
             <SearchOptions onPriorityChange={onPriorityChange}/>
             {!noResults 
             ? <CardContainer cards={cards}/>

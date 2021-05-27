@@ -19,19 +19,27 @@ const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOn
     const [cancel, setCancel] = useState(false)
 
     const clickCancel = () => setCancel(true);
+
+
     const clickCYes = () => {
         if (submit) {
             setSubmit(false);
         }
 
-        db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).delete();
+        (async () => {
+            let actReffleft = db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).collection('Achievements')
+            const snapshot2 = await actReffleft.get();
+                snapshot2.forEach(doc => {
+                    console.log(doc.id)
+                    db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).collection('Achievements').doc(doc.id).delete();
+            })
+            db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).delete();
+        })();
 
-        if(isSignedIn){
-            const cityReffor11 = db.collection('Activities').doc(docId);
-            cityReffor11.update({
-                numOfUsers: firebase.firestore.FieldValue.increment(-1)
-            });
-        };  
+        const cityReffor11 = db.collection('Activities').doc(docId);
+        cityReffor11.update({
+            numOfUsers: firebase.firestore.FieldValue.increment(-1)
+        });
 
         db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).onSnapshot((doc) => {
             setOngoing(doc.exists)
@@ -44,6 +52,8 @@ const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOn
           }
         });
     }
+
+
     const clickCNo = () => setCancel(false);
 
     useEffect(() => {

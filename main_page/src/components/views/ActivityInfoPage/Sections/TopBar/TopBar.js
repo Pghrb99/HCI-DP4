@@ -77,7 +77,15 @@ const TopBar = ({docId, currentUser}) => {
     const clickCancel = () => setCancel(true);
     const clickCYes = () => {
 
-        db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).delete();
+        (async () => {
+            let actReffleft = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements')
+            const snapshot2 = await actReffleft.get();
+                snapshot2.forEach(doc => {
+                    console.log(doc.id)
+                    db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements').doc(doc.id).delete();
+            })
+            db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).delete();
+        })();
 
         if(currentUser){
             const cityReffor11 = db.collection('Activities').doc(docId);
