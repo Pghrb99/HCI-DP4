@@ -9,11 +9,12 @@ import {db} from 'firebase.js';
 import { useHistory } from 'react-router';
 import { useAuth } from '../../../../../contexts/AuthContext'
 
-const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOngoing}) => {
+const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOngoing, completebool}) => {
+    console.log(completebool)
     
     const history = useHistory();
     const [currentDoc, setCurrentDoc] = useState();
-    const [completebool, setcompletebool] = useState(false);
+
     const [cancel, setCancel] = useState(false)
 
     const clickCancel = () => setCancel(true);
@@ -28,7 +29,7 @@ const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOn
 
     useEffect(() => {
 
-        db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))}) 
+
 
         db.collection("Activities").doc(docId).get().then((doc) => {
             setCurrentDoc({
@@ -86,7 +87,6 @@ const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOn
                         currentDoc && <ActivityTags docId={docId} plusbutton={false}/>
                     }
                 </div>
-                {console.log(completebool)}
                 {completebool ?
                     <Button variant='success' id='MPP-topbar-complete' onClick={clickCancel}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>
                     :
