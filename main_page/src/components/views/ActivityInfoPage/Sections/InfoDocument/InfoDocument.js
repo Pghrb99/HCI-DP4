@@ -8,7 +8,7 @@ import { faEdit, faInfo, faChevronCircleDown, faChevronCircleUp, faPencilAlt } f
 import { db } from 'firebase.js'
 import { UndoOutlined } from '@material-ui/icons';
 
-const InfoDocument = ({ currentUser, docId, achievlist, submit, setSubmit, ongoing }) => {
+const InfoDocument = ({ currentUser, docId, achievlist, submit, setSubmit}) => {
     const [countend, setend] = useState(0);
     const [currentDoc, setCurrentDoc] = useState();
     const [review, setReview] = useState(false);
@@ -22,11 +22,15 @@ const InfoDocument = ({ currentUser, docId, achievlist, submit, setSubmit, ongoi
     const [remove, setRemove] = useState(false);
     const [more, setMore] = useState(false);
     const [numInfo, setNumInfo] = useState(false);
-
-
+    const [ongoingbool, setongoingbool] = useState(false);
 
 
     useEffect(() => {
+        if(currentUser){
+        db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).onSnapshot((doc) => {
+            setongoingbool(doc.exists)
+            })
+        }
         db.collection("Activities").doc(docId).onSnapshot((doc) => {
             setCurrentDoc({
                 imgs: doc.get("imgs"),
@@ -385,7 +389,7 @@ const InfoDocument = ({ currentUser, docId, achievlist, submit, setSubmit, ongoi
                 <div id="AIP-achievements" style={{ marginTop: '30px' }}>
                     <div style={{ width: '100%', display: 'inline-block' }}>
                         <h2 style={{ float: 'left' }}>Achievements</h2>
-                        <Button id="AIP-edit-button" variant="success" onClick={clickAchievement} disabled={!ongoing || !currentUser}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Add Achievement</Button>
+                        <Button id="AIP-edit-button" variant="success" onClick={clickAchievement} disabled={!ongoingbool || !currentUser}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Add Achievement</Button>
                     </div>
                     <ListGroup id="AIP-achievements-list">
                         {achievlist.map((achiev, i) => {
@@ -411,12 +415,13 @@ const InfoDocument = ({ currentUser, docId, achievlist, submit, setSubmit, ongoi
                         {submit ?
                             <div>
                                     <Button id="AIP-reviews-remove" variant="danger" onClick={clickRemove}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Remove your Review</Button>
-                                { ongoing &&
+                                
+                                { ongoingbool &&
                                     <Button id="AIP-reviews-write" variant="success" onClick={clickReview}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Modify your Review</Button>
                                 }
                             </div>
                             :
-                            <Button id="AIP-reviews-write" variant="success" onClick={clickReview} disabled={!ongoing || !currentUser}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Write a Review</Button>
+                            <Button id="AIP-reviews-write" variant="success" onClick={clickReview} disabled={!ongoingbool || !currentUser}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Write a Review</Button>
                         }
                         {/*ongoing disabled*/}
                     </div>

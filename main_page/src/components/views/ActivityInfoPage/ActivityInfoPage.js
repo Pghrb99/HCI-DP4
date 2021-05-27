@@ -13,15 +13,6 @@ const ActivityInfoPage = ({achievlist, submit, setSubmit}) => {
     const location = useLocation();
     const docId = location.state.docId;
     const {currentUser} = useAuth();
-    const [ongoing, setOngoing] = useState(false);
-
-    useEffect(() => {
-        if (currentUser) {
-            db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).get().then(doc => {
-                if(doc.exists) setOngoing(true);
-            });
-        }
-    })
 
     return (
         <div id="ActivityInfoPage">
@@ -29,11 +20,8 @@ const ActivityInfoPage = ({achievlist, submit, setSubmit}) => {
             <TopBar
                 currentUser = {currentUser}
                 docId={docId}
-                userEmail={userEmail}
                 submit={submit}
                 setSubmit={setSubmit}
-                ongoing={ongoing}
-                setOngoing={setOngoing}
                 />
             <div id="AIP-hori-div">
                 <HorizontalBar/>
@@ -43,7 +31,6 @@ const ActivityInfoPage = ({achievlist, submit, setSubmit}) => {
                     achievlist={achievlist}
                     submit={submit} 
                     setSubmit={setSubmit} 
-                    ongoing={ongoing} 
                 />
             </div>
             <GoTop/>

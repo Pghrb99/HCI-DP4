@@ -11,18 +11,24 @@ import { useAuth } from 'contexts/AuthContext'
 import {firebase} from 'firebase.js';
 
 
-const TopBar = ({docId, currentUser, submit, setSubmit, ongoing, setOngoing, complete}) => {
+const TopBar = ({docId, currentUser, submit, setSubmit}) => {
     const history = useHistory();
     const [currentDoc, setCurrentDoc] = useState();
     const [activityName, setactivityName] = useState();
     const [start, setStart] = useState(false);
     const [cancel, setCancel] = useState(false);
+    const [completebool, setcompletebool] = useState(false);
+    const [ongoingbool, setongoingbool] = useState(false);
 
     useEffect(() => {
+
         db.collection("Activities").doc(docId).get().then((doc) => {
             setactivityName(doc.get("name"))
         })
         if(currentUser){
+            db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).onSnapshot((doc) => {
+                setongoingbool(doc.exists)
+                })
             db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))})
         }
         db.collection("Activities").doc(docId).get().then((doc) => {
@@ -38,7 +44,9 @@ const TopBar = ({docId, currentUser, submit, setSubmit, ongoing, setOngoing, com
         currentUser ? setStart(true) : history.push('/login');
     }
     const clickSYes = () => {
-        setOngoing(true);
+        db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).onSnapshot((doc) => {
+            setongoingbool(doc.exists)
+            })
         setStart(false);
 
         if(currentUser){
@@ -80,7 +88,9 @@ const TopBar = ({docId, currentUser, submit, setSubmit, ongoing, setOngoing, com
         });
         };  
 
-        setOngoing(false);
+        db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).onSnapshot((doc) => {
+            setongoingbool(doc.exists)
+            })
         setCancel(false);
     }
 
@@ -103,7 +113,7 @@ const TopBar = ({docId, currentUser, submit, setSubmit, ongoing, setOngoing, com
         <div id="AIP-nav-container" style={currentDoc && {backgroundImage: `url(${currentDoc.coverImg.src})`}}>
             <Pagination variant="success" id="AIP-label">
                 <Pagination.Item id="AIP-info-label" variant="success" active={true}>Activity Information</Pagination.Item>
-                <Pagination.Item id="AIP-prog-label" variant="success" active={false} disabled={!ongoing}><div onClick={sendHistory} style={{color: "rgb(77, 163, 77)"}}>My Progress</div></Pagination.Item>
+                <Pagination.Item id="AIP-prog-label" variant="success" active={false} disabled={!ongoingbool}><div onClick={sendHistory} style={{color: "rgb(77, 163, 77)"}}>My Progress</div></Pagination.Item>
                 {/*currentUser && 추가 필요*/}
             </Pagination>
             <div className="align-self-end">
@@ -129,15 +139,15 @@ const TopBar = ({docId, currentUser, submit, setSubmit, ongoing, setOngoing, com
             <div className="align-self-start" id="AIP-tags">
                 <div id="AIP-reltags" style={{width:'50%'}}>
                     <span >Related tags : </span>
-                    {ongoing ?
+                    {ongoingbool ?
                         currentDoc && <ActivityTags docId={docId} plusbutton={true}/>
                         :
                         currentDoc && <ActivityTags docId={docId} plusbutton={false}/>
                     }
                 </div>
-                { !ongoing && <Button id="AIP-topbar-start" onClick={clickStart}>Start!</Button> }
-                { ongoing && !complete && <Button variant='secondary' id='AIP-topbar-ongoing' onClick={clickCancel}>Ongoing<FontAwesomeIcon icon={faTimes} style={{marginLeft:'10px'}}/></Button>}
-                { ongoing && complete && <Button variant='success' id='AIP-topbar-complete' onClick={clickCancel}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>}
+                { !ongoingbool && <Button id="AIP-topbar-start" onClick={clickStart}>Start!</Button> }
+                { ongoingbool && !completebool && <Button variant='secondary' id='AIP-topbar-ongoing' onClick={clickCancel}>Ongoing<FontAwesomeIcon icon={faTimes} style={{marginLeft:'10px'}}/></Button>}
+                { ongoingbool && completebool && <Button variant='success' id='AIP-topbar-complete' onClick={clickCancel}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>}
                 <Modal show={start} onHide={clickSNo}>
                     <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
                         <Modal.Title>Start Activity</Modal.Title>
