@@ -48,7 +48,9 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
             const uid = currentUser ? currentUser.uid : "";
             const tempReviewList = [];
             querySnapshot.forEach((reviewDoc) => {
+                console.log(reviewDoc.get('uid'));
                 const rev = {
+                    uid: reviewDoc.get('uid'),
                     isPositive: reviewDoc.get('isPositive'),
                     name: reviewDoc.get('name'),
                     days: reviewDoc.get('days'),

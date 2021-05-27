@@ -62,6 +62,7 @@ const ProgressDocument = ({ currentUser, docId }) => {
             const tempReviewList = [];
             querySnapshot.forEach((reviewDoc) => {
                 const rev = {
+                    uid: reviewDoc.get('uid'),
                     isPositive: reviewDoc.get('isPositive'),
                     name: reviewDoc.get('name'),
                     days: reviewDoc.get('days'),
@@ -271,6 +272,7 @@ const ProgressDocument = ({ currentUser, docId }) => {
                 const rev = {
                     isPositive: recommend,
                     name: name,
+                    uid: currentUser.uid,
                     days: Math.round((new Date().getTime() - startTime.getTime()) / (1000 * 60 * 60 * 24)),
                     achiev: calculateCompleted(),
                     content: text,
@@ -761,6 +763,7 @@ const ProgressDocument = ({ currentUser, docId }) => {
                     <div id="MMP-reviews-positive">
                         {reviewlist.map(rev => {
                             if (rev['isPositive']) {
+                                console.log(rev['uid']);
                                 if (rev['uid'] == (currentUser ? currentUser.uid : "")) {
                                     return <Review reviewId={rev['reviewId']} docId={docId} isPositive={true} isMe={true} name={rev['name']} days={rev['days']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                                 }
