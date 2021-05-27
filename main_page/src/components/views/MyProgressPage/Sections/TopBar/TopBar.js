@@ -8,6 +8,7 @@ import { faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 import {db} from 'firebase.js';
 import { useHistory } from 'react-router';
 import { useAuth } from '../../../../../contexts/AuthContext'
+import {firebase} from 'firebase.js';
 
 const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOngoing, completebool}) => {
     console.log(completebool)
@@ -22,7 +23,19 @@ const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOn
         if (submit) {
             setSubmit(false);
         }
-        setOngoing(false);
+
+        db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).delete();
+
+        if(isSignedIn){
+            const cityReffor11 = db.collection('Activities').doc(docId);
+            cityReffor11.update({
+                numOfUsers: firebase.firestore.FieldValue.increment(-1)
+            });
+        };  
+
+        db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).onSnapshot((doc) => {
+            setOngoing(doc.exists)
+        })
         setCancel(false);
         history.push({
           pathname: '/info',
