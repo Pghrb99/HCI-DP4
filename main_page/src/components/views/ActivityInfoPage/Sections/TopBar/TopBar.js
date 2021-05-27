@@ -20,11 +20,21 @@ const TopBar = ({docId, isSignedIn, userName, submit, setSubmit, ongoing, setOng
     const [cancel, setCancel] = useState(false);
     const [completebool, setcompletebool] = useState(false);
 
-    db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))}) 
-
-    db.collection("Activities").doc(docId).get().then((doc) => {
-        setactivityName(doc.get("name"))
-    })
+    useEffect(() => {
+        db.collection("Activities").doc(docId).get().then((doc) => {
+            setactivityName(doc.get("name"))
+        })
+        if(isSignedIn){
+        db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))})
+        }
+        db.collection("Activities").doc(docId).get().then((doc) => {
+            setCurrentDoc({
+                name: doc.get("name"),
+                tags: Object.keys(doc.get("tags")).map(x => ({name: x})),
+                coverImg: doc.get("coverImg")
+            })
+        })
+    }, []);
 
     const clickStart = () => {
         isSignedIn ? setStart(true) : history.push('/login');
@@ -55,16 +65,14 @@ const TopBar = ({docId, isSignedIn, userName, submit, setSubmit, ongoing, setOng
                     startTime: firebase.firestore.Timestamp.fromDate(new Date()) 
                 });
             };
-
-
     }
     const clickSNo = () => setStart(false);
 
     const clickCancel = () => setCancel(true);
     const clickCYes = () => {
-        if (submit) {
-            // setSubmit(false);
-        }
+    if (submit) {
+        // setSubmit(false);
+    }
     db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).delete();
 
     if(isSignedIn){
@@ -78,18 +86,7 @@ const TopBar = ({docId, isSignedIn, userName, submit, setSubmit, ongoing, setOng
         setCancel(false);
     }
 
-
     const clickCNo = () => setCancel(false);
-
-    useEffect(() => {
-        db.collection("Activities").doc(docId).get().then((doc) => {
-            setCurrentDoc({
-                name: doc.get("name"),
-                tags: Object.keys(doc.get("tags")).map(x => ({name: x})),
-                coverImg: doc.get("coverImg")
-            })
-        })
-    }, []);
 
     const sendHistory = () => {
         history.push({
@@ -103,6 +100,7 @@ const TopBar = ({docId, isSignedIn, userName, submit, setSubmit, ongoing, setOng
     async function handleLogout() {
         await logOut();
     }
+
     return (
         <div id="AIP-nav-container" style={currentDoc && {backgroundImage: `url(${currentDoc.coverImg.src})`}}>
             <Pagination variant="success" id="AIP-label">
