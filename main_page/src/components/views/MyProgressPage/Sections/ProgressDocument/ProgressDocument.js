@@ -8,11 +8,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { db } from '../../../../../firebase'
 
-const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, setcompletebool, completebool }) => { 
-    const username = userName;
+const ProgressDocument = ({ currentUser, docId }) => {
     const [countend, setend] = useState(0);
     const [countlength, setlength] = useState(0);
     const [currentDoc, setCurrentDoc] = useState();
+    const [activityName, setactivityName] = useState();
     const [resultdata, setresult] = useState([]);
     const [reviewlist, setReviewlist] = useState([]);
     const [achievlist, setachievlist] = useState([]);
@@ -22,15 +22,29 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
     const [prove, setProve] = useState(false);
     const [cancel, setCancel] = useState(false);
     const [attained, setAttained] = useState("");
-    const [tempurl, setTempurl]= useState('');
+    const [tempurl, setTempurl] = useState('');
     const [review, setReview] = useState(false);
     const [text, setText] = useState(""); // useState(submit ? reviewlist[0]['content'] : "");
     const [recommend, setRecommend] = useState(true); // useState(submit ? reviewlist[0]['isPositive'] : true);
     const [range, setRange] = useState([5, 5, 5, 5, 5]); // useState(submit ? reviewlist[0]['data'] : [5, 5, 5, 5, 5]);
     const [remove, setRemove] = useState(false);
     const [reloadtest, setreloadtest] = useState(false);
+    const [completebool, setcompletebool] = useState(false);
+    const [ongoingbool, setongoingbool] = useState(false);
+    const [submitbool, setSubmitbool] = useState(false);
 
     useEffect(() => {
+        db.collection("Activities").doc(docId).get().then((doc) => {
+            setactivityName(doc.get("name"))
+        })
+
+        if (currentUser) {
+            db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).onSnapshot((doc) => {
+                setongoingbool(doc.exists)
+            })
+            db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))}) 
+        }
+
         db.collection("Activities").doc(docId).get().then((doc) => {
             setCurrentDoc({
                 imgs: doc.get("imgs"),
@@ -42,98 +56,99 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                 name: doc.get("name"),
             });
         });
-        
+
+        db.collection("Activities").doc(docId).collection('Reviews').orderBy('like', 'desc').onSnapshot((querySnapshot) => {
+            const uid = currentUser ? currentUser.uid : "";
+            const tempReviewList = [];
+            querySnapshot.forEach((reviewDoc) => {
+                const rev = {
+                    isPositive: reviewDoc.get('isPositive'),
+                    name: reviewDoc.get('name'),
+                    days: reviewDoc.get('days'),
+                    achiev: reviewDoc.get('achiev'),
+                    content: reviewDoc.get('content'),
+                    data: reviewDoc.get('data'),
+                    like: reviewDoc.get('like'),
+                    likeUsers: reviewDoc.get('likeUsers'),
+                    photourl: reviewDoc.get('photourl'),
+                    reviewId: reviewDoc.id
+                }
+                if (reviewDoc.get('uid') == uid) {
+                    tempReviewList.unshift(rev);
+                    setSubmitbool(true);
+                    setText(reviewDoc.get('content'));
+                    setRecommend(reviewDoc.get('isPositive'));
+                    setRange(reviewDoc.get('data'));
+                }
+                else {
+                    tempReviewList.push(rev);
+                }
+            });
+            setReviewlist(tempReviewList);
+        });
+
         (async () => {
             let temparray = []
             let reloadtest1 = true;
-            let actReffleft  = db.collection('UserInfo').doc(username).collection('Activities').doc(docId).collection('Achievements')
+            let actReffleft = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements')
             const snapshot2 = await actReffleft.get();
-                snapshot2.forEach(doc => {
-                    reloadtest1 = false;
+            snapshot2.forEach(doc => {
+                reloadtest1 = false;
                 temparray.push({
                     name: doc.get("name"),
                     explain: doc.get("explain"),
                     isCompleted: doc.get("isCompleted"),
                     isSelected: doc.get("isSelected"),
-                    photourl : doc.get("photourl")
+                    photourl: doc.get("photourl")
                 })
             })
-            if(!reloadtest1){
+            if (!reloadtest1) {
                 setTempselect(Array(temparray.length).fill(false));
                 setachievlist(temparray);
             }
 
-            if(reloadtest1){
-            (async () => {
-                let actRefforthis  = db.collection('Activities').doc(docId).collection('Achievements');
-                const snapshotfor = await actRefforthis.get();
-                let temparray = []
-                snapshotfor.forEach(doc => {
-                    temparray.push({
-                        name: doc.data().name,
-                        explain: doc.data().explain,
-                        isCompleted: doc.data().isCompleted,
-                        isSelected: doc.data().isSelected,
-                        photourl : ''
-                    })
+            if (reloadtest1) {
+                (async () => {
+                    let actRefforthis = db.collection('Activities').doc(docId).collection('Achievements');
+                    const snapshotfor = await actRefforthis.get();
+                    let temparray = []
+                    snapshotfor.forEach(doc => {
+                        temparray.push({
+                            name: doc.data().name,
+                            explain: doc.data().explain,
+                            isCompleted: doc.data().isCompleted,
+                            isSelected: doc.data().isSelected,
+                            photourl: ''
+                        })
                     })
                     setTempselect(Array(temparray.length).fill(false));
                     setachievlist(temparray);
-    
-                })();  
+
+                })();
             }
-            })();
+        })();
 
-
-        db.collection("Activities").doc(docId).collection('Reviews').onSnapshot((querySnapshot) => {
-            db.collection('UserInfo').doc(username).get().then((doc) => {
-                const name = doc.get("name");
-                const tempReviewList = [];
-                querySnapshot.forEach((reviewDoc) => {
-                    tempReviewList.push({
-                        isPositive: reviewDoc.get('isPositive'),
-                        name: reviewDoc.get('name'),
-                        days: reviewDoc.get('days'),
-                        achiev: reviewDoc.get('achiev'),
-                        content: reviewDoc.get('content'),
-                        data: reviewDoc.get('data'),
-                        like: reviewDoc.get('like'),
-                        likeUsers: reviewDoc.get('likeUsers'),
-                        photourl: reviewDoc.get('photourl'),
-                        reviewId: reviewDoc.id
-                    });
-                    if(reviewDoc.get('name') == name) {
-                        setSubmit(true);
-                        setText(reviewDoc.get('content'));
-                        setRecommend(reviewDoc.get('isPositive'));
-                        setRange(reviewDoc.get('data'));
-                    }
-                });
-                setReviewlist(tempReviewList);
-            });
-        });
-
-
-    let tempcountend =0;
-    (async () => {
-        let snapshot3 = db.collection('UserInfo').doc(username).collection('Activities');
-        const snapshot2 = await snapshot3.get();
-        snapshot2.forEach(doc => {
-            if(typeof currentDoc != 'undefined'){
-            if(doc.data().name == currentDoc.name){
-                if(doc.get("achievement").length != 0){
-                for(let i=0; i<doc.get("achievement").length;i++){
-                    if(doc.get("achievement")[i].finish == true){
-                        tempcountend++;
+        let tempcountend = 0;
+        (async () => {
+            let snapshot3 = db.collection('UserInfo').doc(currentUser.email).collection('Activities');
+            const snapshot2 = await snapshot3.get();
+            snapshot2.forEach(doc => {
+                if (typeof currentDoc != 'undefined') {
+                    if (doc.data().name == currentDoc.name) {
+                        if (doc.get("achievement").length != 0) {
+                            for (let i = 0; i < doc.get("achievement").length; i++) {
+                                if (doc.get("achievement")[i].finish == true) {
+                                    tempcountend++;
+                                }
+                            }
+                            setend(tempcountend);
+                            setlength(doc.get("achievement").length);
+                        }
                     }
                 }
-                setend(tempcountend);
-                setlength(doc.get("achievement").length);
-            }}
-        }
-            
-        })
-        })(); 
+
+            })
+        })();
 
 
 
@@ -190,21 +205,16 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
         setTempselect(new Array(achievlist.length).fill(false));
         for (let j = 0; j < temp.length; j++) {
             if (temp[j]['isSelected'] && !temp[j]['isCompleted']) {
-                // setComplete(false);
                 (async () => {
-                const cityRefforPyes = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
-                await cityRefforPyes.update({ isComplete : false });
-                 db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))}) 
+                    const cityRefforPyes = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId);
+                    await cityRefforPyes.update({ isComplete: false });
                 })();
                 break;
             }
-            if (j == temp.length-1) {
-                // setComplete(true);
+            if (j == temp.length - 1) {
                 (async () => {
-                const cityRefforPyes = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
-                await cityRefforPyes.update({ isComplete : true });
-
-        db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))}) 
+                    const cityRefforPyes = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId);
+                    await cityRefforPyes.update({ isComplete: true });
                 })();
             }
         }
@@ -212,7 +222,7 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
 
         let useractivity = [];
 
-        for (let i=0; i<temp.length; i++){
+        for (let i = 0; i < temp.length; i++) {
             useractivity.push({
                 name: temp[i].name,
                 explain: temp[i].explain,
@@ -221,10 +231,10 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                 photourl: ""
             })
         }
-        for(let i=0; i<useractivity.length;i++){
-        db.collection('UserInfo').doc(username).collection('Activities').doc(docId).collection('Achievements').doc(useractivity[i].name).set(useractivity[i]);
+        for (let i = 0; i < useractivity.length; i++) {
+            db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements').doc(useractivity[i].name).set(useractivity[i]);
+        }
     }
-}
 
     const clickMNo = () => {
         setTempselect(new Array(achievlist.length).fill(false));
@@ -254,14 +264,14 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
     }
 
     const addReview = () => {
-        db.collection('UserInfo').doc(username).get().then((doc) => {
+        db.collection('UserInfo').doc(currentUser.email).get().then((doc) => {
             const name = doc.get("name");
-            db.collection('UserInfo').doc(username).collection('Activities').doc(docId).get().then((doc) => {
+            db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).get().then((doc) => {
                 const startTime = doc.get("startTime").toDate()
                 const rev = {
                     isPositive: recommend,
                     name: name,
-                    days: Math.round((new Date().getTime() - startTime.getTime())/(1000*60*60*24)),
+                    days: Math.round((new Date().getTime() - startTime.getTime()) / (1000 * 60 * 60 * 24)),
                     achiev: calculateCompleted(),
                     content: text,
                     data: range,
@@ -274,9 +284,9 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                 return db.runTransaction((transaction) => {
                     return transaction.get(docRef).then((doc) => {
                         const newNumOfReviews = doc.get("numOfReviews") + 1;
-                        const oldNumericsTotal = 
-                            [0,1,2,3,4].map((index) => doc.get("numerics")[index]*doc.get("numOfReviews"));
-                        const newNumerics = oldNumericsTotal.map((x, index) => (x+range[index])/newNumOfReviews);
+                        const oldNumericsTotal =
+                            [0, 1, 2, 3, 4].map((index) => doc.get("numerics")[index] * doc.get("numOfReviews"));
+                        const newNumerics = oldNumericsTotal.map((x, index) => (x + range[index]) / newNumOfReviews);
                         transaction.update(docRef, {
                             numOfReviews: newNumOfReviews,
                             numerics: newNumerics
@@ -289,12 +299,12 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
     }
 
     const removeReview = () => {
-        db.collection('UserInfo').doc(username).get().then((doc) => {
+        db.collection('UserInfo').doc(currentUser.email).get().then((doc) => {
             const name = doc.get("name");
             db.collection('Activities').doc(docId).collection('Reviews').where('name', '==', name)
-            .get().then((querySnapshot) => {
-                querySnapshot.forEach((reviewDoc) => reviewDoc.ref.delete())
-            });
+                .get().then((querySnapshot) => {
+                    querySnapshot.forEach((reviewDoc) => reviewDoc.ref.delete())
+                });
             const docRef = db.collection('Activities').doc(docId);
             return db.runTransaction((transaction) => {
                 return transaction.get(docRef).then((doc) => {
@@ -306,8 +316,8 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                         });
                         return;
                     }
-                    const oldNumericsTotal = [0,1,2,3,4].map((index) => doc.get("numerics")[index]*doc.get("numOfReviews"));
-                    const newNumerics = oldNumericsTotal.map((x, index) => (x-range[index])/newNumOfReviews);
+                    const oldNumericsTotal = [0, 1, 2, 3, 4].map((index) => doc.get("numerics")[index] * doc.get("numOfReviews"));
+                    const newNumerics = oldNumericsTotal.map((x, index) => (x - range[index]) / newNumOfReviews);
                     transaction.update(docRef, {
                         numOfReviews: newNumOfReviews,
                         numerics: newNumerics
@@ -318,33 +328,33 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
     }
 
     const updateReview = () => {
-        db.collection('UserInfo').doc(username).get().then((doc) => {
+        db.collection('UserInfo').doc(currentUser.email).get().then((doc) => {
             const name = doc.get("name");
-            db.collection('UserInfo').doc(username).collection('Activities').doc(docId).get().then((doc) => {
+            db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).get().then((doc) => {
                 const startTime = doc.get("startTime").toDate();
                 db.collection('Activities').doc(docId).collection('Reviews').where('name', '==', name)
-                .get().then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
-                        doc.ref.update({
-                            isPositive: recommend,
-                            content: text,
-                            data: range,
-                            days: Math.round((new Date().getTime() - startTime.getTime())/(1000*60*60*24)),
-                        });
-                    });
-                    const docRef = db.collection('Activities').doc(docId);
-                    return db.runTransaction((transaction) => {
-                        return transaction.get(docRef).then((doc) => {
-                            const oldNumerics = doc.get("numerics");
-                            const oldNumericsTotal = [0,1,2,3,4].map((index) => doc.get("numerics")[index]*doc.get("numOfReviews"));
-                            const newNumerics = oldNumericsTotal.map((x, index) => 
-                                (x-oldNumerics[index]+range[index])/doc.get("numOfReviews"));
-                            transaction.update(docRef, {
-                                numerics: newNumerics
+                    .get().then((querySnapshot) => {
+                        querySnapshot.forEach((doc) => {
+                            doc.ref.update({
+                                isPositive: recommend,
+                                content: text,
+                                data: range,
+                                days: Math.round((new Date().getTime() - startTime.getTime()) / (1000 * 60 * 60 * 24)),
                             });
+                        });
+                        const docRef = db.collection('Activities').doc(docId);
+                        return db.runTransaction((transaction) => {
+                            return transaction.get(docRef).then((doc) => {
+                                const oldNumerics = doc.get("numerics");
+                                const oldNumericsTotal = [0, 1, 2, 3, 4].map((index) => doc.get("numerics")[index] * doc.get("numOfReviews"));
+                                const newNumerics = oldNumericsTotal.map((x, index) =>
+                                    (x - oldNumerics[index] + range[index]) / doc.get("numOfReviews"));
+                                transaction.update(docRef, {
+                                    numerics: newNumerics
+                                });
+                            })
                         })
                     })
-                })
             });
         });
     }
@@ -417,32 +427,27 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                 }
             })
             // 여기에 review의 photourl에 tempurl을 추가하는 코드 넣어야 함
-            for(let i=0; i<useractivity.length;i++){
-                db.collection('UserInfo').doc(username).collection('Activities').doc(docId).collection('Achievements').doc(useractivity[i].name).set(useractivity[i]);   
-                }
+            for (let i = 0; i < useractivity.length; i++) {
+                db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements').doc(useractivity[i].name).set(useractivity[i]);
+            }
             // db.collection('UserInfo').doc(username).collection('Activities').doc(docId).update({ achievement : temp });
 
             setTempurl('');
             setachievlist(temp);
-            
+
             for (let j = 0; j < temp.length; j++) {
                 if (temp[j]['isSelected'] && !temp[j]['isCompleted']) {
-                    // setComplete(false);
                     (async () => {
-                    const cityRefforPyes = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
-                    await cityRefforPyes.update({ isComplete : false });
-                    
-                    db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))}) 
+                        const cityRefforPyes = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId);
+                        await cityRefforPyes.update({ isComplete: false });
                     })();
-                
+
                     break;
                 }
-                if (j == temp.length-1) {
-                    // setComplete(true);
+                if (j == temp.length - 1) {
                     (async () => {
-                    const cityRefforPyes = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
-                    await cityRefforPyes.update({ isComplete : true });
-                    db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))}) 
+                        const cityRefforPyes = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId);
+                        await cityRefforPyes.update({ isComplete: true });
                     })();
 
                 }
@@ -494,21 +499,17 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
         })
         // 여기에 review의 photourl에 tempurl을 제거하는 코드 넣어야 함
 
-        for(let i=0; i<useractivity.length;i++){
-            db.collection('UserInfo').doc(username).collection('Activities').doc(docId).collection('Achievements').doc(useractivity[i].name).set(useractivity[i]);
-            }
+        for (let i = 0; i < useractivity.length; i++) {
+            db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements').doc(useractivity[i].name).set(useractivity[i]);
+        }
 
         // db.collection('UserInfo').doc(username).collection('Activities').doc(docId).update({ achievement : temp });
         setTempurl('');
         setachievlist(temp);
         (async () => {
-        const cityRefforPyes = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
-        await cityRefforPyes.update({ isComplete : false });
-        
-        db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))})    
-
+            const cityRefforPyes = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId);
+            await cityRefforPyes.update({ isComplete: false });
         })();
-        // setComplete(false);
         setCancel(false);
     }
 
@@ -523,9 +524,9 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
     }
 
     const clickRYes = () => {
-        setSubmit(true);
+        setSubmitbool(true);
         setReview(false);
-        if (submit) {
+        if (submitbool) {
             updateReview();
         }
         else {
@@ -545,7 +546,7 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
         setText("");
         setRecommend(true);
         setRange([5, 5, 5, 5, 5]);
-        setSubmit(false);
+        setSubmitbool(false);
         setRemove(false);
         removeReview();
     }
@@ -573,10 +574,10 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                     <Button id="MPP-achievements-modify" variant="success" onClick={clickModify}><FontAwesomeIcon icon={faPlus} style={{ marginRight: "10px" }} />Modify Achievements</Button>
                 </div>
                 <Modal size='lg' show={modify} onHide={clickMNo}>
-                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
+                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom: '5px' }}>
                         <Modal.Title>Modify Selected Achievements</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
+                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0' }}>
                         <ListGroup id="MMP-achievements-modallist">
                             {achievlist.map((achiev, i) => {
                                 if (achiev['isSelected']) {
@@ -596,7 +597,7 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                             })}
                         </ListGroup>
                     </Modal.Body>
-                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
+                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px' }}>
                         <Button variant="primary" onClick={clickMYes}>
                             Submit
                         </Button>
@@ -605,11 +606,11 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                         </Button>
                     </Modal.Footer>
                 </Modal>
-                        
+
                 {(emptyCheck(achievlist.map(achiev => { return achiev['isSelected']; }))) ?
-                
+
                     <div style={{ width: '100%', marginTop: '15px', textAlign: 'center', fontSize: '24px' }}>You have not selected achievements yet. </div>
-                    
+
                     :
                     <ListGroup id="MMP-achievements-list">
                         {achievlist.map((achiev, i) => {
@@ -636,21 +637,21 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                     </ListGroup>
                 }
                 <Modal show={prove} onHide={clickPNo} scrollable={true}>
-                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
+                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom: '5px' }}>
                         <Modal.Title>Accomplish Activity</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
-                        <p style={{fontFamily:'arial', color: 'black', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>Are you sure you attained the activity? If it is true, please upload a proof photo.</p>
+                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0' }}>
+                        <p style={{ fontFamily: 'arial', color: 'black', fontSize: '20px', marginLeft: '20px', marginRight: '20px' }}>Are you sure you attained the activity? If it is true, please upload a proof photo.</p>
                         {/*<input type="file" name="file" id="file" class="inputfile" accept=".jpg, .jpeg, .png"/>*/}
                         <Form>
                             <Form.Group>
                                 {/*<Form.File accept=".jpg, .jpeg, .png" id="exampleFormControlFile1" ref={(ref) => setFile(ref)} />*/}
-                                <Form.File accept=".jpg, .jpeg, .png" id="exampleFormControlFile1" onChange={selectImg} style={{fontFamily:'arial', color: 'black', fontSize:'16px', marginLeft:'20px', marginRight:'20px'}}/>
+                                <Form.File accept=".jpg, .jpeg, .png" id="exampleFormControlFile1" onChange={selectImg} style={{ fontFamily: 'arial', color: 'black', fontSize: '16px', marginLeft: '20px', marginRight: '20px' }} />
                             </Form.Group>
                         </Form>
                         {(tempurl !== '') && <img id='MMP-photo' src={tempurl}></img>}
                     </Modal.Body>
-                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
+                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px' }}>
                         <Button variant="primary" onClick={clickPYes}>
                             Yes
                         </Button>
@@ -660,14 +661,14 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                     </Modal.Footer>
                 </Modal>
                 <Modal show={cancel} onHide={clickCNo} scrollable={true}>
-                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
+                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom: '5px' }}>
                         <Modal.Title>Cancel Activity</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
-                        <p style={{fontFamily:'arial', color: 'black', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>Are you sure you cancel the activity?</p>
+                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0' }}>
+                        <p style={{ fontFamily: 'arial', color: 'black', fontSize: '20px', marginLeft: '20px', marginRight: '20px' }}>Are you sure you cancel the activity?</p>
                         {(tempurl !== '') && <img id='MMP-photo' src={tempurl}></img>}
                     </Modal.Body>
-                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
+                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px' }}>
                         <Button variant="primary" onClick={clickCYes}>
                             Yes
                         </Button>
@@ -680,7 +681,7 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
             <div id="MMP-reviews" style={{ marginTop: '30px' }}>
                 <div style={{ width: '100%', display: 'inline-block' }}>
                     <h2 style={{ float: 'left' }}>Reviews</h2>
-                    {submit ?
+                    {submitbool ?
                         <div>
                             <Button id="MMP-reviews-remove" variant="danger" onClick={clickRemove}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Remove your Review</Button>
                             <Button id="MMP-reviews-write" variant="success" onClick={clickReview}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Modify your Review</Button>
@@ -690,15 +691,15 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                     }
                 </div>
                 <Modal show={review} onHide={clickRNo}>
-                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
-                        {submit ?
+                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom: '5px' }}>
+                        {submitbool ?
                             <Modal.Title>Modify your Review</Modal.Title>
                             :
                             <Modal.Title>Write a Review</Modal.Title>
                         }
                     </Modal.Header>
-                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
-                        <Form style={{marginLeft: '20px', marginRight: '20px'}}>
+                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0' }}>
+                        <Form style={{ marginLeft: '20px', marginRight: '20px' }}>
                             <Form.Group controlId="MMP-text">
                                 <Form.Label id="MMP-reviews-formlabel">Text</Form.Label>
                                 <Form.Control as="textarea" rows={3} value={text} onChange={e => { setText(e.target.value) }} />
@@ -715,20 +716,20 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                                 </ButtonGroup>
                             </Form.Group>
                             <Form.Group controlId="MMP-range">
-                            <Form.Label id="MMP-reviews-formlabel">Easy to start</Form.Label>
-                                    <RangeSlider value={range[0]} max={10} step={1} variant='success' onChange={e => setRange([parseInt(e.target.value), range[1], range[2], range[3], range[4]])} />
-                                    <Form.Label id="MMP-reviews-formlabel">Cost-effective</Form.Label>
-                                    <RangeSlider value={range[1]} max={10} step={1} variant='success' onChange={e => setRange([range[0], parseInt(e.target.value), range[2], range[3], range[4]])} />
-                                    <Form.Label id="MMP-reviews-formlabel">Schedule-flexible</Form.Label>
-                                    <RangeSlider value={range[2]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], parseInt(e.target.value), range[3], range[4]])} />
-                                    <Form.Label id="MMP-reviews-formlabel">Safe</Form.Label>
-                                    <RangeSlider value={range[3]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], range[2], parseInt(e.target.value), range[4]])} />
-                                    <Form.Label id="MMP-reviews-formlabel">Good for health</Form.Label>
-                                    <RangeSlider value={range[4]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], range[2], range[3], parseInt(e.target.value)])} />
+                                <Form.Label id="MMP-reviews-formlabel">Easy to start</Form.Label>
+                                <RangeSlider value={range[0]} max={10} step={1} variant='success' onChange={e => setRange([parseInt(e.target.value), range[1], range[2], range[3], range[4]])} />
+                                <Form.Label id="MMP-reviews-formlabel">Cost-effective</Form.Label>
+                                <RangeSlider value={range[1]} max={10} step={1} variant='success' onChange={e => setRange([range[0], parseInt(e.target.value), range[2], range[3], range[4]])} />
+                                <Form.Label id="MMP-reviews-formlabel">Schedule-flexible</Form.Label>
+                                <RangeSlider value={range[2]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], parseInt(e.target.value), range[3], range[4]])} />
+                                <Form.Label id="MMP-reviews-formlabel">Safe</Form.Label>
+                                <RangeSlider value={range[3]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], range[2], parseInt(e.target.value), range[4]])} />
+                                <Form.Label id="MMP-reviews-formlabel">Good for health</Form.Label>
+                                <RangeSlider value={range[4]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], range[2], range[3], parseInt(e.target.value)])} />
                             </Form.Group>
                         </Form>
                     </Modal.Body>
-                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
+                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px' }}>
                         <Button variant="primary" onClick={clickRYes}>
                             Submit
                         </Button>
@@ -738,13 +739,13 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                     </Modal.Footer>
                 </Modal>
                 <Modal show={remove} onHide={clickXNo}>
-                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
+                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom: '5px' }}>
                         <Modal.Title>Remove your Review</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
-                        <p style={{fontFamily:'arial', color: 'black', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>Are you sure you remove your review?</p>
+                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0' }}>
+                        <p style={{ fontFamily: 'arial', color: 'black', fontSize: '20px', marginLeft: '20px', marginRight: '20px' }}>Are you sure you remove your review?</p>
                     </Modal.Body>
-                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
+                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px' }}>
                         <Button variant="danger" onClick={clickXYes}>
                             Remove
                         </Button>
@@ -755,37 +756,38 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                 </Modal>
                 <h3>Positive Opinions</h3>
                 {!reviewlist.length ?
-                <div style={{margin: "30px 20px", fontSize: "20px", color: "grey"}}>There is no positive review.</div>
-                :
-                <div id="MMP-reviews-positive">
-                    {reviewlist.map(rev => {
+                    <div style={{ margin: "30px 20px", fontSize: "20px", color: "grey" }}>There is no positive review.</div>
+                    :
+                    <div id="MMP-reviews-positive">
+                        {reviewlist.map(rev => {
                             if (rev['isPositive']) {
-                                if (rev['name'] == username) {
-                                    return <Review reviewId={rev['reviewId']} docId={docId} isPositive={true} isMe={true} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
+                                if (rev['uid'] == (currentUser ? currentUser.uid : "")) {
+                                    return <Review reviewId={rev['reviewId']} docId={docId} isPositive={true} isMe={true} name={rev['name']} days={rev['days']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                                 }
                                 else {
-                                    return <Review reviewId={rev['reviewId']} docId={docId} isPositive={true} isMe={false} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
+                                    return <Review reviewId={rev['reviewId']} docId={docId} isPositive={true} isMe={false} name={rev['name']} days={rev['days']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
                                 }
                             }
                         })}
-                </div>
+                    </div>
                 }
                 <h3>Negative Opinions</h3>
                 {!reviewlist.length ?
-                <div style={{margin: "30px 20px", fontSize: "20px", color: "grey"}}>There is no negative review.</div>
-                :
-                <div id="MMP-reviews-negative">
-                    {reviewlist.map(rev => {
+                    <div style={{ margin: "30px 20px", fontSize: "20px", color: "grey" }}>There is no negative review.</div>
+                    :
+                    <div id="MMP-reviews-negative">
+                        {reviewlist.map(rev => {
                             if (!rev['isPositive']) {
-                                if (rev['name'] == username) {
-                                    return <Review reviewId={rev['reviewId']} docId={docId} isPositive={false} isMe={true} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
+                                if (rev['uid'] == (currentUser ? currentUser.uid : "")) {
+                                    return <Review reviewId={rev['reviewId']} docId={docId} isPositive={false} isMe={true} name={rev['name']} days={rev['days']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                                 }
                                 else {
-                                    return <Review reviewId={rev['reviewId']} docId={docId} isPositive={false} isMe={false} name={rev['name']} years={rev['years']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
+                                    return <Review reviewId={rev['reviewId']} docId={docId} isPositive={false} isMe={false} name={rev['name']} days={rev['days']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
                                 }
                             }
-                        })}
-                </div>
+                        })
+                        }
+                    </div>
                 }
             </div>
         </div>

@@ -10,16 +10,36 @@ import { useHistory } from 'react-router';
 import { useAuth } from '../../../../../contexts/AuthContext'
 import {firebase} from 'firebase.js';
 
-const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOngoing, completebool}) => {
-    //console.log(completebool)
-    
+const TopBar = ({ currentUser, docId}) => {    
     const history = useHistory();
     const [currentDoc, setCurrentDoc] = useState();
+    const [activityName, setactivityName] = useState();
+    const [cancel, setCancel] = useState(false);
+    const [completebool, setcompletebool] = useState(false);
+    const [ongoingbool, setongoingbool] = useState(false);
 
-    const [cancel, setCancel] = useState(false)
+    useEffect(() => {
+
+        db.collection("Activities").doc(docId).onSnapshot((doc) => {
+            setactivityName(doc.get("name"))
+        })
+        if(currentUser){
+            db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).onSnapshot((doc) => {
+                setongoingbool(doc.exists)
+            })
+            db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).onSnapshot((doc) => {setcompletebool(doc.get("isComplete"))})
+        }
+
+        db.collection("Activities").doc(docId).get().then((doc) => {
+            setCurrentDoc({
+                name: doc.get("name"),
+                tags: Object.keys(doc.get("tags")).map(x => ({name: x})),
+                coverImg: doc.get("coverImg")
+            })
+        })
+    }, []);
 
     const clickCancel = () => setCancel(true);
-
 
     const clickCYes = () => {
         if (submit) {
@@ -27,22 +47,24 @@ const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOn
         }
 
         (async () => {
-            let actReffleft = db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).collection('Achievements')
+            let actReffleft = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements')
             const snapshot2 = await actReffleft.get();
                 snapshot2.forEach(doc => {
                     console.log(doc.id)
-                    db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).collection('Achievements').doc(doc.id).delete();
+                    db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements').doc(doc.id).delete();
             })
-            db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).delete();
+            db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).delete();
         })();
 
-        const cityReffor11 = db.collection('Activities').doc(docId);
-        cityReffor11.update({
-            numOfUsers: firebase.firestore.FieldValue.increment(-1)
-        });
+        if(currentUser){
+            const cityReffor11 = db.collection('Activities').doc(docId);
+            cityReffor11.update({
+                numOfUsers: firebase.firestore.FieldValue.increment(-1)
+            });
+        };  
 
-        db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).onSnapshot((doc) => {
-            setOngoing(doc.exists)
+        db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).onSnapshot((doc) => {
+            setongoingbool(doc.exists)
         })
         setCancel(false);
         history.push({
@@ -55,19 +77,6 @@ const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOn
 
 
     const clickCNo = () => setCancel(false);
-
-    useEffect(() => {
-
-
-
-        db.collection("Activities").doc(docId).get().then((doc) => {
-            setCurrentDoc({
-                name: doc.get("name"),
-                tags: Object.keys(doc.get("tags")).map(x => ({name: x})),
-                coverImg: doc.get("coverImg")
-            })
-        })
-    }, []);
 
     const sendHistory = () => {
         history.push({
@@ -88,10 +97,10 @@ const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOn
                 <Pagination.Item id="MMP-prog-label" variant="success" active={true}>My Progress</Pagination.Item>
             </Pagination>
             <div className="align-self-end">
-                {isSignedIn ?
+                {currentUser ?
                     <Nav className="mt-3">
-                        <Nav.Link  className="mr-4"><Link to={"/mypage"}><span className="nav-text" id="nav-userName">{userName}</span></Link></Nav.Link>
-                        <Nav.Link  className="mr-5" ><span className="nav-text" id="nav-signOut" onClick={handleLogout}>Sign Out</span></Nav.Link>
+                        <Nav.Link className="mr-4"><Link to={"/mypage"}><span className="nav-text" id="nav-currentUser.email">{currentUser.email}</span></Link></Nav.Link>
+                        <Nav.Link className="mr-5" ><span className="nav-text" id="nav-signOut" onClick={handleLogout}>Sign Out</span></Nav.Link>
                     </Nav>
                     :
                     <Nav className="mt-3">
@@ -110,7 +119,7 @@ const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOn
             <div className="align-self-start" id="MPP-tags">
                 <div id="MPP-reltags">
                     <span >Related tags : </span>
-                    {ongoing ?
+                    {ongoingbool ?
                         currentDoc && <ActivityTags docId={docId} plusbutton={true}/>
                         :
                         currentDoc && <ActivityTags docId={docId} plusbutton={false}/>
@@ -121,8 +130,6 @@ const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOn
                     :
                     <Button variant='secondary' id='MPP-topbar-ongoing' onClick={clickCancel}>Ongoing<FontAwesomeIcon icon={faTimes} style={{marginLeft:'10px'}}/></Button>
                 }
-                {/* ongoing, see_info은 눌리면 activityinfopage로 이동*/}
-
                 <Modal show={cancel} onHide={clickCNo}>
                     <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
                         <Modal.Title id="MPP-modal-title">Cancel Activity</Modal.Title>

@@ -11,7 +11,7 @@ import { useAuth } from 'contexts/AuthContext'
 import {firebase} from 'firebase.js';
 
 
-const TopBar = ({docId, currentUser}) => {
+const TopBar = ({currentUser, docId}) => {
     const history = useHistory();
     const [currentDoc, setCurrentDoc] = useState();
     const [activityName, setactivityName] = useState();
@@ -28,7 +28,7 @@ const TopBar = ({docId, currentUser}) => {
         if(currentUser){
             db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).onSnapshot((doc) => {
                 setongoingbool(doc.exists)
-                })
+            })
             db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))})
         }
         db.collection("Activities").doc(docId).get().then((doc) => {
@@ -56,7 +56,7 @@ const TopBar = ({docId, currentUser}) => {
                 achievement : []
                 };
             db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).set(data);
-            };
+        };
 
         if(currentUser){
             const cityReffor11 = db.collection('Activities').doc(docId);
@@ -120,13 +120,12 @@ const TopBar = ({docId, currentUser}) => {
             <Pagination variant="success" id="AIP-label">
                 <Pagination.Item id="AIP-info-label" variant="success" active={true}>Activity Information</Pagination.Item>
                 <Pagination.Item id="AIP-prog-label" variant="success" active={false} disabled={!ongoingbool}><div onClick={sendHistory} style={{color: "rgb(77, 163, 77)"}}>My Progress</div></Pagination.Item>
-                {/*currentUser && 추가 필요*/}
             </Pagination>
             <div className="align-self-end">
                 {currentUser ?
                     <Nav className="mt-3">
-                        <Nav.Link  className="mr-4"><Link to={"/mypage"}><span className="nav-text" id="nav-currentUser.email">{currentUser.email}</span></Link></Nav.Link>
-                        <Nav.Link  className="mr-5" ><span className="nav-text" id="nav-signOut" onClick={handleLogout}>Sign Out</span></Nav.Link>
+                        <Nav.Link className="mr-4"><Link to={"/mypage"}><span className="nav-text" id="nav-currentUser.email">{currentUser.email}</span></Link></Nav.Link>
+                        <Nav.Link className="mr-5" ><span className="nav-text" id="nav-signOut" onClick={handleLogout}>Sign Out</span></Nav.Link>
                     </Nav>
                     :
                     <Nav className="mt-3">
