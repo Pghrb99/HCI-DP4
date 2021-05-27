@@ -263,14 +263,14 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
             snapshot3.forEach(doc => {
                 if(doc.get("isSelected") == true){
                     tempcountlength++;
-                        if(doc.get("isCompleted") == true){
-                            tempcountend++;
-                        }
+                    if(doc.get("isCompleted") == true){
+                        tempcountend++;
+                    }
                     setend(tempcountend);
                     setlength(tempcountlength);
                 }  
             })
-            })(); 
+        })(); 
 
     }
 
