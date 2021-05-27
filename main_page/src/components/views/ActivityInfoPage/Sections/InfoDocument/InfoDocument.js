@@ -522,7 +522,7 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
                             </Modal.Footer>
                         </Modal>
                         <h3>Positive Opinions</h3>
-                        {!reviewlist.length ?
+                        {!(reviewlist.filter((x) => x.isPositive).length) ?
                         <div style={{margin: "30px 20px", fontSize: "20px", color: "grey"}}>There is no positive review.</div>
                         :
                         <div id="MMP-reviews-positive">
@@ -539,7 +539,7 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
                         </div>
                         }
                         <h3>Negative Opinions</h3>
-                        {!reviewlist.length ?
+                        {!(reviewlist.filter((x) => !(x.isPositive)).length) ?
                         <div style={{margin: "30px 20px", fontSize: "20px", color: "grey"}}>There is no negative review.</div>
                         :
                         <div id="MMP-reviews-negative">
