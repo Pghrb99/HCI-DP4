@@ -42,10 +42,6 @@ const TopBar = ({ currentUser, docId}) => {
     const clickCancel = () => setCancel(true);
 
     const clickCYes = () => {
-        if (submit) {
-            setSubmit(false);
-        }
-
         (async () => {
             let actReffleft = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements')
             const snapshot2 = await actReffleft.get();
