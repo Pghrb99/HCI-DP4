@@ -128,27 +128,22 @@ const ProgressDocument = ({ currentUser, docId }) => {
             }
         })();
 
-        let tempcountend = 0;
-        (async () => {
-            let snapshot3 = db.collection('UserInfo').doc(currentUser.email).collection('Activities');
-            const snapshot2 = await snapshot3.get();
-            snapshot2.forEach(doc => {
-                if (typeof currentDoc != 'undefined') {
-                    if (doc.data().name == currentDoc.name) {
-                        if (doc.get("achievement").length != 0) {
-                            for (let i = 0; i < doc.get("achievement").length; i++) {
-                                if (doc.get("achievement")[i].finish == true) {
-                                    tempcountend++;
-                                }
-                            }
-                            setend(tempcountend);
-                            setlength(doc.get("achievement").length);
-                        }
+    let tempcountend = 0;
+    let tempcountlength = 0;
+    (async () => {
+        let snapshot2 = db.collection('UserInfo').doc(username).collection('Activities').doc(docId).collection('Achievements');
+        const snapshot3 = await snapshot2.get();
+        snapshot3.forEach(doc => {
+            tempcountlength++;
+            if(doc.get("isSelected") == true){
+                    if(doc.get("isCompleted") == true){
+                        tempcountend++;
                     }
-                }
-
-            })
-        })();
+                setend(tempcountend);
+                setlength(tempcountlength);
+            }  
+        })
+        })(); 
 
 
 
