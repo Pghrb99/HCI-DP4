@@ -76,6 +76,31 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
             });
             setReviewlist(tempReviewList);
         });
+
+
+        if (currentUser) {
+
+            let tempcountend = 0;
+            let tempcountlength = 0;
+            (async () => {
+                let snapshot2 = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements');
+                const snapshot3 = await snapshot2.get();
+                snapshot3.forEach(doc => {
+                    if(doc.get("isSelected") == true){
+                        tempcountlength++;
+                        if(doc.get("isCompleted") == true){
+                            tempcountend++;
+                        }
+                        setend(tempcountend);
+                        setlength(tempcountlength);
+                    }  
+                })
+            })(); 
+    
+        }
+
+
+
     }, []);
 
     const calculateCompleted = () => {
@@ -253,26 +278,9 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
 
     const clickINo = () => setNumInfo(false);
 
-    if (currentUser) {
 
-        let tempcountend = 0;
-        let tempcountlength = 0;
-        (async () => {
-            let snapshot2 = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements');
-            const snapshot3 = await snapshot2.get();
-            snapshot3.forEach(doc => {
-                if(doc.get("isSelected") == true){
-                    tempcountlength++;
-                    if(doc.get("isCompleted") == true){
-                        tempcountend++;
-                    }
-                    setend(tempcountend);
-                    setlength(tempcountlength);
-                }  
-            })
-        })(); 
 
-    }
+console.log("뭐고")
 
     if (typeof currentDoc != 'undefined') {
         return (
