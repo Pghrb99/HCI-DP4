@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { db } from '../../../../../firebase'
 
-const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, setComplete }) => { 
+const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, setcompletebool, completebool }) => { 
     const username = userName;
     const [countend, setend] = useState(0);
     const [countlength, setlength] = useState(0);
@@ -193,14 +193,25 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
         for (let j = 0; j < temp.length; j++) {
             if (temp[j]['isSelected'] && !temp[j]['isCompleted']) {
                 // setComplete(false);
+                (async () => {
                 const cityRefforPyes = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
-                cityRefforPyes.update({ isComplete : false });
+                await cityRefforPyes.update({ isComplete : false });
+                 db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))}) 
+                 console.log('false입니다')
+                 console.log(completebool)
+                })();
                 break;
             }
             if (j == temp.length-1) {
                 // setComplete(true);
+                (async () => {
                 const cityRefforPyes = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
-                cityRefforPyes.update({ isComplete : true });
+                await cityRefforPyes.update({ isComplete : true });
+
+        db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))}) 
+        console.log('true입니다')
+        console.log(completebool)
+                })();
             }
         }
         setModify(false);
@@ -216,9 +227,8 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                 photourl: ""
             })
         }
-
-        const cityReffor = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
-        cityReffor.update({
+        console.log(useractivity)
+        db.collection('UserInfo').doc(username).collection('Activities').doc(docId).update({
             achievement: useractivity
         });
 }
@@ -384,17 +394,15 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
         let useractivity = [];
         const i = parseInt(attained.split('|')[1]);
         if (tempurl !== '') {
-            console.log(tempurl)
             $(".MMP-temp").attr('class', "MMP-success " + attained);
             const temp = achievlist.map((achiev, j) => {
                 if (j == i) {
-                    console.log(j, useractivity)
                     useractivity.push({
                         name: achiev.name,
                         explain: achiev.explain,
                         isCompleted: true,
                         isSelected: achiev.isSelected,
-                        photourl: tempurl
+                        photourl: 'tempurl'
                     })
                     return ({
                         name: achiev['name'],
@@ -405,7 +413,6 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                     });
                 }
                 else {
-                    console.log(j, useractivity)
                     useractivity.push({
                         name: achiev.name,
                         explain: achiev.explain,
@@ -417,7 +424,6 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
                 }
             })
             // 여기에 review의 photourl에 tempurl을 추가하는 코드 넣어야 함
-            console.log('왜?', useractivity)
             const cityReffor = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
             cityReffor.update({
                 achievement: useractivity
@@ -430,14 +436,26 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
             for (let j = 0; j < temp.length; j++) {
                 if (temp[j]['isSelected'] && !temp[j]['isCompleted']) {
                     // setComplete(false);
+                    (async () => {
                     const cityRefforPyes = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
-                    cityRefforPyes.update({ isComplete : false });
+                    await cityRefforPyes.update({ isComplete : false });
+                    
+                    db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))}) 
+                    console.log('false입니다')
+                    console.log(completebool)
+                    })();
+                
                     break;
                 }
                 if (j == temp.length-1) {
                     // setComplete(true);
+                    (async () => {
                     const cityRefforPyes = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
-                    cityRefforPyes.update({ isComplete : true });
+                    await cityRefforPyes.update({ isComplete : true });
+                    db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))}) 
+                    console.log('true')
+                    console.log(completebool)
+                    })();
 
                 }
             }
@@ -496,8 +514,15 @@ const ProgressDocument = ({ userName, docId, activityname, submit, setSubmit, se
         db.collection('UserInfo').doc(username).collection('Activities').doc(docId).update({ achievement : temp });
         setTempurl('');
         setachievlist(temp);
+        (async () => {
         const cityRefforPyes = db.collection('UserInfo').doc(username).collection('Activities').doc(docId);
-        cityRefforPyes.update({ isComplete : false });
+        await cityRefforPyes.update({ isComplete : false });
+        
+        db.collection('UserInfo').doc(userName).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))})
+        console.log('false입니다')
+        console.log(completebool)        
+
+        })();
         // setComplete(false);
         setCancel(false);
     }

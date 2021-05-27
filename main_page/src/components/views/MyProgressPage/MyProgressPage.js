@@ -15,8 +15,10 @@ const MyProgressPage = ({achievlist, setAchievlist, setTags, removeReview, submi
     const {currentUser} = useAuth();
     const [ongoing, setOngoing] = useState(false);
     const username = currentUser && currentUser.email;
+    const [completebool, setcompletebool] = useState(false);
 
     useEffect(() => {
+        db.collection('UserInfo').doc(username).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))}) 
         if (username) {
             db.collection('UserInfo').doc(username).collection('Activities').doc(docId).get().then(doc => {
                 if(doc.exists) setOngoing(true);
@@ -28,10 +30,12 @@ const MyProgressPage = ({achievlist, setAchievlist, setTags, removeReview, submi
         <div id="MyProgressPage">
             <Sidemenu/>
             <TopBar userName={username}
+            completebool = {completebool}
             isSignedIn={currentUser} docId={docId} removeReview={removeReview} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing} complete={complete}/>
             <div id="AIP-hori-div">
                 <HorizontalBar/>
-                <ProgressDocument userName={username} docId={docId} achievlist={achievlist} setAchievlist={setAchievlist} submit={submit} setSubmit={setSubmit} setComplete={setComplete}/>
+                <ProgressDocument userName={username} docId={docId} achievlist={achievlist} setAchievlist={setAchievlist} submit={submit} setSubmit={setSubmit} setComplete={setComplete}
+                setcompletebool = {setcompletebool} completebool = {completebool}/>
             </div>
             <GoTop/>
         </div>

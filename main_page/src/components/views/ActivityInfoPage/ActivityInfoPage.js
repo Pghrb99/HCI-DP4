@@ -35,9 +35,7 @@ const ActivityInfoPage = ({achievlist, submit, setSubmit, complete}) => {
                 setSubmit={setSubmit}
                 ongoing={ongoing}
                 setOngoing={setOngoing}
-                complete={complete}
-            />
-
+                />
             <div id="AIP-hori-div">
                 <HorizontalBar/>
                 <InfoDocument

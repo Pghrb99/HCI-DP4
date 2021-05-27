@@ -15,13 +15,19 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
     const [countend, setend] = useState(0);
     const [currentDoc, setCurrentDoc] = useState();
     const [review, setReview] = useState(false);
+    const [achievement, setAchievements] = useState(false);
     const [reviewlist, setReviewlist] = useState([]);
     const [text, setText] = useState(""); // useState(submit ? reviewlist[0]['content'] : "");
+    const [achivetext1, setachivetext1] = useState(" ");
+    const [achivetext2, setachivetext2] = useState(" ");
     const [recommend, setRecommend] = useState(true); // useState(submit ? reviewlist[0]['isPositive'] : true);
     const [range, setRange] = useState([5, 5, 5, 5, 5]); // useState(submit ? reviewlist[0]['data'] : [5, 5, 5, 5, 5]);
     const [remove, setRemove] = useState(false);
     const [more, setMore] = useState(false);
     const [numInfo, setNumInfo] = useState(false);
+
+
+
 
     useEffect(() => {
         db.collection("Activities").doc(docId).onSnapshot((doc) => {
@@ -184,6 +190,29 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
         setReview(true);
     }
 
+    const clickAchievement = () => {
+        setAchievements(true);
+    }
+    const clickAchievements = () => {
+        if(achivetext1 != " "){
+            let achivdata = {
+                name : achivetext1,
+                explain : achivetext2,
+                isCompleted : false,
+                isSelected : false,
+                photourl : ""
+            }
+            db.collection('Activities').doc(docId).collection('Achievements').doc().set(achivdata);
+            }
+
+    setAchievements(false);
+
+    }
+    const clickAchNo = () => {
+        setAchievements(false);
+    }
+    
+
     const clickRYes = () => {
         setSubmit(true);
         setReview(false);
@@ -194,7 +223,6 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
             addReview();
         }
     }
-
     const clickRNo = () => {
         setReview(false);
     }
@@ -369,7 +397,7 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
                 <div id="AIP-achievements" style={{ marginTop: '30px' }}>
                     <div style={{ width: '100%', display: 'inline-block' }}>
                         <h2 style={{ float: 'left' }}>Achievements</h2>
-                        <Button id="AIP-edit-button" variant="success" onClick={clickReview} disabled={!ongoing || !isSignedIn}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Edit Achievements</Button>
+                        <Button id="AIP-edit-button" variant="success" onClick={clickAchievement} disabled={!ongoing || !isSignedIn}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Add Achievement</Button>
                     </div>
                     <ListGroup id="AIP-achievements-list">
                         {achievlist.map((achiev, i) => {
@@ -404,6 +432,31 @@ const InfoDocument = ({ userName, isSignedIn, docId, achievlist, submit, setSubm
                         }
                         {/*ongoing disabled*/}
                     </div>
+                    <Modal show={achievement} onHide={clickAchNo}>
+                        <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom: '5px' }}>
+                            {
+                                <Modal.Title>Add new achievement</Modal.Title>
+                            }
+                        </Modal.Header>
+                        <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0' }}>
+                            <Form style={{ marginLeft: '20px', marginRight: '20px' }}>
+                                <Form.Group controlId="MMP-text">
+                                    <Form.Label id="MMP-reviews-formlabel">Achievement Name(Title)</Form.Label>
+                                    <Form.Control as="input" value={achivetext1} onChange={e => { setachivetext1(e.target.value)}} />
+                                    <Form.Label id="MMP-reviews-formlabel">Achievement Explain</Form.Label>
+                                    <Form.Control as="input" value={achivetext2} onChange={e => { setachivetext2(e.target.value)}} />
+                                </Form.Group>
+                            </Form>
+                        </Modal.Body>
+                        <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px' }}>
+                            <Button variant="primary" onClick={clickAchievements}>
+                                Submit
+                        </Button>
+                            <Button variant="danger" onClick={clickAchNo}>
+                                Cancel
+                        </Button>
+                        </Modal.Footer>
+                    </Modal>
                     <Modal show={review} onHide={clickRNo}>
                         <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom: '5px' }}>
                             {submit ?
