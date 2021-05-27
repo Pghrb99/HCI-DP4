@@ -166,7 +166,7 @@ function App() {
                     
                         <PrivateRoute exact path="/mypage" component={Mypage} />
                         
-                        <Route exact path="/myprogress" render={() => { return currentUser ? <MyProgressPage achievlist={achievlist}  tags={tags} setTags={setTags} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing} complete={complete} /> : <Redirect to="/login"/>}} />
+                        <Route exact path="/myprogress" render={(props) => (currentUser ? <MyProgressPage achievlist={achievlist}  tags={tags} setTags={setTags} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing} complete={complete} {...props}/> : <Redirect to="/login"/>)} />
 
                         
                         <Route exact path="/" component={TagSearchPage} />
