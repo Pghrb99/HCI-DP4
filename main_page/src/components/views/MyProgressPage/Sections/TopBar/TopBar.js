@@ -11,7 +11,7 @@ import { useAuth } from '../../../../../contexts/AuthContext'
 import {firebase} from 'firebase.js';
 
 const TopBar = ({ userName, isSignedIn, docId, submit, setSubmit, ongoing, setOngoing, completebool}) => {
-    console.log(completebool)
+    //console.log(completebool)
     
     const history = useHistory();
     const [currentDoc, setCurrentDoc] = useState();

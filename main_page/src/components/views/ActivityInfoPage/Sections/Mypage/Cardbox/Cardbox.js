@@ -13,10 +13,10 @@ const Cardbox = (userName) => {
     const [allprogressCards, setprogressCards] = useState([]);
     const [allendCards, setendCards] = useState([]);
 
-    console.log("a0")
+    //console.log("a0")
     useEffect(() => {
 
-        console.log("a01")
+        //console.log("a01")
         let progressCard =[];
         let endCard = [];
 
@@ -30,30 +30,30 @@ const Cardbox = (userName) => {
                     name:doc.data().name,
                     docId:doc.id
                 });
-                console.log("a1")
+                //console.log("a1")
             }
             else{
                 progressCard.push({
                 name:doc.data().name,
                 docId:doc.id
             });
-            console.log("a2")
+            //console.log("a2")
             }
         })
-        console.log("a3")
+        //console.log("a3")
         // await setprogressCard(progressCard);
-            console.log("a3-1")  
-            console.log(endCard)  
+            //console.log("a3-1")  
+            //console.log(endCard)  
         // await setendCard(endCard);
     }
     first().then( () => {
     let progressresultCard =[];
     let endresultCard = []; 
-    console.log(endCard) 
-    console.log("a4")
-    console.log(progressCard.length != 0)
+    //console.log(endCard) 
+    //console.log("a4")
+    //console.log(progressCard.length != 0)
     if(progressCard.length != 0){
-        console.log("a4-1")
+        //console.log("a4-1")
     let snapshota1 = db.collection('Activities');
     snapshota1.get().then((querySnapshot => {
         for (let i in querySnapshot.docs) {
@@ -68,18 +68,18 @@ const Cardbox = (userName) => {
                     docId:progressCard[j].docId,
                     givedocId:doc.id
                 });
-                console.log("a5")
+                //console.log("a5")
             }
             }
         }
-        console.log("a6")
+        //console.log("a6")
         setprogressCards(progressresultCard);
     }))
     }
-    console.log(endCard)
-    console.log(endCard.length != 0)
+    //console.log(endCard)
+    //console.log(endCard.length != 0)
     if(endCard.length != 0){
-        console.log(endCard)
+        //console.log(endCard)
     let snapshota2 = db.collection('Activities');
     snapshota2.get().then((querySnapshot => {
         for (let i in querySnapshot.docs) {
@@ -95,24 +95,25 @@ const Cardbox = (userName) => {
                     docId:endCard[j].docId,
                     givedocId:doc.id
                 });
-                console.log("a7")
+                //console.log("a7")
             }
             }
         }
-        console.log("a8")
+        //console.log("a8")
         setendCards(endresultCard);
     }))
     }
     })
-    console.log("a9")
+    //console.log("a9")
     }, []);
 
-    console.log("a10")
+    //console.log("a10")
 
 // if(allendCards.length != 0 || allprogressCards.length != 0){
     return (
     <div className="Cardbox">
-    { console.log("a11")}
+    { //console.log("a11")
+    }
     {/* {console.log(endCards)} */}
         <div id="cardbox-left">
         <Userinfo userEmail={userName.userName}/>

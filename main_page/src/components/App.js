@@ -161,10 +161,13 @@ function App() {
             you have multiple routes, but you want only one
             of them to render at a time
           */}
+          
                     <Switch>
                     
                         <PrivateRoute exact path="/mypage" component={Mypage} />
+                        
                         <Route exact path="/myprogress" render={() => { return currentUser ? <MyProgressPage achievlist={achievlist}  tags={tags} setTags={setTags} submit={submit} setSubmit={setSubmit} ongoing={ongoing} setOngoing={setOngoing} complete={complete} /> : <Redirect to="/login"/>}} />
+
                         
                         <Route exact path="/" component={TagSearchPage} />
                         <Route exact path="/result" component={TagSearchResultPage} />
