@@ -48,37 +48,27 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
             const name = currentUser ? currentUser.displayName : "";
             const tempReviewList = [];
             querySnapshot.forEach((reviewDoc) => {
+                const rev = {
+                    isPositive: reviewDoc.get('isPositive'),
+                    name: reviewDoc.get('name'),
+                    days: reviewDoc.get('days'),
+                    achiev: reviewDoc.get('achiev'),
+                    content: reviewDoc.get('content'),
+                    data: reviewDoc.get('data'),
+                    like: reviewDoc.get('like'),
+                    likeUsers: reviewDoc.get('likeUsers'),
+                    photourl: reviewDoc.get('photourl'),
+                    reviewId: reviewDoc.id
+                }
                 if(reviewDoc.get('name') == name) {
-                    tempReviewList.unshift({
-                        isPositive: reviewDoc.get('isPositive'),
-                        name: reviewDoc.get('name'),
-                        days: reviewDoc.get('days'),
-                        achiev: reviewDoc.get('achiev'),
-                        content: reviewDoc.get('content'),
-                        data: reviewDoc.get('data'),
-                        like: reviewDoc.get('like'),
-                        likeUsers: reviewDoc.get('likeUsers'),
-                        photourl: reviewDoc.get('photourl'),
-                        reviewId: reviewDoc.id
-                    });
+                    tempReviewList.unshift(rev);
                     setSubmitbool(true);
                     setText(reviewDoc.get('content'));
                     setRecommend(reviewDoc.get('isPositive'));
                     setRange(reviewDoc.get('data'));
                 }
                 else {
-                    tempReviewList.push({
-                        isPositive: reviewDoc.get('isPositive'),
-                        name: reviewDoc.get('name'),
-                        days: reviewDoc.get('days'),
-                        achiev: reviewDoc.get('achiev'),
-                        content: reviewDoc.get('content'),
-                        data: reviewDoc.get('data'),
-                        like: reviewDoc.get('like'),
-                        likeUsers: reviewDoc.get('likeUsers'),
-                        photourl: reviewDoc.get('photourl'),
-                        reviewId: reviewDoc.id
-                    });
+                    tempReviewList.push(rev);
                 }
             });
             setReviewlist(tempReviewList);
@@ -536,7 +526,7 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
                         <div id="MMP-reviews-positive">
                             {reviewlist.map(rev => {
                                 if (rev['isPositive']) {
-                                    if (rev['name'] == currentUser.displayName) {
+                                    if (rev['name'] == currentUser ? currentUser.displayName : "") {
                                         return <Review reviewId={rev['reviewId']} docId={docId} isPositive={true} isMe={true} name={rev['name']} days={rev['days']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                                     }
                                     else {
@@ -553,7 +543,7 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
                         <div id="MMP-reviews-negative">
                             {reviewlist.map(rev => {
                                 if (!rev['isPositive']) {
-                                    if (rev['name'] == currentUser.displayName) {
+                                    if (rev['name'] == currentUser ? currentUser.displayName : "") {
                                         return <Review reviewId={rev['reviewId']} docId={docId} isPositive={false} isMe={true} name={rev['name']} days={rev['days']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                                     }
                                     else {
