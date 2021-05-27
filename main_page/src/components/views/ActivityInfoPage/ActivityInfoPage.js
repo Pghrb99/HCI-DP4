@@ -9,7 +9,7 @@ import { useLocation } from 'react-router'
 import { useAuth } from 'contexts/AuthContext';
 import { db } from 'firebase.js';
 
-const ActivityInfoPage = ({achievlist, submit, setSubmit}) => {
+const ActivityInfoPage = ({achievlist}) => {
     const location = useLocation();
     const docId = location.state.docId;
     const {currentUser} = useAuth();
@@ -20,8 +20,6 @@ const ActivityInfoPage = ({achievlist, submit, setSubmit}) => {
             <TopBar
                 currentUser = {currentUser}
                 docId={docId}
-                submit={submit}
-                setSubmit={setSubmit}
                 />
             <div id="AIP-hori-div">
                 <HorizontalBar/>
@@ -29,8 +27,6 @@ const ActivityInfoPage = ({achievlist, submit, setSubmit}) => {
                     currentUser = {currentUser}
                     docId={docId}
                     achievlist={achievlist}
-                    submit={submit} 
-                    setSubmit={setSubmit} 
                 />
             </div>
             <GoTop/>
