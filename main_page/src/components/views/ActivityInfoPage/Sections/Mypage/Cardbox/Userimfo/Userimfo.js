@@ -52,12 +52,12 @@ console.log(userEmail.userEmail)
         <br/>
         <p id = 'userimfo' > User Info </p>
         <p> Name : {userdata[0].name} </p>
-        <p> birthday : {userdata[0].birthday} </p>
+        <p> Birthday : {userdata[0].birthday} </p>
         <p> Age(Sex) : {userdata[0].age}({userdata[0].sex}) </p>
         <p> Phone-number : {userdata[0].phoneNumber} </p>
         <p> Email : {userdata[0].email} </p>
         <p> Hobbies in Progress : {ongoingnum} </p>
-        <p> completed Hobbies  : {endnum} </p>
+        <p> Completed Hobbies  : {endnum} </p>
         <p> About Me  : <br/> 
         {userdata[0].aboutMe} </p>
     </div>

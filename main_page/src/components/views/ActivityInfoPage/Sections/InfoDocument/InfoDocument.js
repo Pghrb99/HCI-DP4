@@ -261,16 +261,16 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
             let snapshot2 = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements');
             const snapshot3 = await snapshot2.get();
             snapshot3.forEach(doc => {
-                tempcountlength++;
                 if(doc.get("isSelected") == true){
-                        if(doc.get("isCompleted") == true){
-                            tempcountend++;
-                        }
+                    tempcountlength++;
+                    if(doc.get("isCompleted") == true){
+                        tempcountend++;
+                    }
                     setend(tempcountend);
                     setlength(tempcountlength);
                 }  
             })
-            })(); 
+        })(); 
 
     }
 
@@ -529,10 +529,10 @@ const InfoDocument = ({ currentUser, docId, achievlist}) => {
                             {reviewlist.map(rev => {
                                 if (rev['isPositive']) {
                                     if (rev['uid'] == (currentUser ? currentUser.uid : "")) {
-                                        return <Review reviewId={rev['reviewId']} docId={docId} isPositive={true} isMe={true} name={rev['name']} days={rev['days']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
+                                        return <Review reviewId={rev['reviewId']} achiev={countend} docId={docId} isPositive={true} isMe={true} name={rev['name']} days={rev['days']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                                     }
                                     else {
-                                        return <Review reviewId={rev['reviewId']} docId={docId} isPositive={true} isMe={false} name={rev['name']} days={rev['days']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
+                                        return <Review reviewId={rev['reviewId']} achiev={countend} docId={docId} isPositive={true} isMe={false} name={rev['name']} days={rev['days']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
                                     }
                                 }
                             })}

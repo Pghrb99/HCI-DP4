@@ -135,8 +135,8 @@ const ProgressDocument = ({ currentUser, docId }) => {
         let snapshot2 = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements');
         const snapshot3 = await snapshot2.get();
         snapshot3.forEach(doc => {
-            tempcountlength++;
             if(doc.get("isSelected") == true){
+                tempcountlength++;
                     if(doc.get("isCompleted") == true){
                         tempcountend++;
                     }
@@ -152,25 +152,25 @@ const ProgressDocument = ({ currentUser, docId }) => {
     }, []);
 
     const calculateTotal = () => {
-        // var cnt = 0;
-        // achievlist.forEach(achiev => {
-        //     if (achiev['isSelected']) {
-        //         cnt++;
-        //     }
-        // });
-        // return cnt;
-        return countlength;
+        var cnt = 0;
+        achievlist.forEach(achiev => {
+            if (achiev['isSelected']) {
+                cnt++;
+            }
+        });
+        return cnt;
+        // return countlength;
     }
 
     const calculateCompleted = () => {
-        // var cnt = 0;
-        // achievlist.forEach(achiev => {
-        //     if (achiev['isCompleted']) {
-        //         cnt++;
-        //     }
-        // });
-        // return cnt;
-        return countend;
+        var cnt = 0;
+        achievlist.forEach(achiev => {
+            if (achiev['isCompleted']) {
+                cnt++;
+            }
+        });
+        return cnt;
+        // return countend;
     }
 
     const calculatePercent = () => {
@@ -760,10 +760,10 @@ const ProgressDocument = ({ currentUser, docId }) => {
                             if (rev['isPositive']) {
                                 console.log(rev['uid']);
                                 if (rev['uid'] == (currentUser ? currentUser.uid : "")) {
-                                    return <Review reviewId={rev['reviewId']} docId={docId} isPositive={true} isMe={true} name={rev['name']} days={rev['days']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
+                                    return <Review reviewId={rev['reviewId']} docId={docId} achiev={calculateCompleted()} isPositive={true} isMe={true} name={rev['name']} days={rev['days']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                                 }
                                 else {
-                                    return <Review reviewId={rev['reviewId']} docId={docId} isPositive={true} isMe={false} name={rev['name']} days={rev['days']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
+                                    return <Review reviewId={rev['reviewId']} docId={docId} achiev={rev['achiev']} isPositive={true} isMe={false} name={rev['name']} days={rev['days']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
                                 }
                             }
                         })}
@@ -777,7 +777,7 @@ const ProgressDocument = ({ currentUser, docId }) => {
                         {reviewlist.map(rev => {
                             if (!rev['isPositive']) {
                                 if (rev['uid'] == (currentUser ? currentUser.uid : "")) {
-                                    return <Review reviewId={rev['reviewId']} docId={docId} isPositive={false} isMe={true} name={rev['name']} days={rev['days']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
+                                    return <Review reviewId={rev['reviewId']} docId={docId} isPositive={false} isMe={true} name={rev['name']} days={rev['days']} achiev={calculateCompleted(2)} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                                 }
                                 else {
                                     return <Review reviewId={rev['reviewId']} docId={docId} isPositive={false} isMe={false} name={rev['name']} days={rev['days']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
