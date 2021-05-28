@@ -71,7 +71,6 @@ const InfoDocument = ({ currentUser, docId}) => {
             const uid = currentUser ? currentUser.uid : "";
             const tempReviewList = [];
             querySnapshot.forEach((reviewDoc) => {
-                console.log(reviewDoc.get('uid'));
                 const rev = {
                     uid: reviewDoc.get('uid'),
                     isPositive: reviewDoc.get('isPositive'),
@@ -303,10 +302,6 @@ const InfoDocument = ({ currentUser, docId}) => {
 
     const clickINo = () => setNumInfo(false);
 
-
-
-console.log("뭐고")
-
     if (typeof currentDoc != 'undefined') {
         return (
             <div id="infodocument">
@@ -392,7 +387,7 @@ console.log("뭐고")
                             src={currentDoc.videos[0].src}
                             alt={currentDoc.videos[0].alt}
                             title="YouTube video player"
-                            frameborder="0"
+                            frameBorder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen>
                         </iframe>
                     </div>
@@ -420,7 +415,7 @@ console.log("뭐고")
                     </div>
                     <ul>
                         {currentDoc.requirements.map((content, index) => (
-                            <li class="AIP-article">{content}</li>
+                            <li class="AIP-article" key={index}>{content}</li>
                         ))}
                     </ul>
 

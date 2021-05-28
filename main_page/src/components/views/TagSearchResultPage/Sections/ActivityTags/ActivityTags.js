@@ -149,9 +149,9 @@ const ActivityTags = ({tags, docId, plusbutton}) => {
 
     return (
         <ul className='ActivityTags'>
-            {tags ? tags.map(tag => (<ActivityTag name={tag.name}/>))
+            {tags ? tags.map((tag, index) => (<ActivityTag name={tag.name} key={index}/>))
                 :
-                taglist.map(tag => (<ActivityTag name={tag.name} maker={tag.maker}/>))
+                taglist.map((tag, index) => (<ActivityTag name={tag.name} maker={tag.maker} key={index}/>))
             }
             {plusbutton && <Button variant='success' id='tagplus' onClick={clickTagplus}><FontAwesomeIcon icon={faPlus} /></Button>}
             <Modal size='lg' show={tagplus} onHide={clickTPNo}>
