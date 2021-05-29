@@ -30,7 +30,7 @@ const HotActivityPage = () => {
                     chartData: doc.get("numerics"),
                     key: doc.id,
                     docId: doc.id,
-                    numOfUsers: doc.numOfUsers
+                    numOfUsers: doc.get("numOfUsers")
                 });
             }
             setAllCards(result);
