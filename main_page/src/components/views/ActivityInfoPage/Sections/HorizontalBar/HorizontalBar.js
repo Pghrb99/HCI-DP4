@@ -22,7 +22,7 @@ const HorizontalBar = () => {
     }
 
     const clickI5 = () => {
-        document.getElementById('AIP-requirments').scrollIntoView({behavior: "smooth"});
+        document.getElementById('AIP-requirements').scrollIntoView({behavior: "smooth"});
     }
 
     const clickI6 = () => {

@@ -409,9 +409,9 @@ const InfoDocument = ({ currentUser, docId }) => {
                         )
                     })}
                 </div>
-                <div id="AIP-requirments" style={{ marginTop: '30px' }}>
+                <div id="AIP-requirements" style={{ marginTop: '30px' }}>
                     <div style={{ width: '100%', display: 'inline-block' }}>
-                        <h2 style={{ float: 'left' }}>Requirments</h2>
+                        <h2 style={{ float: 'left' }}>Requirements</h2>
                     </div>
                     <ul>
                         {currentDoc.requirements.map((content, index) => (
@@ -468,7 +468,7 @@ const InfoDocument = ({ currentUser, docId }) => {
                     <Modal show={achievement} onHide={clickAchNo}>
                         <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom: '5px' }}>
                             {
-                                <Modal.Title>Add new achievement</Modal.Title>
+                                <Modal.Title>Add a New Achievement</Modal.Title>
                             }
                         </Modal.Header>
                         <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0' }}>
