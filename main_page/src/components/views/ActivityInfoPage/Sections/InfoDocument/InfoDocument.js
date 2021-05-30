@@ -8,7 +8,7 @@ import { faEdit, faInfo, faChevronCircleDown, faChevronCircleUp, faPencilAlt } f
 import { db } from 'firebase.js'
 import { UndoOutlined } from '@material-ui/icons';
 
-const InfoDocument = ({ currentUser, docId}) => {
+const InfoDocument = ({ currentUser, docId }) => {
     const [countlength, setlength] = useState(0);
     const [countend, setend] = useState(0);
     const [currentDoc, setCurrentDoc] = useState();
@@ -30,26 +30,26 @@ const InfoDocument = ({ currentUser, docId}) => {
 
 
 
-(async () => {
-    let actRefforthis = db.collection('Activities').doc(docId).collection('Achievements');
-    const snapshotfor = await actRefforthis.get();
-    let temparray = []
-    snapshotfor.forEach(doc => {
-        temparray.push({
-            name: doc.data().name,
-            explain: doc.data().explain,
-            isCompleted: doc.data().isCompleted,
-            isSelected: doc.data().isSelected,
-            photourl: ''
-        })
-    })
-    setachievlist(temparray);
-})();
+        (async () => {
+            let actRefforthis = db.collection('Activities').doc(docId).collection('Achievements');
+            const snapshotfor = await actRefforthis.get();
+            let temparray = []
+            snapshotfor.forEach(doc => {
+                temparray.push({
+                    name: doc.data().name,
+                    explain: doc.data().explain,
+                    isCompleted: doc.data().isCompleted,
+                    isSelected: doc.data().isSelected,
+                    photourl: ''
+                })
+            })
+            setachievlist(temparray);
+        })();
 
 
 
 
-        if(currentUser){
+        if (currentUser) {
             db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).onSnapshot((doc) => {
                 setongoingbool(doc.exists)
             })
@@ -84,7 +84,7 @@ const InfoDocument = ({ currentUser, docId}) => {
                     photourl: reviewDoc.get('photourl'),
                     reviewId: reviewDoc.id
                 }
-                if(reviewDoc.get('uid') == uid) {
+                if (reviewDoc.get('uid') == uid) {
                     tempReviewList.unshift(rev);
                     setSubmitbool(true);
                     setText(reviewDoc.get('content'));
@@ -107,17 +107,17 @@ const InfoDocument = ({ currentUser, docId}) => {
                 let snapshot2 = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements');
                 const snapshot3 = await snapshot2.get();
                 snapshot3.forEach(doc => {
-                    if(doc.get("isSelected") == true){
+                    if (doc.get("isSelected") == true) {
                         tempcountlength++;
-                        if(doc.get("isCompleted") == true){
+                        if (doc.get("isCompleted") == true) {
                             tempcountend++;
                         }
                         setend(tempcountend);
                         setlength(tempcountlength);
-                    }  
+                    }
                 })
-            })(); 
-    
+            })();
+
         }
 
 
@@ -142,7 +142,7 @@ const InfoDocument = ({ currentUser, docId}) => {
                 isPositive: recommend,
                 name: currentUser.displayName,
                 uid: currentUser.uid,
-                days: Math.round((new Date().getTime() - startTime.getTime())/(1000*60*60*24)),
+                days: Math.round((new Date().getTime() - startTime.getTime()) / (1000 * 60 * 60 * 24)),
                 achiev: calculateCompleted(),
                 content: text,
                 data: range,
@@ -155,9 +155,9 @@ const InfoDocument = ({ currentUser, docId}) => {
             return db.runTransaction((transaction) => {
                 return transaction.get(docRef).then((doc) => {
                     const newNumOfReviews = doc.get("numOfReviews") + 1;
-                    const oldNumericsTotal = 
-                        [0,1,2,3,4].map((index) => doc.get("numerics")[index]*doc.get("numOfReviews"));
-                    const newNumerics = oldNumericsTotal.map((x, index) => (x+range[index])/newNumOfReviews);
+                    const oldNumericsTotal =
+                        [0, 1, 2, 3, 4].map((index) => doc.get("numerics")[index] * doc.get("numOfReviews"));
+                    const newNumerics = oldNumericsTotal.map((x, index) => (x + range[index]) / newNumOfReviews);
                     transaction.update(docRef, {
                         numOfReviews: newNumOfReviews,
                         numerics: newNumerics
@@ -170,9 +170,9 @@ const InfoDocument = ({ currentUser, docId}) => {
 
     const removeReview = () => {
         db.collection('Activities').doc(docId).collection('Reviews').where('uid', '==', currentUser.uid)
-        .get().then((querySnapshot) => {
-            querySnapshot.forEach((reviewDoc) => reviewDoc.ref.delete())
-        });
+            .get().then((querySnapshot) => {
+                querySnapshot.forEach((reviewDoc) => reviewDoc.ref.delete())
+            });
         const docRef = db.collection('Activities').doc(docId);
         return db.runTransaction((transaction) => {
             return transaction.get(docRef).then((doc) => {
@@ -184,8 +184,8 @@ const InfoDocument = ({ currentUser, docId}) => {
                     });
                     return;
                 }
-                const oldNumericsTotal = [0,1,2,3,4].map((index) => doc.get("numerics")[index]*doc.get("numOfReviews"));
-                const newNumerics = oldNumericsTotal.map((x, index) => (x-range[index])/newNumOfReviews);
+                const oldNumericsTotal = [0, 1, 2, 3, 4].map((index) => doc.get("numerics")[index] * doc.get("numOfReviews"));
+                const newNumerics = oldNumericsTotal.map((x, index) => (x - range[index]) / newNumOfReviews);
                 transaction.update(docRef, {
                     numOfReviews: newNumOfReviews,
                     numerics: newNumerics
@@ -198,28 +198,28 @@ const InfoDocument = ({ currentUser, docId}) => {
         db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).get().then((doc) => {
             const startTime = doc.get("startTime").toDate();
             db.collection('Activities').doc(docId).collection('Reviews').where('uid', '==', currentUser.uid)
-            .get().then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    doc.ref.update({
-                        isPositive: recommend,
-                        content: text,
-                        data: range,
-                        days: Math.round((new Date().getTime() - startTime.getTime())/(1000*60*60*24)),
-                    });
-                });
-                const docRef = db.collection('Activities').doc(docId);
-                return db.runTransaction((transaction) => {
-                    return transaction.get(docRef).then((doc) => {
-                        const oldNumerics = doc.get("numerics");
-                        const oldNumericsTotal = [0,1,2,3,4].map((index) => doc.get("numerics")[index]*doc.get("numOfReviews"));
-                        const newNumerics = oldNumericsTotal.map((x, index) => 
-                            (x-oldNumerics[index]+range[index])/doc.get("numOfReviews"));
-                        transaction.update(docRef, {
-                            numerics: newNumerics
+                .get().then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        doc.ref.update({
+                            isPositive: recommend,
+                            content: text,
+                            data: range,
+                            days: Math.round((new Date().getTime() - startTime.getTime()) / (1000 * 60 * 60 * 24)),
                         });
+                    });
+                    const docRef = db.collection('Activities').doc(docId);
+                    return db.runTransaction((transaction) => {
+                        return transaction.get(docRef).then((doc) => {
+                            const oldNumerics = doc.get("numerics");
+                            const oldNumericsTotal = [0, 1, 2, 3, 4].map((index) => doc.get("numerics")[index] * doc.get("numOfReviews"));
+                            const newNumerics = oldNumericsTotal.map((x, index) =>
+                                (x - oldNumerics[index] + range[index]) / doc.get("numOfReviews"));
+                            transaction.update(docRef, {
+                                numerics: newNumerics
+                            });
+                        })
                     })
                 })
-            })
         });
     }
 
@@ -242,26 +242,26 @@ const InfoDocument = ({ currentUser, docId}) => {
     }
     const clickAchievements = () => {
         let temparray = achievlist;
-        temparray.push({name : achivetext1, explain : achivetext2})
+        temparray.push({ name: achivetext1, explain: achivetext2 })
         setachievlist(temparray)
-        if(achivetext1 != " "){
+        if (achivetext1 != " ") {
             let achivdata = {
-                name : achivetext1,
-                explain : achivetext2,
-                isCompleted : false,
-                isSelected : false,
-                photourl : ""
+                name: achivetext1,
+                explain: achivetext2,
+                isCompleted: false,
+                isSelected: false,
+                photourl: ""
             }
             db.collection('Activities').doc(docId).collection('Achievements').doc().set(achivdata);
-            }
+        }
 
-    setAchievements(false);
+        setAchievements(false);
 
     }
     const clickAchNo = () => {
         setAchievements(false);
     }
-    
+
 
     const clickRYes = () => {
         setSubmitbool(true);
@@ -426,32 +426,37 @@ const InfoDocument = ({ currentUser, docId}) => {
                         <h2 style={{ float: 'left' }}>Achievements</h2>
                         <Button id="AIP-edit-button" variant="success" onClick={clickAchievement} disabled={!ongoingbool || !currentUser}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Add Achievement</Button>
                     </div>
-                    <ListGroup id="AIP-achievements-list">
-                        {achievlist.map((achiev, i) => {
-                            if (i < 4 || more) {
-                                return (
-                                    <ListGroup.Item>
-                                        <Badge variant="secondary">{achiev['name']}</Badge> {achiev['explain']}
-                                    </ListGroup.Item>
-                                );
-                            }
-                            else {
-                                return null;
-                            }
-                        })}
-                    </ListGroup>
-                    <div style={{ textAlign: 'center' }}>
-                        <Button id="AIP-achievements-more" variant="secondary" onClick={clickMore}><FontAwesomeIcon icon={more ? faChevronCircleUp : faChevronCircleDown} /></Button>
-                    </div>
+                    {(!achievlist.length) ?
+                        <div style={{ width: '100%', marginTop: '20px', textAlign: 'center', fontSize: "24px", color: "grey" }}>There is no achievement yet. You can add achievements for other users!</div>
+                        :
+                        <div>
+                            <ListGroup id="AIP-achievements-list">
+                                {achievlist.map((achiev, i) => {
+                                    if (i < 4 || more) {
+                                        return (
+                                            <ListGroup.Item>
+                                                <Badge variant="secondary">{achiev['name']}</Badge> {achiev['explain']}
+                                            </ListGroup.Item>
+                                        );
+                                    }
+                                    else {
+                                        return null;
+                                    }
+                                })}
+                            </ListGroup>
+                            <div style={{ textAlign: 'center' }}>
+                                <Button id="AIP-achievements-more" variant="secondary" onClick={clickMore}><FontAwesomeIcon icon={more ? faChevronCircleUp : faChevronCircleDown} /></Button>
+                            </div>
+                        </div>
+                    }
                 </div>
                 <div id="AIP-reviews" style={{ marginTop: '30px' }}>
                     <div style={{ width: '100%', display: 'inline-block' }}>
                         <h2 style={{ float: 'left' }}>Reviews</h2>
                         {submitbool ?
                             <div>
-                                    <Button id="AIP-reviews-remove" variant="danger" onClick={clickRemove}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Remove your Review</Button>
-                                
-                                { ongoingbool &&
+                                <Button id="AIP-reviews-remove" variant="danger" onClick={clickRemove}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Remove your Review</Button>
+                                {ongoingbool &&
                                     <Button id="AIP-reviews-write" variant="success" onClick={clickReview}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Modify your Review</Button>
                                 }
                             </div>
@@ -470,9 +475,9 @@ const InfoDocument = ({ currentUser, docId}) => {
                             <Form style={{ marginLeft: '20px', marginRight: '20px' }}>
                                 <Form.Group controlId="MMP-text">
                                     <Form.Label id="MMP-reviews-formlabel">Achievement Name(Title)</Form.Label>
-                                    <Form.Control as="input" value={achivetext1} onChange={e => { setachivetext1(e.target.value)}} />
+                                    <Form.Control as="input" value={achivetext1} onChange={e => { setachivetext1(e.target.value) }} />
                                     <Form.Label id="MMP-reviews-formlabel">Achievement Explain</Form.Label>
-                                    <Form.Control as="input" value={achivetext2} onChange={e => { setachivetext2(e.target.value)}} />
+                                    <Form.Control as="input" value={achivetext2} onChange={e => { setachivetext2(e.target.value) }} />
                                 </Form.Group>
                             </Form>
                         </Modal.Body>
@@ -547,28 +552,28 @@ const InfoDocument = ({ currentUser, docId}) => {
                             <Button variant="secondary" onClick={clickXNo}>
                                 Cancel
                                 </Button>
-                            </Modal.Footer>
-                        </Modal>
-                        <h3>Positive Opinions</h3>
-                        {!(reviewlist.filter((x) => x.isPositive).length) ?
-                        <div style={{margin: "30px 20px", fontSize: "20px", color: "grey"}}>There is no positive opinion.</div>
+                        </Modal.Footer>
+                    </Modal>
+                    <h3>Positive Opinions</h3>
+                    {!(reviewlist.filter((x) => x.isPositive).length) ?
+                        <div style={{ width: '100%', marginTop: '20px', textAlign: 'center', fontSize: "24px", color: "grey" }}>There is no positive opinion.</div>
                         :
                         <div id="MMP-reviews-positive">
                             {reviewlist.map(rev => {
                                 if (rev['isPositive']) {
                                     if (rev['uid'] == (currentUser ? currentUser.uid : "")) {
-                                        return <Review reviewId={rev['reviewId']} achiev={countend} docId={docId} isPositive={true} isMe={true} name={rev['name']} days={rev['days']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
+                                        return <Review reviewId={rev['reviewId']} achiev={countend} docId={docId} isPositive={true} isMe={true} name={rev['name']} days={rev['days']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={imgs()} clickReview={clickReview} clickRemove={clickRemove} />
                                     }
                                     else {
-                                        return <Review reviewId={rev['reviewId']} achiev={rev['achiev']} docId={docId} isPositive={true} isMe={false} name={rev['name']} days={rev['days']}  content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
+                                        return <Review reviewId={rev['reviewId']} achiev={rev['achiev']} docId={docId} isPositive={true} isMe={false} name={rev['name']} days={rev['days']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
                                     }
                                 }
                             })}
                         </div>
-                        }
-                        <h3>Negative Opinions</h3>
-                        {!(reviewlist.filter((x) => !(x.isPositive)).length) ?
-                        <div style={{margin: "30px 20px", fontSize: "20px", color: "grey"}}>There is no negative opinion.</div>
+                    }
+                    <h3>Negative Opinions</h3>
+                    {!(reviewlist.filter((x) => !(x.isPositive)).length) ?
+                        <div style={{ width: '100%', marginTop: '20px', textAlign: 'center', fontSize: "24px", color: "grey" }}>There is no negative opinion.</div>
                         :
                         <div id="MMP-reviews-negative">
                             {reviewlist.map(rev => {
@@ -578,11 +583,12 @@ const InfoDocument = ({ currentUser, docId}) => {
                                     }
                                     else {
                                         return <Review reviewId={rev['reviewId']} docId={docId} isPositive={false} isMe={false} name={rev['name']} days={rev['days']} achiev={rev['achiev']} content={rev['content']} data={rev['data']} like={rev['like']} photourl={rev['photourl']} />
-                                    }    
-                                }})
+                                    }
+                                }
+                            })
                             }
                         </div>
-                        }
+                    }
                 </div>
                 <div id="AIP-communities" style={{ marginTop: '30px' }}>
                     <div style={{ width: '100%', display: 'inline-block' }}>

@@ -42,7 +42,7 @@ const ProgressDocument = ({ currentUser, docId }) => {
             db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).onSnapshot((doc) => {
                 setongoingbool(doc.exists)
             })
-            db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).get().then((doc) => {setcompletebool(doc.get("isComplete"))}) 
+            db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).get().then((doc) => { setcompletebool(doc.get("isComplete")) })
         }
 
         db.collection("Activities").doc(docId).get().then((doc) => {
@@ -116,38 +116,39 @@ const ProgressDocument = ({ currentUser, docId }) => {
                     photourl: ''
                 })
             })
-            if(temparray.length !=0 && temparrayalpha.length != 0){
-            for(let i=0; i<temparrayalpha.length; i++){
-                let k=0;
-                for(let j=0; j<temparray.length; j++){
-                    if(temparrayalpha[i].name == temparray[j].name && temparrayalpha[i].explain == temparray[j].explain){k=1;}
+            if (temparray.length != 0 && temparrayalpha.length != 0) {
+                for (let i = 0; i < temparrayalpha.length; i++) {
+                    let k = 0;
+                    for (let j = 0; j < temparray.length; j++) {
+                        if (temparrayalpha[i].name == temparray[j].name && temparrayalpha[i].explain == temparray[j].explain) { k = 1; }
+                    }
+                    if (k == 0) temparray.push(temparrayalpha[i]);
                 }
-                if(k == 0) temparray.push(temparrayalpha[i]);
-            }}
-            else if(temparray.length == 0 && temparrayalpha.length != 0){temparray = temparrayalpha}
-            else if(temparray.length != 0 && temparrayalpha.length == 0){}
+            }
+            else if (temparray.length == 0 && temparrayalpha.length != 0) { temparray = temparrayalpha }
+            else if (temparray.length != 0 && temparrayalpha.length == 0) { }
             else;
             setTempselect(Array(temparray.length).fill(false));
             setachievlist(temparray);
 
         })();
 
-    let tempcountend = 0;
-    let tempcountlength = 0;
-    (async () => {
-        let snapshot2 = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements');
-        const snapshot3 = await snapshot2.get();
-        snapshot3.forEach(doc => {
-            if(doc.get("isSelected") == true){
-                tempcountlength++;
-                    if(doc.get("isCompleted") == true){
+        let tempcountend = 0;
+        let tempcountlength = 0;
+        (async () => {
+            let snapshot2 = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements');
+            const snapshot3 = await snapshot2.get();
+            snapshot3.forEach(doc => {
+                if (doc.get("isSelected") == true) {
+                    tempcountlength++;
+                    if (doc.get("isCompleted") == true) {
                         tempcountend++;
                     }
-                setend(tempcountend);
-                setlength(tempcountlength);
-            }  
-        })
-        })(); 
+                    setend(tempcountend);
+                    setlength(tempcountlength);
+                }
+            })
+        })();
 
 
 
@@ -608,9 +609,7 @@ const ProgressDocument = ({ currentUser, docId }) => {
                 </Modal>
 
                 {(emptyCheck(achievlist.map(achiev => { return achiev['isSelected']; }))) ?
-
-                    <div style={{ width: '100%', marginTop: '15px', textAlign: 'center', fontSize: '24px' }}>You have not selected achievements yet. </div>
-
+                    <div style={{ width: '100%', marginTop: '20px', textAlign: 'center', fontSize: "24px", color: "grey" }}>You have not selected achievements yet.</div>
                     :
                     <ListGroup id="MMP-achievements-list">
                         {achievlist.map((achiev, i) => {
@@ -756,7 +755,7 @@ const ProgressDocument = ({ currentUser, docId }) => {
                 </Modal>
                 <h3>Positive Opinions</h3>
                 {!reviewlist.length ?
-                    <div style={{ margin: "30px 20px", fontSize: "20px", color: "grey" }}>There is no positive review.</div>
+                    <div style={{ width: '100%', marginTop: '20px', textAlign: 'center', fontSize: "24px", color: "grey" }}>There is no positive review.</div>
                     :
                     <div id="MMP-reviews-positive">
                         {reviewlist.map(rev => {
@@ -774,7 +773,7 @@ const ProgressDocument = ({ currentUser, docId }) => {
                 }
                 <h3>Negative Opinions</h3>
                 {!reviewlist.length ?
-                    <div style={{ margin: "30px 20px", fontSize: "20px", color: "grey" }}>There is no negative review.</div>
+                    <div style={{ width: '100%', marginTop: '20px', textAlign: 'center', fontSize: "24px", color: "grey" }}>There is no negative review.</div>
                     :
                     <div id="MMP-reviews-negative">
                         {reviewlist.map(rev => {
