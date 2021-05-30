@@ -579,6 +579,9 @@ const ProgressDocument = ({ currentUser, docId }) => {
                         <Modal.Title>Modify Selected Achievements</Modal.Title>
                     </Modal.Header>
                     <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0' }}>
+                        {(!achievlist.length) ?
+                            <div style={{ width: '100%', marginTop: '20px', textAlign: 'center', fontSize: "24px", color: "grey" }}>There is no achievement yet.<br></br>You can add achievements for other users at Activity Information Page!</div>
+                        :
                         <ListGroup id="MMP-achievements-modallist">
                             {achievlist.map((achiev, i) => {
                                 if (achiev['isSelected']) {
@@ -597,6 +600,7 @@ const ProgressDocument = ({ currentUser, docId }) => {
                                 }
                             })}
                         </ListGroup>
+                        }
                     </Modal.Body>
                     <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px' }}>
                         <Button variant="primary" onClick={clickMYes}>
