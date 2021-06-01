@@ -176,20 +176,19 @@ const ActivityTags = ({tags, docId, plusbutton}) => {
             {plusbutton && <Button variant='success' id='tagplus' onClick={clickTagplus}><FontAwesomeIcon icon={faPlus} /></Button>}
             <Modal size='lg' show={tagplus} onHide={clickTPNo}>
                 <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
-                    <Modal.Title style={{marginTop: '10px'}}>Add Tags</Modal.Title>
+                    <Modal.Title style={{marginTop: '10px'}}>Add Proper Tags</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', textAlign: 'center', paddingTop: '5px', paddingBottom: '0'}}>
                     <table style={{ width: '100%', textAlign: 'left', margin: '0 20px 0 20px'}}>
                         <thead>
                             <tr>
-                                <th colspan={2} id="newtag-table-title">Tags you did not apply</th>
-                                <th colspan={2} id="newtag-table-title">Tags you applied</th>
+                                <th colspan={2} id="newtag-table-title">Tags you did not voted</th>
+                                <th className="table-right" id="newtag-table-title">Tags you voted</th>
                             </tr>
                             <tr>
                                 <th id="newtag-table-subtitle">Popular Tags</th>
                                 <th id="newtag-table-subtitle">Custom Tags</th>
-                                <th id="newtag-table-subtitle">Popular Tags</th>
-                                <th id="newtag-table-subtitle">Custom Tags</th>
+                                <th className="table-right" id="newtag-table-subtitle">Popular Tags</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -207,15 +206,13 @@ const ActivityTags = ({tags, docId, plusbutton}) => {
                                     }
                                 })}
                             </td>
-                            <td>
+                            <td className="table-right">
                                 {recommendTags.map((tag, i) => {
                                     if (tag.isSelected) {
                                         console.log("hallo");
                                         return (<tr><Button variant='success' className={"|"+i+"|"} id='newtag-tag' onClick={clickCandTag} style={{height: "fit-content"}}><FontAwesomeIcon icon={faTag} style={{ marginRight: '10px'}} /><span className="newtagName">{tag.name}</span></Button></tr>);
                                     }
                                 })}
-                            </td>
-                            <td>
                                 {customTags.map((tag, i) => {
                                     if (tag.isSelected) {
                                         return (<tr><Button variant='success' className={"|"+(recommendTags.length+i)+"|"} id='newtag-tag' onClick={clickCandTag} style={{height: "fit-content"}}><FontAwesomeIcon icon={faTag} style={{ marginRight: '10px'}} /><span className="newtagName">{tag.name}</span></Button></tr>);

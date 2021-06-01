@@ -28,13 +28,18 @@
 	background-color: #52b483;
 }
 
+.table-right {
+	border-left: 2px dashed black;
+	padding-left: 15px;
+}
+
 #newtag-table-title {
 	width: 50%;
 	font-size: 24px;
 }
 
 #newtag-table-subtitle {
-	width: 25%;
+	width: 22%;
 	font-size: 18px;
 	font-weight: 600;
 	padding-top: 10px;
