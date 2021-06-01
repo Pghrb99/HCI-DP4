@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const SearchButton = ({onClick}) => {
     return (
         <div className="SearchButton" onClick={onClick}>
-            <BsSearch className="search-icon" />
+            <BsSearch className="search-icon" style={{color:'white'}}/>
         </div>
     )
 }

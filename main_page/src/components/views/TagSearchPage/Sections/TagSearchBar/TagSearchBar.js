@@ -68,7 +68,7 @@ const TagSearchBar = ({tags, setTags, onClick}) => {
     return (
         <div className="TagSearchBar">
             <div>
-                <Toggle className="Toggle"
+                <Toggle className="Toggle" id="Toggle"
                     defaultChecked={true}
                     icons={{
                         checked: <div className="toggle-message-include">Include</div>,

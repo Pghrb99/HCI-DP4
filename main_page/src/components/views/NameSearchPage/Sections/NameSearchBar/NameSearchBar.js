@@ -72,8 +72,8 @@ const NameSearchBar = () => {
                 />
 
             </ AutoComplete>
-            <div id="SearchButton" onClick={onTextPressEnter}>
-                    <BsSearch className="search-icon" />
+            <div className="SearchButton" onClick={onTextPressEnter}>
+                    <BsSearch className="search-icon" style={{color:'white'}}/>
             </div>
         </div>
         

@@ -124,11 +124,10 @@ $exclude-hover-color: #c23e3e;
   .react-toggle-thumb {
     transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
     position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 44px;
-    height: 44px;
-    border: 1px solid #4D4D4D;
+    top: 3px;
+    left: 3px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     background-color: #FAFAFA;
   
