@@ -136,6 +136,7 @@ const InfoDocument = ({ currentUser, docId }) => {
     }
 
     const addReview = () => {
+
         db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).get().then((doc) => {
             const startTime = doc.get("startTime").toDate()
             const rev = {
@@ -147,10 +148,10 @@ const InfoDocument = ({ currentUser, docId }) => {
                 content: text,
                 data: range,
                 like: 0,
-                likeUsers: [],
-                photourl: imgs(),
+                likeUsers: []
             };
             db.collection('Activities').doc(docId).collection('Reviews').add(rev);
+
             const docRef = db.collection('Activities').doc(docId);
             return db.runTransaction((transaction) => {
                 return transaction.get(docRef).then((doc) => {
@@ -165,7 +166,30 @@ const InfoDocument = ({ currentUser, docId }) => {
                 })
             })
         })
-
+        let temparray = [];
+        (async () => {
+            let snapshot2img = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements');
+            const snapshot3img = await snapshot2img.get();
+            snapshot3img.forEach(doc => {
+                if(doc.get("isCompleted") == true){
+                    console.log("???")
+                    console.log(temparray)
+                temparray.push({'photourl' : doc.get("photourl")})
+                if(temparray.length != 0 ){
+                (async () => {
+                    let snapshot2img = db.collection('Activities').doc(docId).collection('Reviews');
+                    const snapshot3img = await snapshot2img.get();
+                    snapshot3img.forEach(doc1 => {
+                        if(doc1.get("uid") == currentUser.uid){
+                                db.collection('Activities').doc(docId).collection('Reviews').doc(doc1.id).collection('PhotoUrl').doc().set({'photourl' : doc.get("photourl")});
+                                console.log("뭐고")
+                        }
+                    })
+                })();
+            }
+                }
+            })
+        })();
     }
 
     const removeReview = () => {
@@ -195,6 +219,7 @@ const InfoDocument = ({ currentUser, docId }) => {
     }
 
     const updateReview = () => {
+
         db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).get().then((doc) => {
             const startTime = doc.get("startTime").toDate();
             db.collection('Activities').doc(docId).collection('Reviews').where('uid', '==', currentUser.uid)
@@ -221,6 +246,30 @@ const InfoDocument = ({ currentUser, docId }) => {
                     })
                 })
         });
+        let temparray = [];
+        (async () => {
+            let snapshot2img = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements');
+            const snapshot3img = await snapshot2img.get();
+            snapshot3img.forEach(doc => {
+                if(doc.get("isCompleted") == true){
+                    console.log("???")
+                    console.log(temparray)
+                temparray.push({'photourl' : doc.get("photourl")})
+                if(temparray.length != 0 ){
+                (async () => {
+                    let snapshot2img = db.collection('Activities').doc(docId).collection('Reviews');
+                    const snapshot3img = await snapshot2img.get();
+                    snapshot3img.forEach(doc1 => {
+                        if(doc1.get("uid") == currentUser.uid){
+                                db.collection('Activities').doc(docId).collection('Reviews').doc(doc1.id).collection('PhotoUrl').doc().set({'photourl' : doc.get("photourl")});
+                                console.log("뭐고")
+                        }
+                    })
+                })();
+            }
+                }
+            })
+        })();
     }
 
     const imgs = () => {
@@ -240,6 +289,9 @@ const InfoDocument = ({ currentUser, docId }) => {
     const clickAchievement = () => {
         setAchievements(true);
     }
+
+
+
     const clickAchievements = () => {
         let temparray = achievlist;
         temparray.push({ name: achivetext1, explain: achivetext2 })
@@ -258,10 +310,10 @@ const InfoDocument = ({ currentUser, docId }) => {
         setAchievements(false);
 
     }
+
     const clickAchNo = () => {
         setAchievements(false);
     }
-
 
     const clickRYes = () => {
         setSubmitbool(true);
@@ -273,6 +325,8 @@ const InfoDocument = ({ currentUser, docId }) => {
             addReview();
         }
     }
+
+
     const clickRNo = () => {
         setReview(false);
     }

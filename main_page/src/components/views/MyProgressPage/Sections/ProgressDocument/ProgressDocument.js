@@ -308,7 +308,30 @@ const ProgressDocument = ({ currentUser, docId }) => {
                 })
             })
         })
-
+        let temparray = [];
+        (async () => {
+            let snapshot2img = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements');
+            const snapshot3img = await snapshot2img.get();
+            snapshot3img.forEach(doc => {
+                if(doc.get("isCompleted") == true){
+                    console.log("???")
+                    console.log(temparray)
+                temparray.push({'photourl' : doc.get("photourl")})
+                if(temparray.length != 0 ){
+                (async () => {
+                    let snapshot2img = db.collection('Activities').doc(docId).collection('Reviews');
+                    const snapshot3img = await snapshot2img.get();
+                    snapshot3img.forEach(doc1 => {
+                        if(doc1.get("uid") == currentUser.uid){
+                                db.collection('Activities').doc(docId).collection('Reviews').doc(doc1.id).collection('PhotoUrl').doc().set({'photourl' : doc.get("photourl")});
+                                console.log("뭐고")
+                        }
+                    })
+                })();
+            }
+                }
+            })
+        })();
     }
 
     const removeReview = () => {
@@ -370,6 +393,30 @@ const ProgressDocument = ({ currentUser, docId }) => {
                     })
             });
         });
+        let temparray = [];
+        (async () => {
+            let snapshot2img = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements');
+            const snapshot3img = await snapshot2img.get();
+            snapshot3img.forEach(doc => {
+                if(doc.get("isCompleted") == true){
+                    console.log("???")
+                    console.log(temparray)
+                temparray.push({'photourl' : doc.get("photourl")})
+                if(temparray.length != 0 ){
+                (async () => {
+                    let snapshot2img = db.collection('Activities').doc(docId).collection('Reviews');
+                    const snapshot3img = await snapshot2img.get();
+                    snapshot3img.forEach(doc1 => {
+                        if(doc1.get("uid") == currentUser.uid){
+                                db.collection('Activities').doc(docId).collection('Reviews').doc(doc1.id).collection('PhotoUrl').doc().set({'photourl' : doc.get("photourl")});
+                                console.log("뭐고")
+                        }
+                    })
+                })();
+            }
+                }
+            })
+        })();
     }
 
     const selectImg = (event) => {
