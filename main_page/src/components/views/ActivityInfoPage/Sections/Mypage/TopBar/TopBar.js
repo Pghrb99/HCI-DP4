@@ -245,7 +245,7 @@ const TopBar = ({ userName }) => {
 
             </div>
             <div className="mypage-center">
-                <img src={logo} id="logo_mypage" />  My page
+                  My page
             </div>
             {/* <div className="align-self-start" id="tags">   
                 <span>Tags applied : </span><Tags tags={tags}/>
