@@ -176,19 +176,19 @@ const ActivityTags = ({tags, docId, plusbutton}) => {
             {plusbutton && <Button variant='success' id='tagplus' onClick={clickTagplus}><FontAwesomeIcon icon={faPlus} /></Button>}
             <Modal size='lg' show={tagplus} onHide={clickTPNo}>
                 <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
-                    <Modal.Title style={{marginTop: '10px'}}>Add Proper Tags</Modal.Title>
+                    <Modal.Title style={{marginTop: '10px'}}>Edit Tags</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', textAlign: 'center', paddingTop: '5px', paddingBottom: '0'}}>
                     <table style={{ width: '100%', textAlign: 'left', margin: '0 20px 0 20px'}}>
                         <thead>
                             <tr>
-                                <th colspan={2} id="newtag-table-title">Tags you did not voted</th>
-                                <th className="table-right" id="newtag-table-title">Tags you voted</th>
+                                <th colspan={2} id="newtag-table-title">Tags not applied</th>
+                                <th className="table-right" id="newtag-table-title">Tags you've applied</th>
                             </tr>
                             <tr>
                                 <th id="newtag-table-subtitle">Popular Tags</th>
                                 <th id="newtag-table-subtitle">Custom Tags</th>
-                                <th className="table-right" id="newtag-table-subtitle">Popular Tags</th>
+                                {/* <th className="table-right" id="newtag-table-subtitle">Popular Tags</th> */}
                             </tr>
                         </thead>
                         <tbody>

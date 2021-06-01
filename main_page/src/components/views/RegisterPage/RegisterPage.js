@@ -78,32 +78,31 @@ function RegisterPage(props) {
     try {
       setError('')
       setLoading(true)
-      await signUp(values.email, values.password);
+      const userCredential = await signUp(values.email, values.password);
+      const user = userCredential.user;
       //console.log(auth.currentUser)
       const date1 = new Date(values.birthday)
       const diff = Date.now() - date1.getTime();
       const ageDate = new Date(diff); // miliseconds from epoch
-      auth.onAuthStateChanged(user => {
-        user.updateProfile({
-          displayName: values.name
-        })
-        db.collection("UserInfo").doc(user.email).set({
-            aboutme: values.aboutme,
-            birthday: values.birthday, //Age calc later
-            age: Math.abs(ageDate.getUTCFullYear() - 1970),
-            email: values.email,
-            gender: values.gender,
-            name: values.name,
-            phone: values.prefix+values.phone,
-        })
-        .then(() => {
-            console.log("Document successfully written!");
-        })
-        .catch((error) => {
-            console.error("Error writing document: ", error);
-        });
-        //console.log(user)
+      user.updateProfile({
+        displayName: values.name
       })
+      db.collection("UserInfo").doc(values.email).set({
+          aboutme: values.aboutme,
+          birthday: values.birthday, //Age calc later
+          age: Math.abs(ageDate.getUTCFullYear() - 1970),
+          email: values.email,
+          gender: values.gender,
+          name: values.name,
+          phone: values.prefix+values.phone,
+      })
+      .then(() => {
+          console.log("Document successfully written!");
+      })
+      .catch((error) => {
+          console.error("Error writing document: ", error);
+      });
+      //console.log(user)
       
       props.history.push("/login");
     } catch {
