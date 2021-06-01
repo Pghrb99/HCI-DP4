@@ -10,11 +10,13 @@ import { LeftCircleFilled } from '@ant-design/icons';
 import {firebase, db} from 'firebase.js';
 import { useAuth } from 'contexts/AuthContext'
 
-const Review = ({ reviewId, docId, isPositive, isMe, name, days, achiev, content, data, like, photourl, clickReview, clickRemove }) => {
+const Review = ({ reviewId, docId, isPositive, isMe, name, days, achiev, content, data, like, clickReview, clickRemove }) => {
     const [numOfLike, setNumOfLike] = useState(like);
     const [images, setImages] = useState(false);
     const [isthumb, setIsThumb] = useState(false);
+    const [photourl, setphotourl] = useState([]);
     const {currentUser} = useAuth();
+
 
     useEffect(() => {
         const reviewRef = db.collection("Activities").doc(docId).collection("Reviews").doc(reviewId);
@@ -23,6 +25,21 @@ const Review = ({ reviewId, docId, isPositive, isMe, name, days, achiev, content
                 setIsThumb(reviewDoc.get('likeUsers').includes(currentUser.email));
             }
         });
+
+        let tempimg = [];
+        (async () => {
+            // setnumachiev(achiev)
+            let snapshot2img = db.collection("Activities").doc(docId).collection("Reviews").doc(reviewId).collection('PhotoUrl');
+            const snapshot3img = await snapshot2img.get();
+            snapshot3img.forEach(doc => {
+                tempimg.push(doc.get("photourl"))
+                setphotourl(tempimg);
+
+            })
+            
+
+        })();
+
     }, []);
 
     const clickLike = (event) => {
@@ -103,7 +120,7 @@ const Review = ({ reviewId, docId, isPositive, isMe, name, days, achiev, content
                 <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
                     <div id="review-photo-container">
                         {photourl.map(photo => {
-                            return (<img src={photo} style={{width:'90%'}}></img>);
+                            return (<img src={photo} style={{width:'90%', marginTop: '20px'}}></img>);
                         })}
                     </div>
                 </Modal.Body>
