@@ -48,7 +48,7 @@ console.log(userEmail.userEmail)
 
     if(userdata[0] != undefined){
     return (
-    <Card title="User Info" style={{ width: 300 }}>
+    <Card title="User Info" style={{ width: 450 }}>
         <p id = 'userimfo' > User Info </p>
         <p> Name : {userdata[0].name} </p>
         <p> Birthday : {userdata[0].birthday} </p>
