@@ -48,7 +48,7 @@ console.log(userEmail.userEmail)
 
     if(userdata[0] != undefined){
     return (
-    <Card title="User Info" style={{ width: "100%" }} headStyle={{ fontSize: "40px" }} bodyStyle={{ fontSize: "25px" }}>
+    <Card title="User Info" style={{ width: "100%" }} headStyle={{ fontSize: "40px" }} bodyStyle={{ fontSize: "20px", paddingLeft: '0px' }}>
         <p> Name : {userdata[0].name} </p>
         <p> Birthday : {userdata[0].birthday} </p>
         <p> Age(Sex) : {userdata[0].age}({userdata[0].sex}) </p>
