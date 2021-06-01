@@ -114,13 +114,13 @@ const Cardbox = (userName) => {
 // if(allendCards.length != 0 || allprogressCards.length != 0){
     return (
     <div>
-        <Row justify="space-around">
-            <Space align="start">
+        <Row justify="space-around" gutter={16} style={{margin: "20px 10px"}}>
+
             <Col span={6}>
                 <Userinfo userEmail={userName.userName}/>
             </Col>
             <Col span={18}>
-                <Space align="start" wrap>
+                <Space align="start" size={20} wrap>
                 {allprogressCards.map((card) => (
                     
                     <ActivityCard 
@@ -135,7 +135,6 @@ const Cardbox = (userName) => {
                 ))}
                 </Space>
             </Col>
-            </Space>
 
         </Row>
     </div>
