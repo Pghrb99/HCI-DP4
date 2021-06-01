@@ -115,11 +115,12 @@ const Cardbox = (userName) => {
     return (
     <div>
         <Row justify="space-around">
+            <Space align="start">
             <Col span={6}>
                 <Userinfo userEmail={userName.userName}/>
             </Col>
             <Col span={18}>
-                <Space>
+                <Space align="start" wrap>
                 {allprogressCards.map((card) => (
                     
                     <ActivityCard 
@@ -134,6 +135,8 @@ const Cardbox = (userName) => {
                 ))}
                 </Space>
             </Col>
+            </Space>
+
         </Row>
     </div>
     
