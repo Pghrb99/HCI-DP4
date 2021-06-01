@@ -10,13 +10,7 @@ import './ActivityCard.scss'
 import { Link } from "react-router-dom";
 import {useHistory} from "react-router";
 
-const StyledPopover = styled(Popover)`
-      min-width: 320px;
-      height: 300px;
-      padding: 0px;
-      margin: 0px;
-      opacity: 0.98;
-`
+
 const ActivityCard = ({givedocId, docId, userEmail, img, title, tags, text, chartData}) => {
   const history = useHistory();
 
@@ -51,7 +45,7 @@ const ActivityCard = ({givedocId, docId, userEmail, img, title, tags, text, char
             cover={<img alt={img.alt} src={img.src} />}
             onClick={onClick}
             >
-              <Meta title={<Title level={4} ellipsis={true} style={{ width: 267, height: 162 }}>{title}</Title>}/>
+              <Meta title={<Title level={4} ellipsis={true} style={{ width: 267 }}>{title}</Title>}/>
               <ActivityTags tags={tags}/>
             </Card>
         </Popover>

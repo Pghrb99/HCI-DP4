@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 
-import { Row, Col } from 'antd';
+import { Row, Col, Space } from 'antd';
 
 import ActivityCard from '../ActivityCard/ActivityCard'
 import './Cardbox.scss'
@@ -114,15 +114,14 @@ const Cardbox = (userName) => {
 // if(allendCards.length != 0 || allprogressCards.length != 0){
     return (
     <div>
-    { //console.log("a11")
-    }
-    {/* {console.log(endCards)} */}
-        <Row>
+        <Row justify="space-around">
             <Col span={6}>
                 <Userinfo userEmail={userName.userName}/>
             </Col>
-            <Col span={6} offset={12}>
+            <Col span={18}>
+                <Space>
                 {allprogressCards.map((card) => (
+                    
                     <ActivityCard 
                         userEmail={userName.userName}
                         key={card.key}
@@ -133,9 +132,9 @@ const Cardbox = (userName) => {
                         givedocId={card.givedocId}
                     />
                 ))}
+                </Space>
             </Col>
         </Row>
-
     </div>
     
     )
