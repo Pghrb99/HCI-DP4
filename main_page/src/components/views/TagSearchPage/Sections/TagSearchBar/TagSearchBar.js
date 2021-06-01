@@ -9,8 +9,10 @@ import '../TagSearchBar/TagSearchBar.scss'
 import {db} from 'firebase.js'
 
 
+
 const TagSearchBar = ({tags, setTags, onClick}) => {
     
+    const toLowerCase = String.prototype.toLowerCase.call.bind(String.prototype.toLowerCase);
 
     const [mode, setMode] = useState(true);
     const [text, setText] = useState("");
@@ -35,7 +37,7 @@ const TagSearchBar = ({tags, setTags, onClick}) => {
 
     const onSearch = (searchText) => {
         const tagDocs = db.collectionGroup('Tags').orderBy('name_lower')
-        .where('name_lower', '>=', searchText).where('name_lower', '<=', searchText+"\uf8ff");
+        .where('name_lower', '>=', toLowerCase(searchText)).where('name_lower', '<=', toLowerCase(searchText)+"\uf8ff");
 
         tagDocs.get().then((querySnapshot) => {
             let result = [];
@@ -87,6 +89,7 @@ const TagSearchBar = ({tags, setTags, onClick}) => {
                 onSelect={onTextSelect}
                 open={text.length >= 1}
                 defaultActiveFirstOption={true}
+                onKeyDown ={onBackspaceDown}
                 >
                     <Input
                         placeholder="Enter tags"

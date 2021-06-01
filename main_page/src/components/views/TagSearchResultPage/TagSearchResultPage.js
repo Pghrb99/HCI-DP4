@@ -23,7 +23,7 @@ const TagSearchResultPage = () => {
         setCards(prev => [...prev].sort((x,y) => (y.chartData[value]-x.chartData[value])));
     }
 
-    useEffect(() => {
+    useEffect(async () => {
         if(typeof category !== 'undefined') {
             let activityRef = db.collection('Activities').where("categories", "array-contains", category);
             let result = [];
@@ -85,28 +85,25 @@ const TagSearchResultPage = () => {
         }
 
         if(typeof searchText !== 'undefined') {
-            let result = [];
+            const result = [];
             
-            db.collection('Activities').get().then((querySnapshot => {
-                for (let i in querySnapshot.docs) {
-                    const doc = querySnapshot.docs[i];
-                    if(doc.get("name_lower").indexOf(searchText.toLowerCase()) != -1 ){
-                        result.push({ 
-                            name:doc.get("name"),
-                            tags : Object.keys(doc.get("tags")).map(x => ({name: x})),
-                            chartData: doc.get("numerics"),
-                            img: doc.get("cardImg"),
-                            key: doc.id,
-                            docId :doc.id
-                        });
-                    }
-                }
-                result.sort((x,y) => (y.chartData[0]-x.chartData[0]))
-                setCards(result);
-                if(result.length==0) {
-                    setNoResults(true);
-                }
-            }))
+            const querySnapshot = await db.collection('Activities').orderBy('name_lower')
+            .where('name_lower', '>=', searchText.toLowerCase())
+            .where('name_lower', '<=', searchText.toLowerCase()+"\uf8ff")
+            .get()
+            querySnapshot.forEach((doc) => result.push({
+                name:doc.get("name"),
+                tags : Object.keys(doc.get("tags")).map(x => ({name: x})),
+                chartData: doc.get("numerics"),
+                img: doc.get("cardImg"),
+                key: doc.id,
+                docId :doc.id
+            }));
+            result.sort((x,y) => (y.chartData[0]-x.chartData[0]))
+            setCards(result);
+            if(result.length==0) {
+                setNoResults(true);
+            }
         }
     }, []);
 

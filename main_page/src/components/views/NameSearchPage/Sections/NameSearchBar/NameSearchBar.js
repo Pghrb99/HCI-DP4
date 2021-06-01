@@ -8,19 +8,8 @@ import {useHistory} from "react-router";
 const NameSearchBar = () => {
 
     const [text, setText] = useState("");
-    const [allOptions, setAllOptions] = useState([]);
     const [options, setOptions] = useState([]);
     const history = useHistory();
-    
-    useEffect(() => {
-        const tempOptionList = [];
-        db.collection('Activities').orderBy('name').get().then((querySnapshot => {
-            querySnapshot.forEach((doc) => {
-                tempOptionList.push(doc.get('name'))
-            })
-            setAllOptions(tempOptionList);
-        }))
-    }, []);
 
     const onTextChange = (e) => {
         setText(e.target.value);
@@ -31,16 +20,17 @@ const NameSearchBar = () => {
         setText(val);
     };
 
-    const onSearch = (searchText) => {
+    const onSearch = async (searchText) => {
         if (searchText.length==0 ) {
             setOptions([]);
             return;
         }
-        const lowerText = searchText.toLowerCase();
-        let result = [];
-        result = allOptions.filter((x) => (x.toLowerCase().includes(lowerText)));
-        result = result.slice(0, 5)
-        result = result.map(x => ({value: x}))
+        const querySnapshot = await db.collection('Activities').orderBy('name_lower')
+        .where('name_lower', '>=', searchText.toLowerCase())
+        .where('name_lower', '<=', searchText.toLowerCase()+"\uf8ff")
+        .limit(5).get()
+        const result = [];
+        querySnapshot.forEach((doc) => result.push({value: doc.get('name')}))
         setOptions(result);
     };
 

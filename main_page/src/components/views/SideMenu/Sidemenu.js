@@ -51,7 +51,7 @@ const Sidemenu = ({isDark}) => {
                     <Link to={"/hotactivity"}><FontAwesomeIcon icon={faHotjar} style={{marginRight: "10px"}}/>Hot Activities</Link>
                     </li>
                     <li className="active">
-                    <Link to={"/mypage"}><FontAwesomeIcon icon={faUser} style={{marginRight: "10px"}}/>My Activites</Link>
+                    <Link to={"/mypage"}><FontAwesomeIcon icon={faUser} style={{marginRight: "10px"}}/>My Activities</Link>
                     </li>
                 </ul>
             </nav>
