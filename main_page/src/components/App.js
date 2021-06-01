@@ -1,9 +1,8 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Redirect,
 } from "react-router-dom";
 
 import TagSearchPage from './views/TagSearchPage/TagSearchPage';
@@ -20,22 +19,10 @@ import { AuthProvider } from '../contexts/AuthContext'
 import PrivateRoute from "./PrivateRoute"
 import NonuserRoute from "./NonuserRoute"
 
-import {auth} from '../firebase'
 
 import './App.css';
 
 function App() {
-
-    const [currentUser, setCurrentUser] = useState();
-    const [loading, setLoading] = useState(true);
-    useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(user => {
-            setCurrentUser(user);
-            setLoading(false);
-        })
-
-        return unsubscribe
-    }, []);
 
     return (
         <AuthProvider>
@@ -53,12 +40,12 @@ function App() {
                     <Switch>
                     
                         <PrivateRoute exact path="/mypage" component={Mypage} />
+                        <PrivateRoute exact path="/myprogress" component={MyProgressPage} />
                         
-                        <Route exact path="/myprogress" render={(props) => (currentUser ? <MyProgressPage/> : <Redirect to="/login"/>)} />
                         
                         <Route exact path="/" component={TagSearchPage} />
                         <Route exact path="/result" component={TagSearchResultPage} />
-                        <Route exact path="/info" render={() => <ActivityInfoPage/>}/>
+                        <Route exact path="/info" component={ActivityInfoPage}/>
                         
                         <Route exact path="/category" component={CategoryPage} />
                         <NonuserRoute exact path="/login" component={LoginPage} />
