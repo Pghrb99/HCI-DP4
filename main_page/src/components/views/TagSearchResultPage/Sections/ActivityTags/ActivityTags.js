@@ -98,7 +98,7 @@ const ActivityTags = ({tags, docId, plusbutton}) => {
             })
         }
 
-        const top4QuerySnapshot = await activityDocRef.collection('Tags').orderBy('count').limit(4).get();
+        const top4QuerySnapshot = await activityDocRef.collection('Tags').orderBy('count', 'desc').limit(4).get();
         const finalTags = [];
         top4QuerySnapshot.forEach((doc) => {
             finalTags.push(doc.get("name"))
@@ -112,6 +112,7 @@ const ActivityTags = ({tags, docId, plusbutton}) => {
         });
 
         setTagPlus(false);
+        initializeTags();
     }
     
     const clickTPNo = () => {
@@ -209,7 +210,6 @@ const ActivityTags = ({tags, docId, plusbutton}) => {
                             <td className="table-right">
                                 {recommendTags.map((tag, i) => {
                                     if (tag.isSelected) {
-                                        console.log("hallo");
                                         return (<tr><Button variant='success' className={"|"+i+"|"} id='newtag-tag' onClick={clickCandTag} style={{height: "fit-content"}}><FontAwesomeIcon icon={faTag} style={{ marginRight: '10px'}} /><span className="newtagName">{tag.name}</span></Button></tr>);
                                     }
                                 })}
