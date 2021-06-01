@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react'
-import {Col, Row, Container} from 'react-bootstrap'
+
+import { Row, Col } from 'antd';
+
 import ActivityCard from '../ActivityCard/ActivityCard'
 import './Cardbox.scss'
 import Userinfo from './Userimfo/Userimfo'
@@ -111,61 +113,28 @@ const Cardbox = (userName) => {
 
 // if(allendCards.length != 0 || allprogressCards.length != 0){
     return (
-    <div className="Cardbox">
+    <div>
     { //console.log("a11")
     }
     {/* {console.log(endCards)} */}
-        <div id="cardbox-left">
-        <Userinfo userEmail={userName.userName}/>
-        </div>
-
-        <div id="cardbox-right">
-                <div id="cardbox-right-up">
-
-
-                    <Row xs={1} md={2}>
-                    {allprogressCards.map((card) => (
-                        
-                        <Col lg="3" className="card-column">
-                            
-                            <ActivityCard 
-                                userEmail={userName.userName}
-                                key={card.key}
-                                title={card.name} 
-                                imgSrc={card.img.src}
-                                tags={card.tags}
-                                docId={card.docId}
-                                givedocId={card.givedocId}
-                            />
-                        </Col>
-                        
-                        ))}
-                    </Row>
-
-                </div>
-
-                <div id="cardbox-right-down">
-                    <Row xs={1} md={2}>
-                    {allendCards.map((card) => (
-                        
-                        <Col lg="3" className="card-column">
-                            
-                            <ActivityCard 
-                                userEmail={userName.userName}
-                                key={card.key}
-                                title={card.name} 
-                                imgSrc={card.img.src}
-                                tags={card.tags}
-                                docId={card.docId}
-                                givedocId={card.givedocId}
-                            />
-                        </Col>
-                        
-                        ))}
-                    </Row>
-                </div>
-
-        </div>
+        <Row>
+            <Col span={6}>
+                <Userinfo userEmail={userName.userName}/>
+            </Col>
+            <Col span={6} offset={12}>
+                {allprogressCards.map((card) => (
+                    <ActivityCard 
+                        userEmail={userName.userName}
+                        key={card.key}
+                        title={card.name} 
+                        img={card.img}
+                        tags={card.tags}
+                        docId={card.docId}
+                        givedocId={card.givedocId}
+                    />
+                ))}
+            </Col>
+        </Row>
 
     </div>
     

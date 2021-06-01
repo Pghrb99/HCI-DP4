@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import { Card, Popover, OverlayTrigger } from 'react-bootstrap'
+
+import {Card, Popover, Typography} from 'antd'
+
 import Mypagehover from '../Mypagehover/Mypagehover'
 import Tags from '../../../../TagSearchResultPage/Sections/Tags/Tags'
 import ActivityTags from '../../../../TagSearchResultPage/Sections/ActivityTags/ActivityTags'
@@ -15,9 +17,12 @@ const StyledPopover = styled(Popover)`
       margin: 0px;
       opacity: 0.98;
 `
-const ActivityCard = ({givedocId, docId, userEmail, imgSrc, title, tags, text, chartData}) => {
+const ActivityCard = ({givedocId, docId, userEmail, img, title, tags, text, chartData}) => {
   const history = useHistory();
-console.log(docId)
+
+  const { Meta } = Card;
+  const { Title } = Typography;
+  
   const onClick = () => {
     history.push({
       pathname: '/info',
@@ -28,28 +33,29 @@ console.log(docId)
   }
 
     const popover = (
-        <StyledPopover className="popover-container">
-          <StyledPopover.Title as="h3">Activity Info</StyledPopover.Title>
-          <StyledPopover.Content>
-            <Mypagehover  userEmail= {userEmail} hoverdocId= {docId} />
-          </StyledPopover.Content>
-        </StyledPopover>
+        <Mypagehover  userEmail= {userEmail} hoverdocId= {docId} />
       );
     return (
-        <OverlayTrigger
-        placement="auto"
-        delay={{ show: 400, hide: 0 }}
-        overlay={popover}
-        > 
-            <Card style={{ width: '15rem' }} className="Card" onClick={onClick}>
-                <Card.Img variant="top" src={imgSrc} width={267} height={162}/>
-                <Card.Body>
-                    <Card.Title style={{color : 'black',  textAlign: 'left' }}>{title}</Card.Title>
-                    {/* <Tags tags={tags}/> */}
-                    <ActivityTags tags={tags}/>
-                </Card.Body>
+      <>
+        <Popover
+        content={popover}
+        title={<Title level={5} style={{textAlign: "left"}}>Activity Info</Title>}
+        mouseEnterDelay={0.4}
+        placement="rightTop"
+        >
+
+            <Card
+            className="Card"
+            hoverable
+            style={{ width: '15rem' }}
+            cover={<img alt={img.alt} src={img.src} />}
+            onClick={onClick}
+            >
+              <Meta title={<Title level={4} ellipsis={true} style={{ width: 267, height: 162 }}>{title}</Title>}/>
+              <ActivityTags tags={tags}/>
             </Card>
-        </OverlayTrigger>
+        </Popover>
+      </>
     )
 }
 

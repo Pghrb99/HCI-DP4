@@ -1,6 +1,7 @@
 import './Userimfo.scss'
 import React, {useState, useEffect} from 'react';
 import {db} from '../../../../../../../firebase'
+import { Card } from 'antd';
 
 const Userinfo = (userEmail) => {
 const [userdata, setresult] = useState([]);
@@ -47,9 +48,7 @@ console.log(userEmail.userEmail)
 
     if(userdata[0] != undefined){
     return (
-    <div id = 'maincontext' >
-        {/* <div style={image} > </div> */}
-        <br/>
+    <Card title="User Info" style={{ width: 300 }}>
         <p id = 'userimfo' > User Info </p>
         <p> Name : {userdata[0].name} </p>
         <p> Birthday : {userdata[0].birthday} </p>
@@ -60,8 +59,7 @@ console.log(userEmail.userEmail)
         <p> Completed Hobbies  : {endnum} </p>
         <p> About Me  : <br/> 
         {userdata[0].aboutMe} </p>
-    </div>
-
+    </Card>
     
     )
 }
