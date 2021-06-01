@@ -234,6 +234,18 @@ const ProgressDocument = ({ currentUser, docId }) => {
         for (let i = 0; i < useractivity.length; i++) {
             db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements').doc(useractivity[i].name).set(useractivity[i]);
         }
+
+        let temconplete = 0;
+        for(let i=0;i<useractivity.length;i++){
+            if(useractivity[i].isSelected == true) break;
+            else temconplete++;
+        }
+        if(temconplete == useractivity.length){
+            (async () => {
+            const cityRefforPyes = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId);
+            await cityRefforPyes.update({ isComplete: false });
+            })();
+        }
     }
 
     const clickMNo = () => {
