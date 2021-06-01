@@ -10,6 +10,7 @@
   background-size: cover;
   background-position: center;
   z-index: 0;
+
   .align-self-start {
     align-self: flex-start;
     z-index: 1;
@@ -49,16 +50,16 @@
     padding-left: 70px;
     color: white;
   }
+}
 
-  #MP-actadd {
-    float: right;
-    margin: 0 50px 0 0;
-    border: none;
-    cursor: pointer;
-    padding: 0 20px 0 20px;
-    font-size: 24px;
-    font-weight: 600;
-  }
+#MP-actadd {
+  float: right;
+  margin: 38px 50px 0 0;
+  border: none;
+  cursor: pointer;
+  padding: 0 20px 0 20px;
+  font-size: 24px;
+  font-weight: 600;
 }
 
 #MP-addact-formlabel {
