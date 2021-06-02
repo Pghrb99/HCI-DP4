@@ -88,10 +88,14 @@ const TopBar = ({ currentUser, docId}) => {
     }
     return (
         <div id="MPP-nav-container" style={currentDoc && {backgroundImage: `url(${currentDoc.coverImg.src})`}}>
-            <Pagination variant="success" id="MPP-label">
+            <div id="MPP-label">
+            <span style={{marginRight:'10px', float:'left'}}>Page Radio Buttons</span>
+            <Pagination variant="success">
                 <Pagination.Item id="MMP-info-label" variant="success" active={false}><div onClick={sendHistory} style={{color: "rgb(77, 163, 77)"}}>Activity Information</div></Pagination.Item>
                 <Pagination.Item id="MMP-prog-label" variant="success" active={true}>My Progress</Pagination.Item>
             </Pagination>
+            </div>
+            
             <div className="align-self-end">
                 {currentUser ?
                     <Nav className="mt-3">
@@ -122,7 +126,7 @@ const TopBar = ({ currentUser, docId}) => {
                     }
                 </div>
                 {completebool ?
-                    <Button variant='success' id='MPP-topbar-complete' onClick={clickCancel}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>
+                    <Button variant='success' id='MPP-topbar-complete' active>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>
                     :
                     <Button variant='secondary' id='MPP-topbar-ongoing' onClick={clickCancel}>Ongoing<FontAwesomeIcon icon={faTimes} style={{marginLeft:'10px'}}/></Button>
                 }

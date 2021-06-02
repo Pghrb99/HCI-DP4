@@ -44,11 +44,11 @@ console.log(userEmail.userEmail)
 
 
         }, []);
-
+    
 
     if(userdata[0] != undefined){
     return (
-    <Card title="User Info" style={{ width: "100%" }} headStyle={{ fontSize: "40px" }} bodyStyle={{ fontSize: "20px", paddingLeft:'0', margin:'0' }}>
+    <Card id="MP-userinfo-card"title="User Info" style={{ width: "100%" }} headStyle={{ fontSize: "30px" }} bodyStyle={{ fontSize: "20px", paddingLeft:'0', margin:'0' }}>
         <p> Name : {userdata[0].name} </p>
         <p> Birthday : {userdata[0].birthday} </p>
         <p> Age(Sex) : {userdata[0].age}({userdata[0].sex}) </p>
@@ -56,8 +56,9 @@ console.log(userEmail.userEmail)
         <p> Email : {userdata[0].email} </p>
         <p> Hobbies in Progress : {ongoingnum} </p>
         <p> Completed Hobbies  : {endnum} </p>
-        <p> About Me  : <br/> 
-        {userdata[0].aboutMe} </p>
+        {/*<p> About Me : <br/> 
+        <span>&nbsp;&nbsp;&nbsp;{userdata[0].aboutMe}</span> </p>*/}
+        <p> About Me : {userdata[0].aboutMe}</p>
     </Card>
     
     )

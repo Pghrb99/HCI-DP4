@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Nav, Modal, Button, Pagination } from 'react-bootstrap';
+import { Nav, Modal, Button, Pagination, Badge } from 'react-bootstrap';
 import { Link} from "react-router-dom";
 import ActivityTags from '../../../TagSearchResultPage/Sections/ActivityTags/ActivityTags'
 import './TopBar.scss'
@@ -152,7 +152,8 @@ const TopBar = ({currentUser, docId}) => {
                 </div>
                 { !ongoingbool && <Button id="AIP-topbar-start" onClick={clickStart}>Start!</Button> }
                 { ongoingbool && !completebool && <Button variant='secondary' id='AIP-topbar-ongoing' onClick={clickCancel}>Ongoing<FontAwesomeIcon icon={faTimes} style={{marginLeft:'10px'}}/></Button>}
-                { ongoingbool && completebool && <Button variant='success' id='AIP-topbar-complete' onClick={clickCancel}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>}
+                {/* ongoingbool && completebool && <Button variant='success' id='AIP-topbar-complete' onClick={clickCancel}>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>*/}
+                { ongoingbool && completebool && <Button variant='success' id='AIP-topbar-complete' active>Complete<FontAwesomeIcon icon={faCheck} style={{marginLeft:'10px'}}/></Button>}
                 <Modal show={start} onHide={clickSNo}>
                     <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom:'5px'}}>
                         <Modal.Title>Start Activity</Modal.Title>
