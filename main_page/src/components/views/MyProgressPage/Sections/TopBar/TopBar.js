@@ -89,10 +89,10 @@ const TopBar = ({ currentUser, docId}) => {
     return (
         <div id="MPP-nav-container" style={currentDoc && {backgroundImage: `url(${currentDoc.coverImg.src})`}}>
             <div id="MPP-label">
-            <span style={{marginRight:'10px', float:'left'}}>Page Radio Buttons</span>
+            {/*<span style={{marginRight:'10px', float:'left'}}>Page Radio Buttons</span>*/}
             <Pagination variant="success">
-                <Pagination.Item id="MMP-info-label" variant="success" active={false}><div onClick={sendHistory} style={{color: "rgb(77, 163, 77)"}}>Activity Information</div></Pagination.Item>
-                <Pagination.Item id="MMP-prog-label" variant="success" active={true}>My Progress</Pagination.Item>
+                <Pagination.Item id="MMP-info-label" variant="success" active={false}><div onClick={sendHistory} style={{color: "rgb(77, 163, 77)"}}>Go to Activity Information Page</div></Pagination.Item>
+                <Pagination.Item id="MMP-prog-label" variant="success" active={true}>Current: My Progress Page</Pagination.Item>
             </Pagination>
             </div>
             

@@ -221,13 +221,15 @@ const ActivityTags = ({tags, docId, plusbutton}) => {
                             </td>
                         </tbody>
                     </table>
-                    <div style={{ float: 'right', width: '48%', margin:'20px 20px', textAlign: 'left' }}>
+                    <p style={{float: 'left', marginTop: '37px', paddingLeft: '10px', fontSize: '16px'}}>If you click a tag, it will move to the opposite side.</p>
+                    <div style={{ float: 'right', width: '47%', margin:'20px 20px', textAlign: 'left' }}>
                         <InputGroup className="mb-3">
                             <FormControl id='newtag-input' value={tagText} placeholder="Enter a custom tag" aria-label="Enter a custom tag" onKeyPress={pressEnter}  onChange={(e) => setTagText(e.target.value)}/>
                             <InputGroup.Append>
                                 <Button variant='success' id='newtag-add' onClick={clickAdd}>Add</Button>
                             </InputGroup.Append>
                         </InputGroup>
+                        
                     </div>
                 </Modal.Body>
                 <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>

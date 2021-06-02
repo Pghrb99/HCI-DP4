@@ -118,8 +118,8 @@ const TopBar = ({currentUser, docId}) => {
     return (
         <div id="AIP-nav-container" style={currentDoc && {backgroundImage: `url(${currentDoc.coverImg.src})`}}>
             <Pagination variant="success" id="AIP-label">
-                <Pagination.Item id="AIP-info-label" variant="success" active={true}>Activity Information</Pagination.Item>
-                <Pagination.Item id="AIP-prog-label" variant="success" active={false} disabled={!ongoingbool}><div onClick={sendHistory} style={{color: "rgb(77, 163, 77)"}}>My Progress</div></Pagination.Item>
+                <Pagination.Item id="AIP-info-label" variant="success" active={true}>Current: Activity Information Page</Pagination.Item>
+                <Pagination.Item id="AIP-prog-label" variant="success" active={false} disabled={!ongoingbool}><div onClick={sendHistory} style={{color: "rgb(77, 163, 77)"}}>Go to My Progress Page</div></Pagination.Item>
             </Pagination>
             <div className="align-self-end">
                 {currentUser ?
