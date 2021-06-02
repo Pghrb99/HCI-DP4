@@ -176,7 +176,7 @@ const TopBar = ({currentUser, docId}) => {
                     </Modal.Header>
                     <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0'}}>
                         <p style={{fontFamily:'arial', color: 'black', fontSize:'20px', marginLeft:'20px', marginRight:'20px'}}>Are you sure you want to cancel?</p>
-                        <p style={{fontFamily:'arial', color: 'black', fontSize:'16px', marginLeft:'20px', marginRight:'20px'}}>(If you select 'Yes,' your review will be removed autometically.)</p>
+                        <p style={{fontFamily:'arial', color: 'black', fontSize:'16px', marginLeft:'20px', marginRight:'20px'}}>(If you select 'Yes,' you can only remove your review.)</p>
                     </Modal.Body>
                     <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px'}}>
                         <Button variant="primary" onClick={clickCYes}>
