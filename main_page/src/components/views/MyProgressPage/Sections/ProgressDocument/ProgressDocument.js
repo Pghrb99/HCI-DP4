@@ -817,8 +817,8 @@ const ProgressDocument = ({ currentUser, docId }) => {
                     </Modal.Footer>
                 </Modal>
                 <h3>Positive Opinions</h3>
-                {!(reviewlist.filter((x) => x.isPositive).length) ?
-                    <div style={{ width: '100%', marginTop: '20px', textAlign: 'center', fontSize: "24px", color: "grey" }}>There is no positive review.</div>
+                {!reviewlist.length ?
+                    <div style={{ width: '100%', marginTop: '20px', textAlign: 'center', fontSize: "24px", color: "grey" }}>There is no positive opinion.</div>
                     :
                     <div id="MMP-reviews-positive">
                         {reviewlist.map(rev => {
@@ -835,8 +835,8 @@ const ProgressDocument = ({ currentUser, docId }) => {
                     </div>
                 }
                 <h3>Negative Opinions</h3>
-                {!(reviewlist.filter((x) => !(x.isPositive)).length) ?
-                    <div style={{ width: '100%', marginTop: '20px', textAlign: 'center', fontSize: "24px", color: "grey" }}>There is no negative review.</div>
+                {!reviewlist.length ?
+                    <div style={{ width: '100%', marginTop: '20px', textAlign: 'center', fontSize: "24px", color: "grey" }}>There is no negative opinion.</div>
                     :
                     <div id="MMP-reviews-negative">
                         {reviewlist.map(rev => {

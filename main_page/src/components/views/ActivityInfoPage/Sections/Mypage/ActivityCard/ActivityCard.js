@@ -19,7 +19,7 @@ const ActivityCard = ({givedocId, docId, userEmail, img, title, tags, text, char
   
   const onClick = () => {
     history.push({
-      pathname: '/info',
+      pathname: '/myprogress',
       state: {
         docId: givedocId
       }
