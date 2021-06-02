@@ -33,7 +33,7 @@ const ActivityCard = ({givedocId, docId, userEmail, img, title, tags, text, char
       <>
         <Popover
         content={popover}
-        title={<Title level={5} style={{textAlign: "left"}}>Activity Info</Title>}
+        title={<Title level={5} style={{ marginBottom: '0', padding: '5px auto', fontSize: '20px', textAlign: "left"}}>Activity Info</Title>}
         mouseEnterDelay={0.4}
         placement="rightTop"
         >

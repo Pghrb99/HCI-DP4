@@ -50,15 +50,17 @@ useEffect(() => {
 
     if(countend != countlength){
         let num =1;
-        context = <p>Remaining Achievements</p>
+        context = <p id="MP-cardhover-subtitle">Remaining Achievements</p>
         for(let i=0; i<textprogress.length; i++){
                 context1.push(<div> {num}) {textprogress[i].name} </div>);
                 num++;
         }
     }
-    
+    else if (countend == 0) {
+        context = <p>You did not select any achievements.</p>
+    }
     else{
-        context = <p>Done Achievements</p>
+        context = <p id="MP-cardhover-subtitle">Done Achievements</p>
         let num = 1;
         for(let i=0; i<textend.length; i++){
             context1.push(<div> {num}) {textend[i].name} </div>);
@@ -69,7 +71,7 @@ useEffect(() => {
 
 
     return (    <div>
-        <p>Achivement Progress</p>
+        <p id="MP-cardhover-subtitle">Achivement Progress</p>
         <ProgressBar now={(countend/countlength)*100} 
         // label={`${num}%`} 
         />
