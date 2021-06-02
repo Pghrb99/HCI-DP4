@@ -29,8 +29,11 @@
 }
 
 .table-right {
-	border-left: 2px dashed black;
 	padding-left: 15px;
+}
+
+.table-left {
+	border-right: 2px dashed black;
 }
 
 #newtag-table-title {

@@ -1,20 +1,26 @@
-p {
-  margin-top: auto 0;
-  margin-left: 60px;
-}
 
-.image {
-  // background-position :"center";
-  // background-image: url('../../../imgs/hockey_world_1400.png');
-  height: "75vh";
-  width: "100vw";
-  //    height : "275px";
-  //    width : "380px";
-  // backgroundColor: 'aqua',
-  // backgroundRepeat: no-repeat;
-  background-position: "center";
-  background-size: "cover";
-  // opacity : "0.7"
+
+#MP-userinfo-card {
+  p {
+    width: '100vw';
+    margin-top: auto 0;
+    margin-left: 40px;
+    word-break: break-all;
+  }
+  
+  .image {
+    // background-position :"center";
+    // background-image: url('../../../imgs/hockey_world_1400.png');
+    height: "75vh";
+    width: "100vw";
+    //    height : "275px";
+    //    width : "380px";
+    // backgroundColor: 'aqua',
+    // backgroundRepeat: no-repeat;
+    background-position: "center";
+    background-size: "cover";
+    // opacity : "0.7"
+  }
 }
 
 #userimfo {

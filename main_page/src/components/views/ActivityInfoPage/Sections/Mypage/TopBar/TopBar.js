@@ -272,7 +272,14 @@ const TopBar = ({ userName }) => {
                                 <Form.Control as="input" placeholder="Image URL (We recommend a horizontally long image)" value={actcoverimg} onChange={e => { setActcoverimg(e.target.value) }} />
                             </Form.Group>
                             <Form.Group>
-                                <div><Form.Label id="MP-addact-formlabel">Categories</Form.Label></div>
+                                <div><Form.Label id="MP-addact-formlabel">Categories{actcat.map((cat, i) => {
+                                    if (i == 0) {
+                                        return ": "+cat;
+                                    }
+                                    else {
+                                        return ", "+cat;
+                                    }
+                                })}</Form.Label></div>
                                 <div>
                                     <Form.Control id="MP-list-input" as="input" value={actcatt} onChange={e => {setActcatt(e.target.value)}} onKeyPress={catEnter}/>
                                     {/*<Form.Control as='select'>
@@ -285,7 +292,14 @@ const TopBar = ({ userName }) => {
                             </Form.Group>
                             <Form.Group>
                                 <div style={{visibility:'hidden', fontSize:'1px'}}>oooo</div>
-                                <div><Form.Label id="MP-addact-formlabel">Tags</Form.Label></div>
+                                <div><Form.Label id="MP-addact-formlabel">Tags{acttag.map((tag, i) => {
+                                    if (i == 0) {
+                                        return ": "+tag;
+                                    }
+                                    else {
+                                        return ", "+tag;
+                                    }
+                                })}</Form.Label></div>
                                 <div>
                                     <Form.Control id="MP-list-input" as="input" placeholder="Short Word" value={acttagt} onChange={e => {setActtagt(e.target.value)}} onKeyPress={tagEnter}/>
                                     <Button variant="dark" onClick={() => {setActtag(acttag.slice(0, acttag.length-1));}} id="MP-form-undo" disabled={!(acttag.length)}>Undo</Button>
@@ -305,7 +319,7 @@ const TopBar = ({ userName }) => {
                                 <RangeSlider value={actnum[4]} max={10} step={1} variant='success' onChange={e => setActnum([actnum[0], actnum[1], actnum[2], actnum[3], parseInt(e.target.value)])} />
                             </Form.Group>
                             <Form.Group>
-                                <div><Form.Label id="MP-addact-formlabel">Images</Form.Label></div>
+                                <div><Form.Label id="MP-addact-formlabel">Images: {actimg.length}</Form.Label></div>
                                 <div>
                                     <Form.Control id="MP-list-input" as="input" placeholder="Image URL" value={actimgt} onChange={e => {setActimgt(e.target.value)}} onKeyPress={imgEnter}/>
                                     <Button variant="dark" onClick={() => {setActimg(actimg.slice(0, actimg.length-1));}} id="MP-form-undo" disabled={!(actimg.length)}>Undo</Button>
@@ -322,7 +336,14 @@ const TopBar = ({ userName }) => {
                                 <Form.Control as="textarea" rows={3} value={actdes1} onChange={e => { setActdes1(e.target.value) }} />
                             </Form.Group>
                             <Form.Group>
-                                <div><Form.Label id="MP-addact-formlabel">Description - Links</Form.Label></div>
+                                <div><Form.Label id="MP-addact-formlabel">Description - Links{actdes2.map((link, i) => {
+                                    if (i == 0) {
+                                        return ": "+link[0];
+                                    }
+                                    else {
+                                        return ", "+link[0];
+                                    }
+                                })}</Form.Label></div>
                                 <Form.Control id="MP-list-input2" as="input" placeholder="Site Name" value={actdes2t1} onChange={e => {setActdes2t1(e.target.value)}} onKeyPress={des2Enter}/>
                                 <Form.Control id="MP-list-input2" as="input" placeholder="Site URL" value={actdes2t2} onChange={e => {setActdes2t2(e.target.value)}} onKeyPress={des2Enter}/>
                                 <Button variant="dark" onClick={() => {setActdes2(actdes2.slice(0, actdes2.length-1));}} id="MP-form-undo" disabled={!(actdes2.length)}>Undo</Button>
@@ -334,14 +355,28 @@ const TopBar = ({ userName }) => {
                                 <Form.Control as="textarea" rows={2} value={actreq} onChange={e => { setActreq(e.target.value) }} />
                             </Form.Group>
                             <Form.Group>                       
-                                <div><Form.Label id="MP-addact-formlabel">Communities - Links</Form.Label></div>
+                                <div><Form.Label id="MP-addact-formlabel">Communities - Links{actcom1.map((link, i) => {
+                                    if (i == 0) {
+                                        return ": "+link[0];
+                                    }
+                                    else {
+                                        return ", "+link[0];
+                                    }
+                                })}</Form.Label></div>
                                 <Form.Control id="MP-list-input2" as="input" placeholder="Site Name" value={actcom1t1} onChange={e => {setActcom1t1(e.target.value)}} onKeyPress={com1Enter}/>
                                 <Form.Control id="MP-list-input2" as="input" placeholder="Site URL" value={actcom1t2} onChange={e => {setActcom1t2(e.target.value)}} onKeyPress={com1Enter}/>
                                 <Button variant="dark" onClick={() => {setActcom1(actcom1.slice(0, actcom1.length-1));}} id="MP-form-undo" disabled={!(actcom1.length)}>Undo</Button>
                                 <Button variant="info" onClick={clickCom1Add} id="MP-form-add">Add</Button>
                             </Form.Group>
                             <Form.Group>
-                                <div><Form.Label id="MP-addact-formlabel">Communities - Clubs</Form.Label></div>
+                                <div><Form.Label id="MP-addact-formlabel">Communities - Clubs{actcom2.map((club, i) => {
+                                    if (i == 0) {
+                                        return ": "+club[0];
+                                    }
+                                    else {
+                                        return ", "+club[0];
+                                    }
+                                })}</Form.Label></div>
                                 <Form.Control id="MP-list-input3" as="input" placeholder="Club Name" value={actcom2t1} onChange={e => {setActcom2t1(e.target.value)}} onKeyPress={com2Enter}/>
                                 <Form.Control id="MP-list-input3" as="input" placeholder="Region" value={actcom2t2} onChange={e => {setActcom2t2(e.target.value)}} onKeyPress={com2Enter}/>
                                 <Form.Control id="MP-list-input3" as="input" placeholder="Contact" value={actcom2t3} onChange={e => {setActcom2t3(e.target.value)}} onKeyPress={com2Enter}/>
