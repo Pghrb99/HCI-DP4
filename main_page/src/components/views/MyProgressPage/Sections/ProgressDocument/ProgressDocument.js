@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { ProgressBar, ListGroup, Badge, Modal, Button, ButtonGroup, ToggleButton, Form } from 'react-bootstrap'
+import { ProgressBar, ListGroup, Badge, Modal, Button, ButtonGroup, ToggleButton, Form, Alert } from 'react-bootstrap'
 import RangeSlider from 'react-bootstrap-range-slider';
 import './ProgressDocument.scss';
 import $ from 'jquery';
 import Review from '../../../ActivityInfoPage/Sections/Review/Review';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faPencilAlt, faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { db } from '../../../../../firebase'
+import swal from 'sweetalert';
 
 const ProgressDocument = ({ currentUser, docId }) => {
     const [countend, setend] = useState(0);
@@ -24,6 +25,9 @@ const ProgressDocument = ({ currentUser, docId }) => {
     const [attained, setAttained] = useState("");
     const [tempurl, setTempurl] = useState('');
     const [review, setReview] = useState(false);
+    const [achievements, setAchievements] = useState(false);
+    const [achivetext1, setachivetext1] = useState(" ");
+    const [achivetext2, setachivetext2] = useState(" ");
     const [text, setText] = useState(""); // useState(submit ? reviewlist[0]['content'] : "");
     const [recommend, setRecommend] = useState(true); // useState(submit ? reviewlist[0]['isPositive'] : true);
     const [range, setRange] = useState([5, 5, 5, 5, 5]); // useState(submit ? reviewlist[0]['data'] : [5, 5, 5, 5, 5]);
@@ -32,6 +36,7 @@ const ProgressDocument = ({ currentUser, docId }) => {
     const [completebool, setcompletebool] = useState(false);
     const [ongoingbool, setongoingbool] = useState(false);
     const [submitbool, setSubmitbool] = useState(false);
+    const [alertComplete, setAlertComplete] = useState(false);
 
     useEffect(() => {
         db.collection("Activities").doc(docId).get().then((doc) => {
@@ -86,8 +91,8 @@ const ProgressDocument = ({ currentUser, docId }) => {
                 }
             });
             setReviewlist(tempReviewList);
+            
         });
-
         (async () => {
             let temparray = []
             let reloadtest1 = true;
@@ -236,14 +241,14 @@ const ProgressDocument = ({ currentUser, docId }) => {
         }
 
         let temconplete = 0;
-        for(let i=0;i<useractivity.length;i++){
-            if(useractivity[i].isSelected == true) break;
+        for (let i = 0; i < useractivity.length; i++) {
+            if (useractivity[i].isSelected == true) break;
             else temconplete++;
         }
-        if(temconplete == useractivity.length){
+        if (temconplete == useractivity.length) {
             (async () => {
-            const cityRefforPyes = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId);
-            await cityRefforPyes.update({ isComplete: false });
+                const cityRefforPyes = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId);
+                await cityRefforPyes.update({ isComplete: false });
             })();
         }
     }
@@ -313,22 +318,22 @@ const ProgressDocument = ({ currentUser, docId }) => {
             let snapshot2img = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements');
             const snapshot3img = await snapshot2img.get();
             snapshot3img.forEach(doc => {
-                if(doc.get("isCompleted") == true){
+                if (doc.get("isCompleted") == true) {
                     console.log("???")
                     console.log(temparray)
-                temparray.push({'photourl' : doc.get("photourl")})
-                if(temparray.length != 0 ){
-                (async () => {
-                    let snapshot2img = db.collection('Activities').doc(docId).collection('Reviews');
-                    const snapshot3img = await snapshot2img.get();
-                    snapshot3img.forEach(doc1 => {
-                        if(doc1.get("uid") == currentUser.uid){
-                                db.collection('Activities').doc(docId).collection('Reviews').doc(doc1.id).collection('PhotoUrl').doc().set({'photourl' : doc.get("photourl")});
-                                console.log("뭐고")
-                        }
-                    })
-                })();
-            }
+                    temparray.push({ 'photourl': doc.get("photourl") })
+                    if (temparray.length != 0) {
+                        (async () => {
+                            let snapshot2img = db.collection('Activities').doc(docId).collection('Reviews');
+                            const snapshot3img = await snapshot2img.get();
+                            snapshot3img.forEach(doc1 => {
+                                if (doc1.get("uid") == currentUser.uid) {
+                                    db.collection('Activities').doc(docId).collection('Reviews').doc(doc1.id).collection('PhotoUrl').doc().set({ 'photourl': doc.get("photourl") });
+                                    console.log("뭐고")
+                                }
+                            })
+                        })();
+                    }
                 }
             })
         })();
@@ -398,22 +403,22 @@ const ProgressDocument = ({ currentUser, docId }) => {
             let snapshot2img = db.collection('UserInfo').doc(currentUser.email).collection('Activities').doc(docId).collection('Achievements');
             const snapshot3img = await snapshot2img.get();
             snapshot3img.forEach(doc => {
-                if(doc.get("isCompleted") == true){
+                if (doc.get("isCompleted") == true) {
                     console.log("???")
                     console.log(temparray)
-                temparray.push({'photourl' : doc.get("photourl")})
-                if(temparray.length != 0 ){
-                (async () => {
-                    let snapshot2img = db.collection('Activities').doc(docId).collection('Reviews');
-                    const snapshot3img = await snapshot2img.get();
-                    snapshot3img.forEach(doc1 => {
-                        if(doc1.get("uid") == currentUser.uid){
-                                db.collection('Activities').doc(docId).collection('Reviews').doc(doc1.id).collection('PhotoUrl').doc().set({'photourl' : doc.get("photourl")});
-                                console.log("뭐고")
-                        }
-                    })
-                })();
-            }
+                    temparray.push({ 'photourl': doc.get("photourl") })
+                    if (temparray.length != 0) {
+                        (async () => {
+                            let snapshot2img = db.collection('Activities').doc(docId).collection('Reviews');
+                            const snapshot3img = await snapshot2img.get();
+                            snapshot3img.forEach(doc1 => {
+                                if (doc1.get("uid") == currentUser.uid) {
+                                    db.collection('Activities').doc(docId).collection('Reviews').doc(doc1.id).collection('PhotoUrl').doc().set({ 'photourl': doc.get("photourl") });
+                                    console.log("뭐고")
+                                }
+                            })
+                        })();
+                    }
                 }
             })
         })();
@@ -512,10 +517,25 @@ const ProgressDocument = ({ currentUser, docId }) => {
 
                 }
             }
+            if ((calculateTotal() - calculateCompleted() == 1)) {
+                // alert("You have completed all the achievements you set as your goal! However, still you can set and carry out new achievements.");
+                // setAlertComplete(true);
+                // swal("Congratulation!", "You have completed all the achievements you set as your goal! However, still you can set and carry out new achievements.", "success");
+                swal({
+                    title: "Congratulation!",
+                    text: "You have completed all the achievements you set as your goal! However, still you can set and carry out new achievements.",
+                    icon: "success",
+                    button: "Got It!"
+                })
+            }
             setProve(false);
         }
         else {
-            alert("No Photo!");
+            swal({
+                title: "No Photo!",
+                icon: "error",
+                button: "Close"
+            })
         }
     }
 
@@ -524,6 +544,34 @@ const ProgressDocument = ({ currentUser, docId }) => {
         setTempurl('');
         setProve(false);
     }
+
+    const clickAchievement = () => {
+        setAchievements(true);
+    }
+
+    const clickAchYes = () => {
+        let temparray = achievlist;
+        temparray.push({ name: achivetext1, explain: achivetext2 })
+        setachievlist(temparray)
+        if (achivetext1 != " ") {
+            let achivdata = {
+                name: achivetext1,
+                explain: achivetext2,
+                isCompleted: false,
+                isSelected: false,
+                photourl: ""
+            }
+            db.collection('Activities').doc(docId).collection('Achievements').doc().set(achivdata);
+        }
+
+        setAchievements(false);
+
+    }
+
+    const clickAchNo = () => {
+        setAchievements(false);
+    }
+
 
     const clickCYes = () => {
         let useractivity = [];
@@ -631,8 +679,32 @@ const ProgressDocument = ({ currentUser, docId }) => {
             <div id="MMP-selectedachiev" style={{ marginTop: '30px' }}>
                 <div style={{ width: '100%', display: 'inline-block' }}>
                     <h2 style={{ float: 'left' }}>Selected Achievements</h2>
-                    <Button id="MPP-achievements-modify" variant="success" onClick={clickModify}><FontAwesomeIcon icon={faPlus} style={{ marginRight: "10px" }} />Modify Achievements</Button>
+                    <Button id="MMP-add-achiev" variant="success" onClick={clickAchievement} disabled={!ongoingbool || !currentUser}><FontAwesomeIcon icon={faPlus} style={{ marginRight: "10px" }} />Add Achievement</Button>
+                    <Button id="MPP-achievements-modify" variant="success" onClick={clickModify}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Modify Achievements</Button>
                 </div>
+                <Modal show={achievements} onHide={clickAchNo}>
+                    <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom: '5px' }}>
+                        <Modal.Title>Add a New Achievement</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0' }}>
+                        <Form style={{ marginLeft: '20px', marginRight: '20px' }}>
+                            <Form.Group controlId="MMP-text">
+                                <Form.Label id="MMP-reviews-formlabel">Achievement Name(Title)</Form.Label>
+                                <Form.Control as="input" value={achivetext1} onChange={e => { setachivetext1(e.target.value) }} />
+                                <Form.Label id="MMP-reviews-formlabel">Achievement Explain</Form.Label>
+                                <Form.Control as="input" value={achivetext2} onChange={e => { setachivetext2(e.target.value) }} />
+                            </Form.Group>
+                        </Form>
+                    </Modal.Body>
+                    <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px' }}>
+                        <Button variant="primary" onClick={clickAchYes}>
+                            Submit
+                        </Button>
+                        <Button variant="danger" onClick={clickAchNo}>
+                            Cancel
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
                 <Modal size='lg' show={modify} onHide={clickMNo}>
                     <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom: '5px' }}>
                         <Modal.Title>Modify Selected Achievements</Modal.Title>
@@ -640,25 +712,25 @@ const ProgressDocument = ({ currentUser, docId }) => {
                     <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0' }}>
                         {(!achievlist.length) ?
                             <div style={{ width: '100%', marginTop: '20px', textAlign: 'center', fontSize: "24px", color: "grey" }}>There is no achievement yet.<br></br>You can add achievements for other users at Activity Information Page!</div>
-                        :
-                        <ListGroup id="MMP-achievements-modallist">
-                            {achievlist.map((achiev, i) => {
-                                if (achiev['isSelected']) {
-                                    return (
-                                        <ListGroup.Item>
-                                            <Badge variant="secondary" className={"MMP-success |" + i + "|"} onClick={clickModifyLabel}>{achiev['name']}</Badge> {achiev['explain']}
-                                        </ListGroup.Item>
-                                    )
-                                }
-                                else {
-                                    return (
-                                        <ListGroup.Item>
-                                            <Badge variant="secondary" className={"|" + i + "|"} onClick={clickModifyLabel}>{achiev['name']}</Badge> {achiev['explain']}
-                                        </ListGroup.Item>
-                                    )
-                                }
-                            })}
-                        </ListGroup>
+                            :
+                            <ListGroup id="MMP-achievements-modallist">
+                                {achievlist.map((achiev, i) => {
+                                    if (achiev['isSelected']) {
+                                        return (
+                                            <ListGroup.Item>
+                                                <Badge variant="secondary" className={"MMP-success |" + i + "|"} onClick={clickModifyLabel}>{achiev['name']}</Badge> {achiev['explain']}
+                                            </ListGroup.Item>
+                                        )
+                                    }
+                                    else {
+                                        return (
+                                            <ListGroup.Item>
+                                                <Badge variant="secondary" className={"|" + i + "|"} onClick={clickModifyLabel}>{achiev['name']}</Badge> {achiev['explain']}
+                                            </ListGroup.Item>
+                                        )
+                                    }
+                                })}
+                            </ListGroup>
                         }
                     </Modal.Body>
                     <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px' }}>
@@ -670,7 +742,6 @@ const ProgressDocument = ({ currentUser, docId }) => {
                         </Button>
                     </Modal.Footer>
                 </Modal>
-
                 {(emptyCheck(achievlist.map(achiev => { return achiev['isSelected']; }))) ?
                     <div style={{ width: '100%', marginTop: '20px', textAlign: 'center', fontSize: "24px", color: "grey" }}>You have not selected achievements yet.</div>
                     :
@@ -745,7 +816,7 @@ const ProgressDocument = ({ currentUser, docId }) => {
                     <h2 style={{ float: 'left' }}>Reviews</h2>
                     {submitbool ?
                         <div>
-                            <Button id="MMP-reviews-remove" variant="danger" onClick={clickRemove}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Remove your Review</Button>
+                            <Button id="MMP-reviews-remove" variant="danger" onClick={clickRemove}><FontAwesomeIcon icon={faTrashAlt} style={{ marginRight: "10px" }} />Remove your Review</Button>
                             <Button id="MMP-reviews-write" variant="success" onClick={clickReview}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Modify your Review</Button>
                         </div>
                         :

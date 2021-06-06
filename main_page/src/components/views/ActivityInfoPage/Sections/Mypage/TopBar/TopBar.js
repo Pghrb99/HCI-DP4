@@ -251,6 +251,7 @@ const TopBar = ({ userName }) => {
                 <span>Tags applied : </span><Tags tags={tags}/>
             </div> */}
             <div className="align-self-start" id="MP-bottom">
+                <span style={{float:'left', marginTop:'1%', fontSize:'24px'}}>If you click a card, then you will go to its MyProgressPage.</span>
                 <Button variant='success' id="MP-actadd" onClick={clickAddAct}>Add Activity</Button>
             </div>
             <Modal size='lg' show={addact} onHide={clickAANo}>

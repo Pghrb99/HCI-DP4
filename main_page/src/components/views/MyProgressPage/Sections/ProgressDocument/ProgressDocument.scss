@@ -1,3 +1,9 @@
+.swal-button {
+    font-size: 20px;
+    background-color: #333333;
+}
+
+
 #progressdocument {
     padding: 20px 70px 20px 70px;
     position: relative;
@@ -22,6 +28,18 @@
 
 #MMP-percentage-bar {
     height: 30px;
+    font-size: 20px;
+}
+
+#MMP-add-achiev {
+    width: 250px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin-top: 30px;
+    margin-left: 20px;
+    float: right;
+    background-color: #5C996B;
+    border: none;
     font-size: 20px;
 }
 

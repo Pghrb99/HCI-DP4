@@ -4,7 +4,7 @@ import RangeSlider from 'react-bootstrap-range-slider';
 import './InfoDocument.scss';
 import Review from '../Review/Review'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faInfo, faChevronCircleDown, faChevronCircleUp, faPencilAlt } from "@fortawesome/free-solid-svg-icons"
+import { faPlus, faInfo, faChevronCircleDown, faChevronCircleUp, faPencilAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons"
 import { db } from 'firebase.js'
 import { UndoOutlined } from '@material-ui/icons';
 
@@ -13,7 +13,7 @@ const InfoDocument = ({ currentUser, docId }) => {
     const [countend, setend] = useState(0);
     const [currentDoc, setCurrentDoc] = useState();
     const [review, setReview] = useState(false);
-    const [achievement, setAchievements] = useState(false);
+    const [achievements, setAchievements] = useState(false);
     const [reviewlist, setReviewlist] = useState([]);
     const [text, setText] = useState(""); // useState(submit ? reviewlist[0]['content'] : "");
     const [achivetext1, setachivetext1] = useState(" ");
@@ -290,9 +290,7 @@ const InfoDocument = ({ currentUser, docId }) => {
         setAchievements(true);
     }
 
-
-
-    const clickAchievements = () => {
+    const clickAchYes = () => {
         let temparray = achievlist;
         temparray.push({ name: achivetext1, explain: achivetext2 })
         setachievlist(temparray)
@@ -478,7 +476,7 @@ const InfoDocument = ({ currentUser, docId }) => {
                 <div id="AIP-achievements" style={{ marginTop: '30px' }}>
                     <div style={{ width: '100%', display: 'inline-block' }}>
                         <h2 style={{ float: 'left' }}>Achievements</h2>
-                        <Button id="AIP-edit-button" variant="success" onClick={clickAchievement} disabled={!ongoingbool || !currentUser}><FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />Add Achievement</Button>
+                        <Button id="AIP-edit-button" variant="success" onClick={clickAchievement} disabled={!ongoingbool || !currentUser}><FontAwesomeIcon icon={faPlus} style={{ marginRight: "10px" }} />Add Achievement</Button>
                     </div>
                     {(!achievlist.length) ?
                         <div style={{ width: '100%', marginTop: '20px', textAlign: 'center', fontSize: "24px", color: "grey" }}>There is no achievement yet. You can add achievements for other users!</div>
@@ -509,7 +507,7 @@ const InfoDocument = ({ currentUser, docId }) => {
                         <h2 style={{ float: 'left' }}>Reviews</h2>
                         {submitbool ?
                             <div>
-                                <Button id="AIP-reviews-remove" variant="danger" onClick={clickRemove}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Remove your Review</Button>
+                                <Button id="AIP-reviews-remove" variant="danger" onClick={clickRemove}><FontAwesomeIcon icon={faTrashAlt} style={{ marginRight: "10px" }} />Remove your Review</Button>
                                 {ongoingbool &&
                                     <Button id="AIP-reviews-write" variant="success" onClick={clickReview}><FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "10px" }} />Modify your Review</Button>
                                 }
@@ -519,11 +517,9 @@ const InfoDocument = ({ currentUser, docId }) => {
                         }
                         {/*ongoing disabled*/}
                     </div>
-                    <Modal show={achievement} onHide={clickAchNo}>
+                    <Modal show={achievements} onHide={clickAchNo}>
                         <Modal.Header closeButton style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingBottom: '5px' }}>
-                            {
-                                <Modal.Title>Add a New Achievement</Modal.Title>
-                            }
+                            <Modal.Title>Add a New Achievement</Modal.Title>
                         </Modal.Header>
                         <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0' }}>
                             <Form style={{ marginLeft: '20px', marginRight: '20px' }}>
@@ -536,7 +532,7 @@ const InfoDocument = ({ currentUser, docId }) => {
                             </Form>
                         </Modal.Body>
                         <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px' }}>
-                            <Button variant="primary" onClick={clickAchievements}>
+                            <Button variant="primary" onClick={clickAchYes}>
                                 Submit
                         </Button>
                             <Button variant="danger" onClick={clickAchNo}>
