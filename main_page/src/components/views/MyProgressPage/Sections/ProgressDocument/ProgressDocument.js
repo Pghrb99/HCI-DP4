@@ -5,7 +5,7 @@ import './ProgressDocument.scss';
 import $ from 'jquery';
 import Review from '../../../ActivityInfoPage/Sections/Review/Review';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faPencilAlt, faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faPencilAlt, faEdit, faTrashAlt, faAsterisk } from "@fortawesome/free-solid-svg-icons";
 import { db } from '../../../../../firebase'
 import swal from 'sweetalert';
 
@@ -710,6 +710,7 @@ const ProgressDocument = ({ currentUser, docId }) => {
                         <Modal.Title>Modify Selected Achievements</Modal.Title>
                     </Modal.Header>
                     <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0' }}>
+                    <div style={{ margin: '10px 0 5px 20px', fontSize: "16px" }}><FontAwesomeIcon icon={faAsterisk} style={{ marginRight: '6px' }}/>By clicking a badge of each achievement, you can accomplish or cancel the achievements.</div>
                         {(!achievlist.length) ?
                             <div style={{ width: '100%', marginTop: '20px', textAlign: 'center', fontSize: "24px", color: "grey" }}>There is no achievement yet.<br></br>You can add achievements for other users at Activity Information Page!</div>
                             :
@@ -810,6 +811,7 @@ const ProgressDocument = ({ currentUser, docId }) => {
                         </Button>
                     </Modal.Footer>
                 </Modal>
+                <div style={{ marginTop: '10px', fontSize: "16px" }}><FontAwesomeIcon icon={faAsterisk} style={{ marginRight: '6px' }}/>By clicking a badge of each achievement, you can accomplish or cancel the achievements.</div>
             </div>
             <div id="MMP-reviews" style={{ marginTop: '30px' }}>
                 <div style={{ width: '100%', display: 'inline-block' }}>
