@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { ProgressBar, ListGroup, Badge, Modal, Button, ButtonGroup, ToggleButton, Form, Alert } from 'react-bootstrap'
+import { ProgressBar, ListGroup, Badge, Modal, Button, ButtonGroup, ToggleButton, Form, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import RangeSlider from 'react-bootstrap-range-slider';
 import './ProgressDocument.scss';
 import $ from 'jquery';
 import Review from '../../../ActivityInfoPage/Sections/Review/Review';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faPencilAlt, faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faPencilAlt, faEdit, faTrashAlt, faAsterisk } from "@fortawesome/free-solid-svg-icons";
 import { db } from '../../../../../firebase'
 import swal from 'sweetalert';
 
@@ -689,9 +689,9 @@ const ProgressDocument = ({ currentUser, docId }) => {
                     <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0' }}>
                         <Form style={{ marginLeft: '20px', marginRight: '20px' }}>
                             <Form.Group controlId="MMP-text">
-                                <Form.Label id="MMP-reviews-formlabel">Achievement Name(Title)</Form.Label>
+                                <Form.Label id="MPP-reviews-formlabel">Achievement Name(Title)</Form.Label>
                                 <Form.Control as="input" value={achivetext1} onChange={e => { setachivetext1(e.target.value) }} />
-                                <Form.Label id="MMP-reviews-formlabel">Achievement Explain</Form.Label>
+                                <Form.Label id="MPP-reviews-formlabel">Achievement Explain</Form.Label>
                                 <Form.Control as="input" value={achivetext2} onChange={e => { setachivetext2(e.target.value) }} />
                             </Form.Group>
                         </Form>
@@ -710,8 +710,9 @@ const ProgressDocument = ({ currentUser, docId }) => {
                         <Modal.Title>Modify Selected Achievements</Modal.Title>
                     </Modal.Header>
                     <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0' }}>
+                    <div style={{ margin: '10px 0 5px 20px', fontSize: "16px" }}><FontAwesomeIcon icon={faAsterisk} style={{ marginRight: '6px' }}/>By clicking a badge of each achievement, you can accomplish or cancel the achievements.</div>
                         {(!achievlist.length) ?
-                            <div style={{ width: '100%', marginTop: '20px', textAlign: 'center', fontSize: "24px", color: "grey" }}>There is no achievement yet.<br></br>You can add achievements for other users at Activity Information Page!</div>
+                            <div style={{ width: '100%', marginTop: '20px', marginBottom: '10px', textAlign: 'center', fontSize: "22px", color: "grey" }}>There is no achievement yet.<br></br>You can add achievements for other users at Activity Information Page!</div>
                             :
                             <ListGroup id="MMP-achievements-modallist">
                                 {achievlist.map((achiev, i) => {
@@ -734,7 +735,7 @@ const ProgressDocument = ({ currentUser, docId }) => {
                         }
                     </Modal.Body>
                     <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px' }}>
-                        <Button variant="primary" onClick={clickMYes}>
+                        <Button variant="primary" onClick={clickMYes} disabled={(!achievlist.length)}>
                             Submit
                         </Button>
                         <Button variant="danger" onClick={clickMNo}>
@@ -810,6 +811,7 @@ const ProgressDocument = ({ currentUser, docId }) => {
                         </Button>
                     </Modal.Footer>
                 </Modal>
+                <div style={{ marginTop: '10px', fontSize: "16px" }}><FontAwesomeIcon icon={faAsterisk} style={{ marginRight: '6px' }}/>By clicking a badge of each achievement, you can accomplish or cancel the achievements.</div>
             </div>
             <div id="MMP-reviews" style={{ marginTop: '30px' }}>
                 <div style={{ width: '100%', display: 'inline-block' }}>
@@ -834,11 +836,11 @@ const ProgressDocument = ({ currentUser, docId }) => {
                     <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0' }}>
                         <Form style={{ marginLeft: '20px', marginRight: '20px' }}>
                             <Form.Group controlId="MMP-text">
-                                <Form.Label id="MMP-reviews-formlabel">Text</Form.Label>
+                                <Form.Label id="MPP-reviews-formlabel">Text</Form.Label>
                                 <Form.Control as="textarea" rows={3} value={text} onChange={e => { setText(e.target.value) }} />
                             </Form.Group>
                             <Form.Group>
-                                <Form.Label id="MMP-reviews-formlabel">Do you recommend this activity?</Form.Label>
+                                <Form.Label id="MPP-reviews-formlabel">Do you recommend this activity?</Form.Label>
                                 <ButtonGroup toggle>
                                     <ToggleButton id="MMP-reviews-recommend" type="radio" variant="success" checked={recommend} onChange={() => setRecommend(true)} style={recommend ? { backgroundColor: "rgb(77, 163, 77)", border: "none" } : { backgroundColor: "#BBBBBB", border: "none" }}>
                                         Recommend
@@ -849,21 +851,31 @@ const ProgressDocument = ({ currentUser, docId }) => {
                                 </ButtonGroup>
                             </Form.Group>
                             <Form.Group controlId="MMP-range">
-                                <Form.Label id="MMP-reviews-formlabel">Easy to start</Form.Label>
+                                <OverlayTrigger placement="top" overlay={<Tooltip>{"Boxing < Walking"}</Tooltip>}>
+                                        <Form.Label id="AIP-reviews-formlabel">Easy to start</Form.Label>
+                                </OverlayTrigger>
                                 <RangeSlider value={range[0]} max={10} step={1} variant='success' onChange={e => setRange([parseInt(e.target.value), range[1], range[2], range[3], range[4]])} />
-                                <Form.Label id="MMP-reviews-formlabel">Cost-effective</Form.Label>
+                                <OverlayTrigger placement="top" overlay={<Tooltip>{"Badminton < Horse riding"}</Tooltip>}>
+                                        <Form.Label id="AIP-reviews-formlabel">Cost-effective</Form.Label>
+                                </OverlayTrigger>
                                 <RangeSlider value={range[1]} max={10} step={1} variant='success' onChange={e => setRange([range[0], parseInt(e.target.value), range[2], range[3], range[4]])} />
-                                <Form.Label id="MMP-reviews-formlabel">Schedule-flexible</Form.Label>
+                                <OverlayTrigger placement="top" overlay={<Tooltip>{"Climbing Everest < Jogging"}</Tooltip>}>
+                                        <Form.Label id="AIP-reviews-formlabel">Schedule-flexible</Form.Label>
+                                </OverlayTrigger>
                                 <RangeSlider value={range[2]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], parseInt(e.target.value), range[3], range[4]])} />
-                                <Form.Label id="MMP-reviews-formlabel">Safe</Form.Label>
+                                <OverlayTrigger placement="top" overlay={<Tooltip>{"Bullfighting < Yoga"}</Tooltip>}>
+                                        <Form.Label id="AIP-reviews-formlabel">Safe</Form.Label>
+                                </OverlayTrigger>
                                 <RangeSlider value={range[3]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], range[2], parseInt(e.target.value), range[4]])} />
-                                <Form.Label id="MMP-reviews-formlabel">Good for health</Form.Label>
+                                <OverlayTrigger placement="top" overlay={<Tooltip>{"Billiards < Pilates"}</Tooltip>}>
+                                        <Form.Label id="AIP-reviews-formlabel">Good for health</Form.Label>
+                                </OverlayTrigger>
                                 <RangeSlider value={range[4]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], range[2], range[3], parseInt(e.target.value)])} />
                             </Form.Group>
                         </Form>
                     </Modal.Body>
                     <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px' }}>
-                        <Button variant="primary" onClick={clickRYes}>
+                        <Button variant="primary" onClick={clickRYes} disabled={(text == "")}>
                             Submit
                         </Button>
                         <Button variant="danger" onClick={clickRNo}>

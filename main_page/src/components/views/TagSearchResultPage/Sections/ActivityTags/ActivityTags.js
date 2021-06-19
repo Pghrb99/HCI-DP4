@@ -3,7 +3,7 @@ import { Button, Modal, InputGroup, FormControl } from 'react-bootstrap';
 import ActivityTag from '../ActivityTag/ActivityTag'
 import './ActivityTags.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faTimes, faTag } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTimes, faTag, faAsterisk } from "@fortawesome/free-solid-svg-icons";
 import {firebase, db} from 'firebase.js';
 import { useAuth } from 'contexts/AuthContext';
 
@@ -221,7 +221,7 @@ const ActivityTags = ({tags, docId, plusbutton}) => {
                             </td>
                         </tbody>
                     </table>
-                    <p style={{float: 'left', marginTop: '37px', paddingLeft: '10px', fontSize: '16px'}}>If you click a tag, it will move to the opposite side.</p>
+                    <p style={{float: 'left', marginTop: '37px', paddingLeft: '10px', fontSize: '16px'}}><FontAwesomeIcon icon={faAsterisk} style={{ marginRight: '6px' }}/> By clicking a tag, it moves to the other side.</p>
                     <div style={{ float: 'right', width: '47%', margin:'20px 20px', textAlign: 'left' }}>
                         <InputGroup className="mb-3">
                             <FormControl id='newtag-input' value={tagText} placeholder="Enter a custom tag" aria-label="Enter a custom tag" onKeyPress={pressEnter}  onChange={(e) => setTagText(e.target.value)}/>

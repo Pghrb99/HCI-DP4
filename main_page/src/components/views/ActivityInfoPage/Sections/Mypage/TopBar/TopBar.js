@@ -6,8 +6,9 @@ import logo from '../../imgs/logo.svg'
 import './TopBar.scss'
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from '../../../../../../contexts/AuthContext';
-import { db } from 'firebase.js'
-
+import { db } from 'firebase.js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAsterisk } from "@fortawesome/free-solid-svg-icons";
 
 const TopBar = ({ userName }) => {
     const [addact, setAddact] = useState(false);
@@ -251,7 +252,7 @@ const TopBar = ({ userName }) => {
                 <span>Tags applied : </span><Tags tags={tags}/>
             </div> */}
             <div className="align-self-start" id="MP-bottom">
-                <span style={{float:'left', marginTop:'1%', fontSize:'24px'}}>If you click a card, then you will go to its MyProgressPage.</span>
+                <span style={{float:'left', marginTop:'2%', fontSize:'16px'}}><FontAwesomeIcon icon={faAsterisk} style={{ marginRight: '6px' }}/> If you click a card, then you will go to its MyProgressPage.</span>
                 <Button variant='success' id="MP-actadd" onClick={clickAddAct}>Add Activity</Button>
             </div>
             <Modal size='lg' show={addact} onHide={clickAANo}>
