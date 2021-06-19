@@ -4,14 +4,16 @@ import TagSearchBar from './Sections/TagSearchBar/TagSearchBar'
 import TopBar from './Sections/TopBar/TopBar'
 import Sidemenu from '../SideMenu/Sidemenu'
 import logo from './Sections/imgs/tagLogo.svg'
-import { useHistory } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import { useAuth } from '../../../contexts/AuthContext'
 
 function TagSearchPage(props) {
-  const [tags, setTags] = useState([]);
+  const location = useLocation();
+  const history = useHistory();
+  const initialTags = location.state ? location.state.tags : null; 
+  const [tags, setTags] = useState(initialTags ? initialTags : []);
   
   const {currentUser} = useAuth();
-  const history = useHistory();
   const onClick = () => {
     if(tags.length == 0) {
       return;

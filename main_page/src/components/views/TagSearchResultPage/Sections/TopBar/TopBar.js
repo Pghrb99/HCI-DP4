@@ -5,6 +5,8 @@ import logo from '../imgs/logo.svg'
 import Tags from '../Tags/Tags'
 import './TopBar.scss'
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit } from "@fortawesome/free-solid-svg-icons"
 import { useHistory } from 'react-router';
 import { useAuth } from '../../../../../contexts/AuthContext'
 
@@ -15,6 +17,15 @@ const TopBar = ({searchText, tags, category, isSignedIn, userName}) => {
         await logOut();
         history.push({
             pathname: '/result',
+            state: {
+                tags: tags
+            }
+        })
+    }
+
+    const onEdit = () => {
+        history.push({
+            pathname: '/',
             state: {
                 tags: tags
             }
@@ -45,10 +56,16 @@ const TopBar = ({searchText, tags, category, isSignedIn, userName}) => {
                 }
             </div>
             {
-                typeof tags != 'undefined' &&
+            typeof tags != 'undefined' &&
+
             <div className="align-self-start" id="tags">   
-                <span>Tags applied :</span><Tags tags={tags}/>
+                <span>Tags applied :</span>
+                <div style={{display: "flex", alignItems: "center"}}>
+                    <Tags tags={tags}/>
+                    <FontAwesomeIcon icon={faEdit} style={{ marginLeft: '10px', cursor:"pointer"}} onClick={onEdit}/>
+                </div>
             </div>
+    
             }
         </div>
     )
