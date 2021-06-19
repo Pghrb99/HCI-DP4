@@ -524,9 +524,9 @@ const InfoDocument = ({ currentUser, docId }) => {
                         <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0' }}>
                             <Form style={{ marginLeft: '20px', marginRight: '20px' }}>
                                 <Form.Group controlId="MMP-text">
-                                    <Form.Label id="MMP-reviews-formlabel">Achievement Name(Title)</Form.Label>
+                                    <Form.Label id="AIP-reviews-formlabel">Achievement Name(Title)</Form.Label>
                                     <Form.Control as="input" value={achivetext1} onChange={e => { setachivetext1(e.target.value) }} />
-                                    <Form.Label id="MMP-reviews-formlabel">Achievement Explain</Form.Label>
+                                    <Form.Label id="AIP-reviews-formlabel">Achievement Explain</Form.Label>
                                     <Form.Control as="input" value={achivetext2} onChange={e => { setachivetext2(e.target.value) }} />
                                 </Form.Group>
                             </Form>
@@ -551,11 +551,11 @@ const InfoDocument = ({ currentUser, docId }) => {
                         <Modal.Body style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '5px', paddingBottom: '0' }}>
                             <Form style={{ marginLeft: '20px', marginRight: '20px' }}>
                                 <Form.Group controlId="MMP-text">
-                                    <Form.Label id="MMP-reviews-formlabel">Text</Form.Label>
+                                    <Form.Label id="AIP-reviews-formlabel">Text</Form.Label>
                                     <Form.Control as="textarea" rows={3} value={text} onChange={e => { setText(e.target.value) }} />
                                 </Form.Group>
                                 <Form.Group>
-                                    <Form.Label id="MMP-reviews-formlabel">Do you recommend this activity?</Form.Label>
+                                    <Form.Label id="AIP-reviews-formlabel">Do you recommend this activity?</Form.Label>
                                     <ButtonGroup toggle>
                                         <ToggleButton id="MMP-reviews-recommend" type="radio" variant="success" checked={recommend} onChange={() => setRecommend(true)} style={recommend ? { backgroundColor: "rgb(77, 163, 77)", border: "none" } : { backgroundColor: "#BBBBBB", border: "none" }}>
                                             Recommend
@@ -566,21 +566,31 @@ const InfoDocument = ({ currentUser, docId }) => {
                                     </ButtonGroup>
                                 </Form.Group>
                                 <Form.Group controlId="MMP-range">
-                                    <Form.Label id="MMP-reviews-formlabel">Easy to start</Form.Label>
+                                    <OverlayTrigger placement="top" overlay={<Tooltip>{"Boxing < Walking"}</Tooltip>}>
+                                        <Form.Label id="AIP-reviews-formlabel">Easy to start</Form.Label>
+                                    </OverlayTrigger>
                                     <RangeSlider value={range[0]} max={10} step={1} variant='success' onChange={e => setRange([parseInt(e.target.value), range[1], range[2], range[3], range[4]])} />
-                                    <Form.Label id="MMP-reviews-formlabel">Cost-effective</Form.Label>
+                                    <OverlayTrigger placement="top" overlay={<Tooltip>{"Badminton < Horse riding"}</Tooltip>}>
+                                        <Form.Label id="AIP-reviews-formlabel">Cost-effective</Form.Label>
+                                    </OverlayTrigger>
                                     <RangeSlider value={range[1]} max={10} step={1} variant='success' onChange={e => setRange([range[0], parseInt(e.target.value), range[2], range[3], range[4]])} />
-                                    <Form.Label id="MMP-reviews-formlabel">Schedule-flexible</Form.Label>
+                                    <OverlayTrigger placement="top" overlay={<Tooltip>{"Climbing Everest < Jogging"}</Tooltip>}>
+                                        <Form.Label id="AIP-reviews-formlabel">Schedule-flexible</Form.Label>
+                                    </OverlayTrigger>
                                     <RangeSlider value={range[2]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], parseInt(e.target.value), range[3], range[4]])} />
-                                    <Form.Label id="MMP-reviews-formlabel">Safe</Form.Label>
+                                    <OverlayTrigger placement="top" overlay={<Tooltip>{"Bullfighting < Yoga"}</Tooltip>}>
+                                        <Form.Label id="AIP-reviews-formlabel">Safe</Form.Label>
+                                    </OverlayTrigger>
                                     <RangeSlider value={range[3]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], range[2], parseInt(e.target.value), range[4]])} />
-                                    <Form.Label id="MMP-reviews-formlabel">Good for health</Form.Label>
+                                    <OverlayTrigger placement="top" overlay={<Tooltip>{"Billiards < Pilates"}</Tooltip>}>
+                                        <Form.Label id="AIP-reviews-formlabel">Good for health</Form.Label>
+                                    </OverlayTrigger>
                                     <RangeSlider value={range[4]} max={10} step={1} variant='success' onChange={e => setRange([range[0], range[1], range[2], range[3], parseInt(e.target.value)])} />
                                 </Form.Group>
                             </Form>
                         </Modal.Body>
                         <Modal.Footer style={{ backgroundColor: '#eeeeee', color: 'black', border: 'none', paddingTop: '0', paddingBottom: '10px' }}>
-                            <Button variant="primary" onClick={clickRYes}>
+                            <Button variant="primary" onClick={clickRYes} disabled={(text == "")}>
                                 Submit
                         </Button>
                             <Button variant="danger" onClick={clickRNo}>

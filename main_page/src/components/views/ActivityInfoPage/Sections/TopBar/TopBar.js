@@ -9,6 +9,7 @@ import {db} from 'firebase.js';
 import { useHistory } from 'react-router';
 import { useAuth } from 'contexts/AuthContext'
 import {firebase} from 'firebase.js';
+import { SendSharp } from '@material-ui/icons';
 
 
 const TopBar = ({currentUser, docId}) => {
@@ -71,6 +72,8 @@ const TopBar = ({currentUser, docId}) => {
                 startTime: firebase.firestore.Timestamp.fromDate(new Date()) 
             });
         };
+
+        sendHistory();
     }
     const clickSNo = () => setStart(false);
 
