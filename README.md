@@ -1,6 +1,7 @@
 # Pongpong
 
 Pongpong is a website which provides organized information of various active hobbies to users and motivates them to continue the selected hobby.
+
 Site link: https://pongpong-f1442.web.app/
 
 ## Main features
